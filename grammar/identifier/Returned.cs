@@ -9,14 +9,17 @@ namespace CompiPascal.grammar.identifier
     {
         Object _value;
         DataType type;
+        bool isNull;
 
         public Returned(Object v, DataType d)
         {
             this._value = v;
             this.type = d;
+            this.isNull = false;
         }
         public Returned()
         {
+            this.isNull = true;
         }
 
         public Object Value
@@ -25,10 +28,15 @@ namespace CompiPascal.grammar.identifier
             set { _value = value; }
         }
 
-        public DataType DataType
+        public DataType getDataType
         {
             get { return type; }
             set { type = value; }
+        }
+        public bool IsNull
+        {
+            get { return isNull; }
+            set { isNull = value; }
         }
 
     }

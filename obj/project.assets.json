@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\juan_\\Downloads\\CompiPascal\\CompiPascal.csproj",
+      "projectUniqueName": "C:\\Users\\juan_\\Documents\\USAC\\4.Cuarto Año\\1. SEPTIMO SEMESTRE\\COMPILADORES 2\\Lab\\-OLC2-Compi-Pascal-\\CompiPascal.csproj",
       "projectName": "CompiPascal",
-      "projectPath": "C:\\Users\\juan_\\Downloads\\CompiPascal\\CompiPascal.csproj",
+      "projectPath": "C:\\Users\\juan_\\Documents\\USAC\\4.Cuarto Año\\1. SEPTIMO SEMESTRE\\COMPILADORES 2\\Lab\\-OLC2-Compi-Pascal-\\CompiPascal.csproj",
       "packagesPath": "C:\\Users\\juan_\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\juan_\\Downloads\\CompiPascal\\obj\\",
+      "outputPath": "C:\\Users\\juan_\\Documents\\USAC\\4.Cuarto Año\\1. SEPTIMO SEMESTRE\\COMPILADORES 2\\Lab\\-OLC2-Compi-Pascal-\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\juan_\\AppData\\Roaming\\NuGet\\NuGet.Config",

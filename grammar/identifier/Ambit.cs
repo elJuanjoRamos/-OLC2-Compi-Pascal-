@@ -14,6 +14,7 @@ namespace CompiPascal.grammar.identifier
         public Ambit anterior;
         public int ambit_null;
 
+        public string Ambit_name { get => ambit_name; set => ambit_name = value; }
 
         public Ambit(Ambit a, string n, int isnull)
         {
@@ -58,6 +59,7 @@ namespace CompiPascal.grammar.identifier
             }
             this.variables.Add(id, new Identifier(valor, id, type, esconstante));
         }
+
 
 
     }

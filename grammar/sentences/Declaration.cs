@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CompiPascal.controller;
 using CompiPascal.grammar.abstracts;
 using CompiPascal.grammar.identifier;
 
@@ -15,11 +16,11 @@ namespace CompiPascal.grammar.sentences
         public int column;
 
 
-        public Declaration(string i, DataType d, Expression e, int r, int c)
+        public Declaration(string i, String d, Expression e, int r, int c)
             : base(r, c)
         {
             this.id = i;
-            this.type = d;
+            this.type = GetDataType(d);
             this.value = e;
             this.row = r;
             this.column = c;
@@ -31,14 +32,41 @@ namespace CompiPascal.grammar.sentences
             {
                 var val = this.value.Execute(ambit);
 
+                if (val.getDataType == this.type)
+                {
+                    ambit.save(this.id, val.Value, val.getDataType, false);
+                    SimbolTableController.Instance.add(this.id, this.type, ambit.Ambit_name, ((Expression)val.Value), true, false);
 
-                ambit.save(this.id, val.Value, val.DataType, false);
+
+                } else
+                {
+                    ErrorController.Instance.add("El tipo " + val.Value.ToString() + " no es asignable con " + this.type.ToString());
+                }
 
             }
             catch (Exception)
             {
 
             }
+
+        }
+
+
+        public DataType GetDataType(string d)
+        {
+            if (d.Equals("integer"))
+            {
+                return DataType.INTEGER;
+            }
+            else if (d.Equals("boolean"))
+            {
+                return DataType.BOOLEAN;
+            }
+            else if (d.Equals("real"))
+            {
+                return DataType.REAL;
+            }
+            return DataType.STRING;
 
         }
 

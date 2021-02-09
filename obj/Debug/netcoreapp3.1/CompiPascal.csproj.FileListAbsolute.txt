@@ -32,3 +32,20 @@ C:\Users\juan_\Downloads\CompiPascal\bin\Debug\netcoreapp3.1\CompiPascal.pdb
 C:\Users\juan_\Downloads\CompiPascal\bin\Debug\netcoreapp3.1\Irony.dll
 C:\Users\juan_\Downloads\CompiPascal\obj\Debug\netcoreapp3.1\CompiPascal.csproj.CopyComplete
 C:\Users\juan_\Downloads\CompiPascal\obj\Debug\netcoreapp3.1\CompiPascal.genruntimeconfig.cache
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\bin\Debug\netcoreapp3.1\CompiPascal.exe
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\bin\Debug\netcoreapp3.1\CompiPascal.deps.json
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\bin\Debug\netcoreapp3.1\CompiPascal.runtimeconfig.json
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\bin\Debug\netcoreapp3.1\CompiPascal.runtimeconfig.dev.json
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\bin\Debug\netcoreapp3.1\CompiPascal.dll
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\bin\Debug\netcoreapp3.1\CompiPascal.pdb
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\bin\Debug\netcoreapp3.1\Irony.dll
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.csprojAssemblyReference.cache
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.Form1.resources
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.csproj.GenerateResource.cache
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.AssemblyInfoInputs.cache
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.AssemblyInfo.cs
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.csproj.CoreCompileInputs.cache
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.csproj.CopyComplete
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.dll
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.pdb
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.genruntimeconfig.cache

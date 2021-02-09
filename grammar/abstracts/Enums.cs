@@ -11,6 +11,8 @@ namespace CompiPascal.grammar.abstracts
         BOOLEAN = 2,
         REAL = 3,
         TYPE = 4,
+        IDENTIFIER = 5,
+
     }
 
     public enum OpRelational
