@@ -43,27 +43,31 @@ namespace CompiPascal.controller
         }
         public bool validName(string name)
         {
-            if (name.Equals("leaf"))
+            if (name.Contains("reserv"))
             {
                 return true;
             }
-            if (name.Equals("identifier"))
+            if (name.Contains("tk_"))
             {
                 return true;
             }
-            if (name.Equals("numero"))
+            else if (name.Equals("identifier"))
             {
                 return true;
             }
-            if (name.Equals("real"))
+            else if (name.Equals("numero"))
             {
                 return true;
             }
-            if (name.Equals("boolean"))
+            else if (name.Equals("real"))
             {
                 return true;
             }
-            if (name.Equals("cadena"))
+            else if (name.Equals("boolean"))
+            {
+                return true;
+            }
+            else if (name.Equals("cadena"))
             {
                 return true;
             }

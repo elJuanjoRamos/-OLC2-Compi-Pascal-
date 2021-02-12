@@ -62,14 +62,14 @@ namespace CompiPascal.grammar.expression
                 else
                 {
                     var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                    ErrorController.Instance.add(texto);
+                    //ErrorController.Instance.add(texto)
                 }
 
             }
             else
             {
                 var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                ErrorController.Instance.add(texto);
+                //ErrorController.Instance.add(texto)
             }
 
             return result;

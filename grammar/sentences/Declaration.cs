@@ -40,7 +40,7 @@ namespace CompiPascal.grammar.sentences
 
                 } else
                 {
-                    ErrorController.Instance.add("El tipo " + val.Value.ToString() + " no es asignable con " + this.type.ToString());
+                    //ErrorController.Instance.add("El tipo " + val.Value.ToString() + " no es asignable con " + this.type.ToString());
                 }
 
             }

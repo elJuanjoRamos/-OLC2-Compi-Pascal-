@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
+using CompiPascal.Model;
 
 namespace CompiPascal.controller
 {
@@ -23,13 +24,19 @@ namespace CompiPascal.controller
         }
 
 
-        ArrayList error = new ArrayList();
+        ArrayList syntacticErrors = new ArrayList();
+        ArrayList lexicalErrors = new ArrayList();
 
 
 
-        public void add(string texto)
+        public void SyntacticError(string message, int row, int col)
         {
-            this.error.Add(texto);
+            this.syntacticErrors.Add(new Error(message, row, col));
+        }
+
+        public void LexicalError(string message, int row, int col)
+        {
+            this.lexicalErrors.Add(new Error(message, row, col));
         }
 
     }

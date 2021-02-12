@@ -20,6 +20,12 @@ namespace CompiPascal.analizer
         public void analizer(String cadena)
         {
             Grammar grammar = new Grammar();
+            LanguageData languageData = new LanguageData(grammar);
+
+            /*foreach (var item in languageData.Errors)
+            {
+                System.Diagnostics.Debug.WriteLine(item);
+            }*/
             Parser parser = new Parser(new LanguageData(grammar));
             ParseTree tree = parser.Parse(cadena.ToLower());
             ParseTreeNode root = tree.Root;
@@ -27,10 +33,28 @@ namespace CompiPascal.analizer
             {
                 return;
             }
+
+            /*if (tree.ParserMessages.Count > 0)
+            {
+                foreach (var err in tree.ParserMessages)
+                {
+                    //Errores lexicos
+                    if (err.Message.Contains("Invalid character"))
+                    {
+                        ErrorController.Instance.LexicalError(err.Message, err.Location.Line, err.Location.Column);
+                    } 
+                    //Errores sintacticos
+                    else
+                    {
+                        ErrorController.Instance.SyntacticError(err.Message, err.Location.Line, err.Location.Column);
+                    }
+                }
+            }*/
+
+
             getGraph(root);
             //instructions(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(2));
             
-
         }
         public /*LinkedList<Instruction>*/ void instructions(ParseTreeNode actual)
         {
