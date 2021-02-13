@@ -1,4 +1,6 @@
 ﻿using CompiPascal.analizer;
+using CompiPascal.controller;
+using MaterialSkin.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +13,7 @@ using System.Windows.Forms;
 
 namespace CompiPascal
 {
-    public partial class Form1 : Form
+    public partial class Form1 : MaterialForm
     {
         public Form1()
         {
@@ -35,9 +37,19 @@ namespace CompiPascal
 
         private void analizar_Click(object sender, EventArgs e)
         {
+           
+        }
+
+        private void ejecutar_Click(object sender, EventArgs e)
+        {
             var a = textAnalizar.Text;
+            consola.Text = "Programa Encendido\nEn ejecucion ...";
+            
             Syntactic syntactic = new Syntactic();
-            syntactic.analizer(a);
+            syntactic.analizer(a.ToLower());
+
+            consola.Text = consola.Text + "\n" + ConsolaController.Instance.getText();
+
         }
     }
 }

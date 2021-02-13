@@ -259,7 +259,6 @@ namespace CompiPascal.analizer
             INSTRUCTIONS.Rule = MakePlusRule(INSTRUCTIONS, INSTRUCTION);
 
             INSTRUCTION.Rule
-                //= DECLARATION
                 = VAR_ASSIGNATE
                 | IFTHEN
                 | SENTENCE_CASE

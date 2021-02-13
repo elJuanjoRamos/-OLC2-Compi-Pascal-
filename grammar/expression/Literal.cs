@@ -34,7 +34,7 @@ namespace CompiPascal.grammar.expression
             }
             else if (this.type == 2)
             {
-                returned = new Returned(double.Parse(this.value.ToString()), DataType.REAL);
+                returned = new Returned(this.value.ToString(), DataType.STRING);
             }
 
             else if (this.type == 3)

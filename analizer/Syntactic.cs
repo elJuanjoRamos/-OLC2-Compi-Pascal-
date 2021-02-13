@@ -2,7 +2,6 @@
 using CompiPascal.grammar.abstracts;
 using CompiPascal.grammar.expression;
 using CompiPascal.grammar.identifier;
-using CompiPascal.grammar.instruction;
 using CompiPascal.grammar.sentences;
 using Irony.Parsing;
 using System;
@@ -15,7 +14,7 @@ namespace CompiPascal.analizer
 {
     class Syntactic
     {
-        public int root = 0;
+        public Ambit general = new Ambit();
 
         public void analizer(String cadena)
         {
@@ -34,7 +33,7 @@ namespace CompiPascal.analizer
                 return;
             }
 
-            /*if (tree.ParserMessages.Count > 0)
+            if (tree.ParserMessages.Count > 0)
             {
                 foreach (var err in tree.ParserMessages)
                 {
@@ -49,119 +48,145 @@ namespace CompiPascal.analizer
                         ErrorController.Instance.SyntacticError(err.Message, err.Location.Line, err.Location.Column);
                     }
                 }
-            }*/
+            }
 
 
             getGraph(root);
-            //instructions(root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(2));
-            
-        }
-        public /*LinkedList<Instruction>*/ void instructions(ParseTreeNode actual)
-        {
-            LinkedList<Instruction> instruction_list = new LinkedList<Instruction>();
 
-            /*foreach (ParseTreeNode node in actual.ChildNodes)
-            {
-                var exp = expresion(node);
-                var a = exp.Execute(new Ambit());
+            var program_body = root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(3);
 
-                System.Diagnostics.Debug.WriteLine(a.Value);
-                instruction_list.AddLast(new Evaluar(exp));
-            }*/
-            if (actual.ChildNodes.Count == 2)
-            {
-                instruccion(actual.ChildNodes.ElementAt(0));
-                instructions(actual.ChildNodes.ElementAt(1));
-            }
-            else
-            {
-                instruccion(actual.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0));
-            }
+            //declarations(program_body.ChildNodes.ElementAt(0));
 
-            //return instruction_list;
+            LinkedList<Instruction> listaInstrucciones = instructions(program_body.ChildNodes.ElementAt(2));
+            ejecutar(listaInstrucciones);
+            //instructions();
+
         }
 
-        public void instruccion(ParseTreeNode actual)
-        {
-            if (actual.Term.Name.Equals("DECLARATION"))
-            {
-
-                declaration(actual);
-            }
-        }
-
-        public void declaration(ParseTreeNode actual)
+        public void declarations(ParseTreeNode actual)
         {
 
-
-            var declaration_list = actual.ChildNodes.ElementAt(1);
-
-            var identifier = declaration_list.ChildNodes.ElementAt(0).Token.Text;
-
-
-            assignation(declaration_list.ChildNodes.ElementAt(1), identifier);
-
-   
-        }
-
-        public void declaration_prima(ParseTreeNode actual)
-        {
-            /*LISTA_ DECLARACION_PRIMA => 
-                 LISTA_DECLARACION
-                | epsilon
-            */
-
-            if (actual.ChildNodes.Count != 0)
+            if (actual.ChildNodes.Count !=0)
             {
-                declaration(actual.ChildNodes.ElementAt(0));
+
+                //VERIFICA SI ES VAR O CONST
+                var tipo = actual.ChildNodes.ElementAt(0);
+                //ES CONST
+                if (tipo.Term.Equals("RESERV_CONST"))
+                {
+
+                } 
+                //ES VAR
+                else
+                {
+
+                }
+
+
+
+
+                if (true)
+                {
+
+                }
+
+                foreach (var item in actual.ChildNodes)
+                {
+                    if (item.Term.Equals("DECLARATION_LIST"))
+                    {
+                        declarations(item);
+                    }
+                }
+                var declaration_list = actual.ChildNodes.ElementAt(1);
+
+                var identifier = declaration_list.ChildNodes.ElementAt(0).Token.Text;
+
+
+
+
+
+
             }
-            else
-            {
-                //EPSILON
-            }
+
+
         }
 
 
-        public void assignation(ParseTreeNode actual, string identificador)
+
+
+        public LinkedList<Instruction> instructions(ParseTreeNode actual)
         {
 
-            if (actual.ChildNodes.ElementAt(0).Token.Text.Equals(":"))
+            LinkedList<Instruction> listaInstrucciones = new LinkedList<Instruction>();
+
+            var instructions = actual.ChildNodes[1];
+            foreach (ParseTreeNode nodo in instructions.ChildNodes)
             {
+                var inst = instruction(nodo.ChildNodes[0]);
+                listaInstrucciones.AddLast(inst);
 
-                var type = data_type(actual.ChildNodes.ElementAt(1));
-                assignation_prima(actual.ChildNodes.ElementAt(2), identificador, type);
-                declaration_prima(actual.ChildNodes.ElementAt(3));
-
-
+                //System.Diagnostics.Debug.WriteLine(nodo);
+                //Console.WriteLine(expresion(nodo.ChildNodes[2]));
+                //listaInstrucciones.AddLast();
             }
-            else
-            {
-                //SE OBTIENE EL TIPO
-                //type = assignation.ChildNodes.ElementAt(2).ChildNodes.ElementAt(0).Token.Text;
-
-            }
+            return listaInstrucciones;
         }
-        public void assignation_prima(ParseTreeNode actual, string identificador, string type)
+        public Instruction instruction(ParseTreeNode actual)
         {
-            if (actual.ChildNodes.Count != 0)
+            if (actual.Term.ToString().Equals("WRITE"))
+            {
+                var WRHITE_PARAMETER = actual.ChildNodes[2];
+
+                var isln = false;
+                LinkedList<Expression> list = new LinkedList<Expression>();
+                
+                list = WRITES(WRHITE_PARAMETER);
+                
+                if (actual.ChildNodes[0].Term.ToString().Equals("RESERV_WRITEN"))
+                {
+                    isln = true;
+                }
+                return new Write(list, isln);
+
+            }
+            else if (actual.Term.ToString().Equals("IFTHEN"))
             {
 
+            }
+
+            return null;
+        }
+
+
+        #region WRITE
+        public LinkedList<Expression> WRITES(ParseTreeNode actual)
+        {
+            LinkedList<Expression> list = new LinkedList<Expression>();
+            if (actual.ChildNodes.Count > 0)
+            {
+                var exp = expresion(actual.ChildNodes.ElementAt(0));
+                list.AddLast(exp);
+                list = WRHITE_PARAMETER(actual.ChildNodes.ElementAt(1), list);
+
+            }
+            return list;
+        }
+        public LinkedList<Expression> WRHITE_PARAMETER(ParseTreeNode actual, LinkedList<Expression> list)
+        {
+            if (actual.ChildNodes.Count > 0)
+            {
                 var exp = expresion(actual.ChildNodes.ElementAt(1));
-
-                var a = exp.Execute(new Ambit());
-                System.Diagnostics.Debug.WriteLine(a.Value);
-
-                Declaration declaration = new Declaration(identificador, type, exp, 0, 0);
-        
+                list.AddLast(exp);
+                list = WRHITE_PARAMETER(actual.ChildNodes.ElementAt(2), list);
 
             }
-            
+            return list;
         }
-        public string data_type(ParseTreeNode actual)
-        {
-            return actual.ChildNodes.ElementAt(0).Token.Text;
+        #endregion
 
-        }
+
+
+
 
         
 
@@ -230,7 +255,7 @@ namespace CompiPascal.analizer
             }
             else
             {
-                 return new Literal(actual.ChildNodes.ElementAt(0).Token.Text, 0);
+                 return new Literal(actual.ChildNodes.ElementAt(0).Token.Text, 2);
             }
         }
 
@@ -264,7 +289,14 @@ namespace CompiPascal.analizer
         #endregion
 
 
-        
+        public void ejecutar(LinkedList<Instruction> actual)
+        {
+            foreach (var item in actual)
+            {
+               item.Execute(general);
+                
+            }
+        }
 
         public void getGraph(ParseTreeNode root)
         {

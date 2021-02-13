@@ -6,13 +6,14 @@ namespace CompiPascal.grammar.abstracts
 {
     public enum DataType
     {
-        INTEGER = 0,
-        STRING = 1,
-        BOOLEAN = 2,
-        REAL = 3,
-        TYPE = 4,
-        IDENTIFIER = 5,
-
+        INTEGER = 1,
+        STRING = 2,
+        BOOLEAN = 3,
+        REAL = 4,
+        TYPE = 5,
+        ARRAY = 6,
+        IDENTIFIER = 7,
+        ERROR = 8
     }
 
     public enum OpRelational

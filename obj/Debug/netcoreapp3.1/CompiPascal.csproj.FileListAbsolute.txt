@@ -49,3 +49,5 @@ C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\L
 C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.dll
 C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.pdb
 C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.genruntimeconfig.cache
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\bin\Debug\netcoreapp3.1\MaterialSkin.dll
+C:\Users\juan_\Documents\USAC\4.Cuarto Año\1. SEPTIMO SEMESTRE\COMPILADORES 2\Lab\-OLC2-Compi-Pascal-\obj\Debug\netcoreapp3.1\CompiPascal.Properties.Resources.resources

@@ -304,45 +304,27 @@ namespace CompiPascal.grammar.expression
 
             return result;
         }
-        public string getOperator(int type)
+        
+
+        public DataType GetDataType(DataType izq, DataType der)
         {
 
-            if (type == 0)
+            
+            if (izq == DataType.STRING)
             {
-                return "+";
+                if (der == DataType.ARRAY || der == DataType.TYPE || der == DataType.ERROR)
+                {
+                    return DataType.ERROR;
+                } else
+                {
 
-            }
-            else if (type == 1)
-            {
-                return "-";
-            }
-            else if (type == 2)
-            {
-                return "*";
-            }
-            else if (type == 3)
-            {
-                return "/";
-            }
-            else if (type == 4)
-            {
-                return "^";
-            }
-            else if (type == 5)
-            {
-                return "%";
-            }
-            else if (type == 6)
-            {
-                return "++";
-            }
-            else if (type == 7)
-            {
-                return "--";
+                }  
             }
 
-            return "";
+
+            return DataType.ERROR;
+
+            
         }
-
     }
 }
