@@ -20,7 +20,13 @@ namespace CompiPascal.grammar.identifier
         public Returned()
         {
             this._value = "";
-            this.type = DataType.STRING;
+            this.type = DataType.ERROR;
+            this.isNull = true;
+        }
+        public Returned(string n)
+        {
+            this._value = n;
+            this.type = DataType.ERROR;
             this.isNull = true;
         }
 

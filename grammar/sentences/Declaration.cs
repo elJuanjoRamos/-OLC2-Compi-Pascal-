@@ -44,6 +44,13 @@ namespace CompiPascal.grammar.sentences
             {
                 Returned val = this.value.Execute(ambit);
 
+                //VERIFICA QUE NO HAYA ERROR
+                if (val.getDataType == DataType.ERROR)
+                {
+                    return null;
+                }
+
+
                 if (this.type == DataType.CONST)
                 {
                     ambit.save(this.id, val.Value, val.getDataType, true);
@@ -61,7 +68,7 @@ namespace CompiPascal.grammar.sentences
                     else
                     {
                         ConsolaController.Instance.Add("El tipo " + val.Value.ToString() + " no es asignable con " + this.type.ToString());
-                        throw new Exception();
+                        return null;
                     }
                 }
 

@@ -22,13 +22,24 @@ namespace CompiPascal.grammar.sentences
             var texto = "";
             foreach (var el in value)
             {
-                if (this.isln)
+               var element = el.Execute(a);
+
+                if (element.getDataType == DataType.ERROR)
                 {
-                    texto = texto + "\n" + (el.Execute(a)).Value.ToString();
+                    return null;
                 } else
                 {
-                    texto = texto + " " + (el.Execute(a)).Value.ToString();
+                    if (this.isln)
+                    {
+                        texto = texto + "\n" + (element.Value.ToString());
+                    }
+                    else
+                    {
+                        texto = texto + " " + (element.Value.ToString());
+                    }
                 }
+
+                
                 
             }
             ConsolaController.Instance.Add(texto);

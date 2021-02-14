@@ -50,8 +50,7 @@ namespace CompiPascal.grammar.sentences
             if (condition.getDataType != DataType.BOOLEAN)
             {
                 ConsolaController.Instance.Add("Semantico - La condicion del If no es booleana");
-                throw new Exception();
-
+                return null;
             }
 
             if ((bool)condition.Value == true)

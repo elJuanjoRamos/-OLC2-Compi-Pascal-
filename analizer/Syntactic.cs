@@ -52,6 +52,7 @@ namespace CompiPascal.analizer
                         ErrorController.Instance.SyntacticError(err.Message, err.Location.Line, err.Location.Column);
                     }
                 }
+                return;
             }
 
 
@@ -124,9 +125,15 @@ namespace CompiPascal.analizer
                 IF ifs = IFTHEN(actual);
                 return ifs;
             }
-            else if (true)
+            else if (actual.Term.ToString().Equals("WHILE"))
             {
-
+                While _while = WHILE(actual);
+                return _while;
+            }
+            else if (actual.Term.ToString().Equals("VAR_ASSIGNATE"))
+            {
+                Assignation assignation = VAR_ASSIGNATE(actual);
+                return assignation;
             }
 
             return null;
@@ -135,6 +142,9 @@ namespace CompiPascal.analizer
 
         #region DECLARACION Y ASIGNACION
 
+        #region DECLARACION
+
+        
         public LinkedList<Instruction> LIST_DECLARATIONS(ParseTreeNode actual, LinkedList<Instruction> lista_actual, ArrayList elementos_her)
         {
             
@@ -294,6 +304,20 @@ namespace CompiPascal.analizer
             }
             return null;
         }
+
+        #endregion
+
+        #region ASIGNACION
+        public Assignation VAR_ASSIGNATE(ParseTreeNode actual)
+        {
+            //VAR_ASSIGNATE.Rule = IDENTIFIER + DOS_PUNTOS + EQUALS + LOGIC_EXPRESION + PUNTO_COMA;
+            var identifier = actual.ChildNodes[0].Token.Text;
+            var exp = expresion(actual.ChildNodes[3]);
+            return new Assignation(identifier, exp);
+        }
+
+        #endregion
+
         #endregion
 
         #region FUNCIONES NATIVAS 
@@ -382,7 +406,17 @@ namespace CompiPascal.analizer
         #endregion
 
         #region WHILE
+        public While WHILE(ParseTreeNode actual)
+        {
+            //WHILE.Rule = RESERV_WHILE + LOGIC_EXPRESION + RESERV_DO + INSTRUCTIONS_BODY;
 
+            var condition = expresion(actual.ChildNodes[1]);
+
+            LinkedList<Instruction> lista_instrucciones = INSTRUCTIONS_BODY(actual.ChildNodes[3]);
+
+            return new While(condition, new Sentence(lista_instrucciones));
+
+        }
 
         #endregion
 
@@ -424,8 +458,8 @@ namespace CompiPascal.analizer
                     {
                         opcion = 3;
                     }
-                    var iz = GetLiteral(actual.ChildNodes.ElementAt(0).ChildNodes.ElementAt(0));
-                    var der = GetLiteral(actual.ChildNodes.ElementAt(2).ChildNodes.ElementAt(0));
+                    var iz = expresion(actual.ChildNodes.ElementAt(0));
+                    var der = expresion(actual.ChildNodes.ElementAt(2));
 
                     switch (opcion)
                     {
@@ -447,9 +481,19 @@ namespace CompiPascal.analizer
             else if (actual.ChildNodes.Count == 2)
             {
                 var simb = actual.ChildNodes.ElementAt(0).Token.Text;
-                var iz = GetLiteral(actual.ChildNodes.ElementAt(1).ChildNodes.ElementAt(0));
 
-                return new Logical(iz, null, simb, 0, 0);
+
+                if (simb.Equals("-"))
+                {
+                    var iz = expresion(actual.ChildNodes[1]);
+                    return new Arithmetic(iz, new Literal("-1", 1), "*");
+                } else
+                {
+                    var iz = GetLiteral(actual.ChildNodes.ElementAt(1).ChildNodes.ElementAt(0));
+                    return new Logical(iz, null, simb, 0, 0);
+                }
+
+
 
             }
             else
@@ -497,9 +541,16 @@ namespace CompiPascal.analizer
         #endregion
 
 
+
+        #region EJECUCION
+
+     
         public void ejecutar(LinkedList<Instruction> actual, LinkedList<Instruction> lista_declaraciones)
         {
             //GUARDAR VARIABLES
+
+            var error_variable = false;
+
 
             foreach (var item in lista_declaraciones)
             {
@@ -508,7 +559,8 @@ namespace CompiPascal.analizer
                     var result = item.Execute(general);
                     if (result == null)
                     {
-                        ConsolaController.Instance.Add("");
+                        error_variable = true;
+                        break;
                     }
                 }
                 catch (Exception)
@@ -518,23 +570,27 @@ namespace CompiPascal.analizer
                 }
             }
 
-            foreach (var item in actual)
+            if (!error_variable)
             {
-                try
+                foreach (var item in actual)
                 {
-                   var result = item.Execute(general);
-                    if (result == null)
+                    try
                     {
-                        ConsolaController.Instance.Add("");
+                        var result = item.Execute(general);
+                        if (result == null)
+                        {
+                            break;
+                        }
                     }
-                }
-                catch (Exception)
-                {
+                    catch (Exception)
+                    {
 
-                    throw;
+                        throw;
+                    }
+
                 }
-                
             }
+            
         }
 
         public void getGraph(ParseTreeNode root)
@@ -555,6 +611,9 @@ namespace CompiPascal.analizer
                 System.Diagnostics.Debug.WriteLine("ERROR AL GENERAR EL DOT");
             }
         }
+
+        #endregion
+
     }
 
 }

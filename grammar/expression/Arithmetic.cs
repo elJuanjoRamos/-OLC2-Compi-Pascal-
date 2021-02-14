@@ -27,13 +27,28 @@ namespace CompiPascal.grammar.expression
             var varIz = this.left.Execute(ambit);
             var valDer = this.right.Execute(ambit);
 
+
+            //VERIFICA QUE NO HAYA ERROR
+            if (varIz.getDataType == DataType.ERROR)
+            {
+                return new Returned(varIz.Value.ToString());
+            }
+            else if (valDer.getDataType == DataType.ERROR)
+            {
+                return new Returned(valDer.Value.ToString());
+            }
+
+
+
+
             if (this.type.Equals("+"))
             {
                 /**
-                    * SI EL IZQUIERDO ES NUMBER
-                    * NUMBER + NUMBER : NUMBER
-                    * NUMBER + STRING : STRING
-                    * NUMBER + OTRO : ERROR
+                    * SI EL IZQUIERDO ES INT
+                    * INT + INT: INT
+                    * INT + REAL: REAL
+                    * INT + STRING : STRING
+                    * INT + OTRO : ERROR
                     * 
                     */
                 if (varIz.getDataType == DataType.INTEGER)
@@ -42,13 +57,17 @@ namespace CompiPascal.grammar.expression
                     {
                         result = new Returned((int.Parse(varIz.Value.ToString()) + int.Parse(valDer.Value.ToString())), DataType.INTEGER);
                     }
+                    else if (valDer.getDataType == DataType.REAL)
+                    {
+                        result = new Returned((double.Parse(varIz.Value.ToString()) + double.Parse(valDer.Value.ToString())), DataType.REAL);
+                    }
                     else if (valDer.getDataType == DataType.STRING)
                     {
                         result = new Returned((varIz.Value.ToString() + valDer.Value.ToString()), DataType.STRING);
                     } else
                     {
-                        var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                        //ErrorController.Instance.add(texto);
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
 
                 }
@@ -64,13 +83,14 @@ namespace CompiPascal.grammar.expression
                 /**
                 * SI EL IZQUIERDO ES REAL
                 * REAL + REAL : REAL
+                * REAL + INT: INT
                 * REAL + STRING : STRING
                 * REAL + OTRO : ERROR
                 * 
                 */
                 else if (varIz.getDataType == DataType.REAL)
                 {
-                    if (valDer.getDataType == DataType.REAL)
+                    if (valDer.getDataType == DataType.REAL || valDer.getDataType == DataType.INTEGER)
                     {
                         result = new Returned((double.Parse(varIz.Value.ToString()) + double.Parse(valDer.Value.ToString())), DataType.REAL);
                     }
@@ -80,8 +100,8 @@ namespace CompiPascal.grammar.expression
                     }
                     else
                     {
-                        var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                        //ErrorController.Instance.add(texto);
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
                     
                 }
@@ -98,22 +118,23 @@ namespace CompiPascal.grammar.expression
                         result = new Returned((varIz.Value.ToString() + valDer.Value.ToString()), DataType.STRING);
                     } else
                     {
-                        var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                        //ErrorController.Instance.add(texto);
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
                 }
-                else if (varIz.getDataType == DataType.TYPE)
+                else 
                 {
-                    var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                    //ErrorController.Instance.add(texto);
+                    ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                    return new Returned();
 
                 }
             }
-            if (this.type.Equals("-"))
+            else if (this.type.Equals("-"))
             {
                 /*
                     SI EL IZQUIERDO ES INT
                     INT - INT : INT
+                    INT - REAL: REAL
                     INT - OTRO : ERROR
                  */
 
@@ -123,45 +144,51 @@ namespace CompiPascal.grammar.expression
                     {
                         result = new Returned((int.Parse(varIz.Value.ToString()) - int.Parse(valDer.Value.ToString())), DataType.INTEGER);
                     }
+                    else if (valDer.getDataType == DataType.REAL)
+                    {
+                        result = new Returned((double.Parse(varIz.Value.ToString()) - double.Parse(valDer.Value.ToString())), DataType.REAL);
+                    }
                     else
                     {
-                        var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                        //ErrorController.Instance.add(texto);
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
 
                 }
                 /*
                    SI EL IZQUIERDO ES REAL
                    REAL - REAL : REAL
+                   REAL - INT : REAL
                    REAL - OTRO : ERROR
                 */
 
-                if (varIz.getDataType == DataType.REAL)
+                else if (varIz.getDataType == DataType.REAL)
                 {
-                    if (valDer.getDataType == DataType.REAL)
+                    if (valDer.getDataType == DataType.REAL || valDer.getDataType == DataType.REAL)
                     {
                         result = new Returned((double.Parse(varIz.Value.ToString()) - double.Parse(valDer.Value.ToString())), DataType.REAL);
                     }
                     else
                     {
-                        var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                        //ErrorController.Instance.add(texto);
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
 
                 }
                 else
                 {
-                    var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                    //ErrorController.Instance.add(texto);
+                    ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                    return new Returned();
                 }
 
 
             }
-            if (this.type.Equals("*"))
+            else if (this.type.Equals("*"))
             {
                 /*
                    SI EL IZQUIERDO ES INT
-                   INT * INT : INT
+                   INT * INT  : INT
+                   INT * REAL : REAL
                    INT * OTRO : ERROR
                 */
 
@@ -171,76 +198,84 @@ namespace CompiPascal.grammar.expression
                     {
                         result = new Returned((int.Parse(varIz.Value.ToString()) * int.Parse(valDer.Value.ToString())), DataType.INTEGER);
                     }
+                    else if (valDer.getDataType == DataType.REAL)
+                    {
+                        result = new Returned((double.Parse(varIz.Value.ToString()) * double.Parse(valDer.Value.ToString())), DataType.REAL);
+                    }
                     else
                     {
-                        var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                        //ErrorController.Instance.add(texto);
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
 
                 }
                 /*
                    SI EL IZQUIERDO ES REAL
                    REAL * REAL : REAL
+                   REAL * INT : REAL
+
                    REAL * OTRO : ERROR
                 */
 
-                if (varIz.getDataType == DataType.REAL)
+                else if (varIz.getDataType == DataType.REAL)
                 {
-                    if (valDer.getDataType == DataType.REAL)
+                    if (valDer.getDataType == DataType.REAL || valDer.getDataType == DataType.INTEGER)
                     {
                         result = new Returned((double.Parse(varIz.Value.ToString()) * double.Parse(valDer.Value.ToString())), DataType.REAL);
                     }
                     else
                     {
-                        var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                        //ErrorController.Instance.add(texto);
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
 
                 }
                 else
                 {
-                    var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                    //ErrorController.Instance.add(texto);
+                    ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                    return new Returned();
                 }
 
             }
-            if (this.type.Equals("/"))
+            else if (this.type.Equals("/"))
             {
                 /*
                    SI EL IZQUIERDO ES INT
-                   INT / INT : INT
+                   INT / INT : REAL
+                   INT / REAL : REAL 
                    INT / OTRO : ERROR
                 */
 
                 if (varIz.getDataType == DataType.INTEGER)
                 {
-                    if (valDer.getDataType == DataType.INTEGER)
+                    if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
                     {
-                        result = new Returned((int.Parse(varIz.Value.ToString()) / int.Parse(valDer.Value.ToString())), DataType.INTEGER);
+                        result = new Returned((double.Parse(varIz.Value.ToString()) / double.Parse(valDer.Value.ToString())), DataType.REAL);
                     }
                     else
                     {
-                        var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                        //ErrorController.Instance.add(texto);
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
 
                 }
                 /*
                    SI EL IZQUIERDO ES REAL
                    REAL / REAL : REAL
+                   REAL / INT : REAL
                    REAL / OTRO : ERROR
                 */
 
-                if (varIz.getDataType == DataType.REAL)
+                else if (varIz.getDataType == DataType.REAL)
                 {
-                    if (valDer.getDataType == DataType.REAL)
+                    if (valDer.getDataType == DataType.REAL || valDer.getDataType == DataType.INTEGER)
                     {
                         result = new Returned((double.Parse(varIz.Value.ToString()) / double.Parse(valDer.Value.ToString())), DataType.REAL);
                     }
                     else
                     {
-                        var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                        //ErrorController.Instance.add(texto);
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
 
                 }
@@ -251,51 +286,53 @@ namespace CompiPascal.grammar.expression
                 }
 
             }
-            if (this.type.Equals("%"))
+            else if (this.type.Equals("%"))
             {
 
                 /*
                    SI EL IZQUIERDO ES INT
-                   INT % INT : INT
+                   INT % INT : REAL
+                   INT % REAL: REAL 
                    INT % OTRO : ERROR
                 */
 
                 if (varIz.getDataType == DataType.INTEGER)
                 {
-                    if (valDer.getDataType == DataType.INTEGER)
+                    if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
                     {
-                        result = new Returned((int.Parse(varIz.Value.ToString()) % int.Parse(valDer.Value.ToString())), DataType.INTEGER);
+                        result = new Returned((double.Parse(varIz.Value.ToString()) % double.Parse(valDer.Value.ToString())), DataType.REAL);
                     }
                     else
                     {
-                        var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                        //ErrorController.Instance.add(texto);
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
 
                 }
                 /*
                    SI EL IZQUIERDO ES REAL
                    REAL % REAL : REAL
+                   REAL % INT : REAL
                    REAL % OTRO : ERROR
                 */
 
-                if (varIz.getDataType == DataType.REAL)
+                else if (varIz.getDataType == DataType.REAL)
                 {
-                    if (valDer.getDataType == DataType.REAL)
+                    if (valDer.getDataType == DataType.REAL || valDer.getDataType == DataType.INTEGER)
                     {
                         result = new Returned((double.Parse(varIz.Value.ToString()) % double.Parse(valDer.Value.ToString())), DataType.REAL);
                     }
                     else
                     {
-                        var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                        //ErrorController.Instance.add(texto);
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
 
                 }
                 else
                 {
-                    var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                    //ErrorController.Instance.add(texto);
+                    ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                    return new Returned();
                 }
             }
 

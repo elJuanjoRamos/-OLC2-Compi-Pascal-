@@ -34,8 +34,8 @@ namespace CompiPascal.analizer
             var REAL = new RegexBasedTerminal("REAL", "[0-9]+[.][0-9]+");
             var NUMERO = new NumberLiteral("NUMERO");
             var IDENTIFIER = new IdentifierTerminal("IDENTIFIER", "[_a-zA-Z][_a-zA-Z0-9]");
-            var CADENA = new RegexBasedTerminal("CADENA", "\'[_a-zA-Z][_a-zA-Z0-9]\'");
-            var texto = new StringLiteral("texto", "\"");
+            //var CADENA = new RegexBasedTerminal("CADENA", "\'[_a-zA-Z][_a-zA-Z0-9]\'");
+            var CADENA = new StringLiteral("CADENA", "\'");
             #endregion
 
             #region Terminales
@@ -362,6 +362,7 @@ namespace CompiPascal.analizer
                 | LOGIC_EXPRESION + AND + LOGIC_EXPRESION
                 | LOGIC_EXPRESION + OR + LOGIC_EXPRESION
                 | NOT + LOGIC_EXPRESION
+                | MIN + LOGIC_EXPRESION
                 | IDENTIFIER
                 | NUMERO
                 | CADENA
@@ -466,7 +467,7 @@ namespace CompiPascal.analizer
             #endregion
 
             #region WHILE DO
-            WHILE.Rule = RESERV_WHILE + LOGIC_EXPRESION + RESERV_DO + INSTRUCTIONS_BODY + PUNTO_COMA;
+            WHILE.Rule = RESERV_WHILE + LOGIC_EXPRESION + RESERV_DO + INSTRUCTIONS_BODY;// + PUNTO_COMA;
             #endregion
 
             #region REPEAT UNTIL

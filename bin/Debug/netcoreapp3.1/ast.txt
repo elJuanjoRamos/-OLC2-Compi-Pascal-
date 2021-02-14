@@ -22,7 +22,7 @@ nodo10[ label =": (Key symbol)"]
 nodo9->nodo10; 
 nodo11[ label ="DATA_TYPE"]
 nodo9->nodo11; 
-nodo12[ label ="string (Keyword)"]
+nodo12[ label ="integer (Keyword)"]
 nodo11->nodo12; 
 nodo13[ label ="ASSIGNATION"]
 nodo9->nodo13; 
@@ -34,116 +34,96 @@ nodo16[ label ="0 (NUMERO)"]
 nodo15->nodo16; 
 nodo17[ label ="; (Key symbol)"]
 nodo9->nodo17; 
-nodo18[ label ="VAR_DECLARATION"]
-nodo6->nodo18; 
-nodo19[ label ="b (IDENTIFIER)"]
+nodo18[ label ="INSTRUCTIONS_BODY"]
+nodo5->nodo18; 
+nodo19[ label ="begin (Keyword)"]
 nodo18->nodo19; 
-nodo20[ label ="DECLARATION_BODY"]
+nodo20[ label ="INSTRUCTIONS"]
 nodo18->nodo20; 
-nodo21[ label =", (Key symbol)"]
+nodo21[ label ="INSTRUCTION"]
 nodo20->nodo21; 
-nodo22[ label ="c (IDENTIFIER)"]
-nodo20->nodo22; 
-nodo23[ label ="MORE_ID"]
-nodo20->nodo23; 
-nodo24[ label =", (Key symbol)"]
-nodo23->nodo24; 
-nodo25[ label ="d (IDENTIFIER)"]
-nodo23->nodo25; 
-nodo26[ label =": (Key symbol)"]
-nodo20->nodo26; 
-nodo27[ label ="DATA_TYPE"]
-nodo20->nodo27; 
-nodo28[ label ="string (Keyword)"]
-nodo27->nodo28; 
-nodo29[ label ="; (Key symbol)"]
-nodo20->nodo29; 
-nodo30[ label ="DECLARATION_LIST"]
-nodo6->nodo30; 
-nodo31[ label ="const (Keyword)"]
+nodo22[ label ="VAR_ASSIGNATE"]
+nodo21->nodo22; 
+nodo23[ label ="a (IDENTIFIER)"]
+nodo22->nodo23; 
+nodo24[ label =": (Key symbol)"]
+nodo22->nodo24; 
+nodo25[ label ="= (Key symbol)"]
+nodo22->nodo25; 
+nodo26[ label ="LOGIC_EXPRESION"]
+nodo22->nodo26; 
+nodo27[ label ="- (Key symbol)"]
+nodo26->nodo27; 
+nodo28[ label ="LOGIC_EXPRESION"]
+nodo26->nodo28; 
+nodo29[ label ="( (Key symbol)"]
+nodo28->nodo29; 
+nodo30[ label ="LOGIC_EXPRESION"]
+nodo28->nodo30; 
+nodo31[ label ="LOGIC_EXPRESION"]
 nodo30->nodo31; 
-nodo32[ label ="c (IDENTIFIER)"]
-nodo30->nodo32; 
-nodo33[ label ="= (Key symbol)"]
-nodo30->nodo33; 
-nodo34[ label ="LOGIC_EXPRESION"]
-nodo30->nodo34; 
-nodo35[ label ="3.15 (REAL)"]
-nodo34->nodo35; 
-nodo36[ label ="; (Key symbol)"]
-nodo30->nodo36; 
-nodo37[ label ="CONST_DECLARATION"]
-nodo30->nodo37; 
-nodo38[ label ="d (IDENTIFIER)"]
-nodo37->nodo38; 
-nodo39[ label ="= (Key symbol)"]
-nodo37->nodo39; 
+nodo32[ label ="LOGIC_EXPRESION"]
+nodo31->nodo32; 
+nodo33[ label ="LOGIC_EXPRESION"]
+nodo32->nodo33; 
+nodo34[ label ="5 (NUMERO)"]
+nodo33->nodo34; 
+nodo35[ label ="* (Key symbol)"]
+nodo32->nodo35; 
+nodo36[ label ="LOGIC_EXPRESION"]
+nodo32->nodo36; 
+nodo37[ label ="6 (NUMERO)"]
+nodo36->nodo37; 
+nodo38[ label ="+ (Key symbol)"]
+nodo31->nodo38; 
+nodo39[ label ="LOGIC_EXPRESION"]
+nodo31->nodo39; 
 nodo40[ label ="LOGIC_EXPRESION"]
-nodo37->nodo40; 
-nodo41[ label ="2.24 (REAL)"]
+nodo39->nodo40; 
+nodo41[ label ="7 (NUMERO)"]
 nodo40->nodo41; 
-nodo42[ label ="; (Key symbol)"]
-nodo37->nodo42; 
-nodo43[ label ="INSTRUCTIONS_BODY"]
-nodo5->nodo43; 
-nodo44[ label ="begin (Keyword)"]
+nodo42[ label ="* (Key symbol)"]
+nodo39->nodo42; 
+nodo43[ label ="LOGIC_EXPRESION"]
+nodo39->nodo43; 
+nodo44[ label ="6 (NUMERO)"]
 nodo43->nodo44; 
-nodo45[ label ="INSTRUCTIONS"]
-nodo43->nodo45; 
-nodo46[ label ="INSTRUCTION"]
-nodo45->nodo46; 
-nodo47[ label ="WRITE"]
+nodo45[ label ="- (Key symbol)"]
+nodo30->nodo45; 
+nodo46[ label ="LOGIC_EXPRESION"]
+nodo30->nodo46; 
+nodo47[ label ="5 (NUMERO)"]
 nodo46->nodo47; 
-nodo48[ label ="writeln (Keyword)"]
-nodo47->nodo48; 
-nodo49[ label ="( (Key symbol)"]
-nodo47->nodo49; 
-nodo50[ label ="WRHITE_PARAMETER"]
-nodo47->nodo50; 
-nodo51[ label ="LOGIC_EXPRESION"]
+nodo48[ label =") (Key symbol)"]
+nodo28->nodo48; 
+nodo49[ label ="; (Key symbol)"]
+nodo22->nodo49; 
+nodo50[ label ="INSTRUCTION"]
+nodo20->nodo50; 
+nodo51[ label ="WRITE"]
 nodo50->nodo51; 
-nodo52[ label ="a (IDENTIFIER)"]
+nodo52[ label ="writeln (Keyword)"]
 nodo51->nodo52; 
-nodo53[ label =") (Key symbol)"]
-nodo47->nodo53; 
-nodo54[ label ="; (Key symbol)"]
-nodo47->nodo54; 
-nodo55[ label ="INSTRUCTION"]
-nodo45->nodo55; 
-nodo56[ label ="WRITE"]
+nodo53[ label ="( (Key symbol)"]
+nodo51->nodo53; 
+nodo54[ label ="WRHITE_PARAMETER"]
+nodo51->nodo54; 
+nodo55[ label ="LOGIC_EXPRESION"]
+nodo54->nodo55; 
+nodo56[ label ="el resultado de a es:  (CADENA)"]
 nodo55->nodo56; 
-nodo57[ label ="writeln (Keyword)"]
-nodo56->nodo57; 
-nodo58[ label ="( (Key symbol)"]
-nodo56->nodo58; 
-nodo59[ label ="WRHITE_PARAMETER"]
-nodo56->nodo59; 
-nodo60[ label ="LOGIC_EXPRESION"]
+nodo57[ label ="WRHITE_PARAMETER"]
+nodo54->nodo57; 
+nodo58[ label =", (Key symbol)"]
+nodo57->nodo58; 
+nodo59[ label ="LOGIC_EXPRESION"]
+nodo57->nodo59; 
+nodo60[ label ="a (IDENTIFIER)"]
 nodo59->nodo60; 
-nodo61[ label ="c (IDENTIFIER)"]
-nodo60->nodo61; 
-nodo62[ label =") (Key symbol)"]
-nodo56->nodo62; 
-nodo63[ label ="; (Key symbol)"]
-nodo56->nodo63; 
-nodo64[ label ="INSTRUCTION"]
-nodo45->nodo64; 
-nodo65[ label ="WRITE"]
-nodo64->nodo65; 
-nodo66[ label ="writeln (Keyword)"]
-nodo65->nodo66; 
-nodo67[ label ="( (Key symbol)"]
-nodo65->nodo67; 
-nodo68[ label ="WRHITE_PARAMETER"]
-nodo65->nodo68; 
-nodo69[ label ="LOGIC_EXPRESION"]
-nodo68->nodo69; 
-nodo70[ label ="d (IDENTIFIER)"]
-nodo69->nodo70; 
-nodo71[ label =") (Key symbol)"]
-nodo65->nodo71; 
-nodo72[ label ="; (Key symbol)"]
-nodo65->nodo72; 
-nodo73[ label ="end (Keyword)"]
-nodo43->nodo73; 
+nodo61[ label =") (Key symbol)"]
+nodo51->nodo61; 
+nodo62[ label ="; (Key symbol)"]
+nodo51->nodo62; 
+nodo63[ label ="end (Keyword)"]
+nodo18->nodo63; 
 }

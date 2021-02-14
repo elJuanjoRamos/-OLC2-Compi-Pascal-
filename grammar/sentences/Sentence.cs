@@ -43,25 +43,17 @@ namespace CompiPascal.grammar.sentences
                     if (element != null)
                     {
                         retorno = element;
+                    } else
+                    {
+                        break;
                     }
                 }
                 catch (Exception)
                 {
-                    throw;
+                    return null;
                 }
 
             }
-
-
-            /**
-            * VARIABLES NUEVO ENTORNO
-            */
-            foreach (var iterator in newAmbit.Variables)
-            {
-
-                //SimbolTableController.Instance.add(iterator[1].id, this.obtenerTipo(iterator[1].getDataType), iterator[1].Ambit_name, iterator[1].Value, 0, 0);
-            }
-
             return retorno;
         }
 

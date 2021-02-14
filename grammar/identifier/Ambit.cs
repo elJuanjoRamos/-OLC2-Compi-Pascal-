@@ -60,10 +60,27 @@ namespace CompiPascal.grammar.identifier
                 if (amb.Variables.ContainsKey(id))
                 {
                     identifier = amb.Variables[id];
+                    //identifier = new Identifier(amb.Variables[id].Value, amb.Variables[id].Id, amb.Variables[id].DataType, amb.Variables[id].Esconstante);
+                    break;
                 }
                 amb = amb.anterior;
             }
             return identifier;
+        }
+
+        public void setVariable(string id, object valor, DataType type)
+        {
+            Ambit env = this;
+            
+            while (env != null)
+            {
+                if (env.Variables.ContainsKey(id))
+                {
+                    env.Variables[id] = new Identifier(valor, id, type, false);
+                    return;
+                }
+                env = env.anterior;
+            }
         }
 
 

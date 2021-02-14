@@ -41,7 +41,7 @@ namespace CompiPascal.controller
             var a = "";
             foreach (var item in salida)
             {
-                a = a + "\n" + item;
+                a = a + item;
             }
 
             return a;
