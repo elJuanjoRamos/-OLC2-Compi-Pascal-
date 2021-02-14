@@ -34,8 +34,8 @@ namespace CompiPascal.analizer
             var REAL = new RegexBasedTerminal("REAL", "[0-9]+[.][0-9]+");
             var NUMERO = new NumberLiteral("NUMERO");
             var IDENTIFIER = new IdentifierTerminal("IDENTIFIER", "[_a-zA-Z][_a-zA-Z0-9]");
-            var CADENA = new RegexBasedTerminal("CADENA", "\'" + "[_a-zA-Z][_a-zA-Z0-9]" + "\'");
-
+            var CADENA = new RegexBasedTerminal("CADENA", "\'[_a-zA-Z][_a-zA-Z0-9]\'");
+            var texto = new StringLiteral("texto", "\"");
             #endregion
 
             #region Terminales
@@ -218,13 +218,7 @@ namespace CompiPascal.analizer
 
             #endregion
 
-            #region FUNCIONS NO TERMINALES
-            NonTerminal FUNCTION = new NonTerminal("FUNCTION", "FUNCTION");
-            NonTerminal FUNCTION_LIST = new NonTerminal("FUNCTION_LIST", "FUNCTION_LIST");
-            NonTerminal PARAMETERS = new NonTerminal("PARAMETERS", "PARAMETERS");
-            NonTerminal ARGUMENTS = new NonTerminal("ARGUMENTS", "ARGUMENTS");
-            NonTerminal REFERENCIA_VALOR = new NonTerminal("REFERENCIA_VALOR", "REFERENCIA_VALOR");
-            #endregion
+           
 
             #region  Funciones nativas NO TERMINALES
             NonTerminal WRITE = new NonTerminal("WRITE", "WRITE");
@@ -234,9 +228,16 @@ namespace CompiPascal.analizer
 
             NonTerminal EXIT = new NonTerminal("EXIT", "EXIT");
             NonTerminal GRAFICAR = new NonTerminal("GRAFICAR", "GRAFICAR");
-            
+
             #endregion
 
+            #region FUNCIONS NO TERMINALES
+            //NonTerminal FUNCTION = new NonTerminal("FUNCTION", "FUNCTION");
+            NonTerminal FUNCTION_LIST = new NonTerminal("FUNCTION_LIST", "FUNCTION_LIST");
+            //NonTerminal PARAMETERS = new NonTerminal("PARAMETERS", "PARAMETERS");
+            //NonTerminal ARGUMENTS = new NonTerminal("ARGUMENTS", "ARGUMENTS");
+            //NonTerminal REFERENCIA_VALOR = new NonTerminal("REFERENCIA_VALOR", "REFERENCIA_VALOR");
+            #endregion
 
             #endregion
 
@@ -253,7 +254,9 @@ namespace CompiPascal.analizer
 
 
 
-            INSTRUCTIONS_BODY.Rule = RESERV_BEGIN + INSTRUCTIONS + RESERV_END;
+            INSTRUCTIONS_BODY.Rule 
+                = RESERV_BEGIN + INSTRUCTIONS + RESERV_END
+                ;
 
 
             INSTRUCTIONS.Rule = MakePlusRule(INSTRUCTIONS, INSTRUCTION);
@@ -266,7 +269,7 @@ namespace CompiPascal.analizer
                 | REPEAT_UNTIL
                 | FOR
                 | TRANSFER
-                | FUNCTION
+                //| FUNCTION
                 | WRITE
                 ;
 
@@ -310,34 +313,7 @@ namespace CompiPascal.analizer
                 | Empty
                 ;
 
-           
-            /*DECLARATION.Rule = RESERV_VAR + DECLARATION_LIST
-                                | RESERV_CONST + IDENTIFIER + EQUALS + LOGIC_EXPRESION + PUNTO_COMA
-                                ;
-
-
-            DECLARATION_LIST.Rule = IDENTIFIER + ASSIGNATION;
-
-            DECLARATION_LIST_P.Rule = DECLARATION_LIST
-                | Empty
-                ;
-
-            ASSIGNATION.Rule = DOS_PUNTOS + DATA_TYPE + ASSIGNATION_P + PUNTO_COMA + DECLARATION_LIST_P
-                | MORE_DECLARATION + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA + DECLARATION_LIST_P
-                ;
-
-            ASSIGNATION_P.Rule = EQUALS + LOGIC_EXPRESION
-                | Empty
-                ;
-
-
-            MORE_DECLARATION.Rule = COMA + IDENTIFIER + MORE_DECLARATION_P;
-
-            MORE_DECLARATION_P.Rule = MORE_DECLARATION
-                | Empty
-                ;
-            */
-            // a: = 5;
+          
 
             VAR_ASSIGNATE.Rule = IDENTIFIER + DOS_PUNTOS + EQUALS + LOGIC_EXPRESION + PUNTO_COMA;
 
@@ -462,12 +438,12 @@ namespace CompiPascal.analizer
                         + IF_SENTENCE
                     + ELIF;
 
-            IF_SENTENCE.Rule = INSTRUCTIONS_BODY + PUNTO_COMA
+            IF_SENTENCE.Rule = INSTRUCTIONS_BODY 
                 | Empty
                 ;
 
             ELIF.Rule
-                = RESERV_ELSE + IF_SENTENCE
+                = RESERV_ELSE + IF_SENTENCE //+ PUNTO_COMA
                 | RESERV_ELSE + IFTHEN
                 | Empty
                 ;
@@ -490,7 +466,7 @@ namespace CompiPascal.analizer
             #endregion
 
             #region WHILE DO
-            WHILE.Rule = RESERV_WHILE + LOGIC_EXPRESION + RESERV_DO + PROGRAM_BODY + PUNTO_COMA;
+            WHILE.Rule = RESERV_WHILE + LOGIC_EXPRESION + RESERV_DO + INSTRUCTIONS_BODY + PUNTO_COMA;
             #endregion
 
             #region REPEAT UNTIL
@@ -501,7 +477,8 @@ namespace CompiPascal.analizer
             FOR.Rule
                 = RESERV_FOR + IDENTIFIER + DOS_PUNTOS + EQUALS + LOGIC_EXPRESION + TODOWN + LOGIC_EXPRESION
                     + RESERV_DO
-                        + INSTRUCTIONS_BODY + PUNTO_COMA;
+                        + INSTRUCTIONS_BODY //+ PUNTO_COMA
+                ;
 
             TODOWN.Rule 
                 = RESERV_TO
@@ -518,32 +495,9 @@ namespace CompiPascal.analizer
                | Empty;
             #endregion
 
-
             #region FUNCIONES Y PROCEDIMIENTOS
-            FUNCTION.Rule
-                = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETERS + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA
-                    + INSTRUCTIONS_BODY
-                    + PUNTO_COMA
-                    + FUNCTION_LIST
-                    ;
-
-            FUNCTION_LIST.Rule
-                = FUNCTION + FUNCTION_LIST
-                | Empty
-                ;
-            PARAMETERS.Rule 
-                = REFERENCIA_VALOR
-                | Empty;
-
-            REFERENCIA_VALOR.Rule
-                = RESERV_VAR + IDENTIFIER + MORE_ID + DOS_PUNTOS + DATA_TYPE + ARGUMENTS
-                | IDENTIFIER + MORE_ID + DOS_PUNTOS + DATA_TYPE + ARGUMENTS
-                ;
-            ARGUMENTS.Rule = PUNTO_COMA + REFERENCIA_VALOR
-                | Empty
-                ;
+            FUNCTION_LIST.Rule = Empty;
             #endregion
-
 
             #region FUNCIONES NATIVAS
 
@@ -565,6 +519,7 @@ namespace CompiPascal.analizer
             GRAFICAR.Rule = RESERV_GRAF;
 
             #endregion
+            
             #region Preferencias
             this.Root = init;
             #endregion

@@ -5,19 +5,24 @@ using CompiPascal.grammar.abstracts;
 
 namespace CompiPascal.grammar.identifier
 {
-    class Identifier
+    public class Identifier
     {
         private object _value;
         private string id;
         private DataType type;
         private bool esconsante;
-
+        private bool isNull;
         public Identifier(object v, string i, DataType t, bool ec)
         {
             this._value = v;
             this.id = i;
             this.type = t;
             this.esconsante = ec;
+            this.isNull = false;
+        }
+        public Identifier()
+        {
+            this.isNull = true;
         }
 
         public object Value
@@ -41,6 +46,11 @@ namespace CompiPascal.grammar.identifier
         {
             get { return esconsante; }
             set { esconsante = value; }
+        }
+        public bool IsNull
+        {
+            get { return isNull; }
+            set { isNull = value; }
         }
 
     }

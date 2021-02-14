@@ -27,6 +27,7 @@ namespace CompiPascal.grammar.expression
 
         public override Returned Execute(Ambit ambit)
         {
+
             var returned = new Returned();
             if (this.type == 1)
             {
@@ -39,15 +40,6 @@ namespace CompiPascal.grammar.expression
 
             else if (this.type == 3)
             {
-                returned = new Returned(this.value.ToString(), DataType.IDENTIFIER);
-            }
-            else if (this.type == 4)
-            {
-                returned = new Returned(this.value.ToString(), DataType.STRING);
-            }
-
-            else if (this.type == 5)
-            {
                 if (this.value.ToString() == "false")
                 {
                     returned = new Returned(false, DataType.BOOLEAN);
@@ -57,8 +49,20 @@ namespace CompiPascal.grammar.expression
                     returned = new Returned(true, DataType.BOOLEAN);
                 }
             }
+            else if (this.type == 4)
+            {
+                returned = new Returned(double.Parse(this.value.ToString()), DataType.REAL);
+            }
+
+            else if (this.type == 7)
+            {
+                returned = new Returned(this.value.ToString(), DataType.IDENTIFIER);
+            }
             return returned;
 
         }
+
+        public bool IsNull { get => isNull; set => isNull = value; }
+
     }
 }

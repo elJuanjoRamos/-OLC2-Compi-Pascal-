@@ -31,63 +31,100 @@ namespace CompiPascal.grammar.expression
             var result = new Returned();
             var op = GetType(this.type);
 
-            if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
-            {
-                if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
-                {
 
-                    switch (op)
-                    {   
-                        case OpRelational.EQUALS:
-                            result = new Returned((double.Parse(valIz.Value.ToString()) == double.Parse(valDer.Value.ToString())), DataType.BOOLEAN);
-                            break;
-                        case OpRelational.DISCTINCT:
-                            result = new Returned((double.Parse(valIz.Value.ToString()) != double.Parse(valDer.Value.ToString())), DataType.BOOLEAN);
-                            break;
-                        case OpRelational.LESS:
-                            result = new Returned((double.Parse(valIz.Value.ToString()) < double.Parse(valDer.Value.ToString())), DataType.BOOLEAN);
-                            break;
-                        case OpRelational.LESS_EQUALS:
-                            result = new Returned((double.Parse(valIz.Value.ToString()) <= double.Parse(valDer.Value.ToString())), DataType.BOOLEAN);
-                            break;
-                        case OpRelational.HIGHER:
-                            result = new Returned((double.Parse(valIz.Value.ToString()) > double.Parse(valDer.Value.ToString())), DataType.BOOLEAN);
-                            break;
-                        case OpRelational.HIGHER_EQUALS:
-                            result = new Returned((double.Parse(valIz.Value.ToString()) >= double.Parse(valDer.Value.ToString())), DataType.BOOLEAN);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                else if (valIz.getDataType == DataType.BOOLEAN)
-                {
-                    if (valDer.getDataType == DataType.BOOLEAN)
+
+            switch (op)
+            {
+                case OpRelational.EQUALS:
+                    var equals = (bool)(valIz.Value == valDer.Value);
+                    result = new Returned(equals, DataType.BOOLEAN);
+                    break;
+                case OpRelational.DISCTINCT:
+                    var distict = (bool)(valIz.Value != valDer.Value);
+                    result = new Returned(distict, DataType.BOOLEAN);
+                    break;
+                case OpRelational.LESS:
+
+                    if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
                     {
-                        result = new Returned((bool.Parse(valIz.Value.ToString()) == bool.Parse(valDer.Value.ToString())), DataType.BOOLEAN);
+                        if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
+                        {
+                            var less = (bool)(double.Parse(valIz.Value.ToString()) < double.Parse(valDer.Value.ToString()));
+                            result = new Returned(less, DataType.BOOLEAN);
+                        }
+                        else
+                        {
+                            throw new Exception("Los tipos no coinciden para la operacion relacional");
+                        }
+
+                    } else
+                    {
+                        throw new Exception("Los tipos no coinciden para la operacion relacional"); 
+                    }
+
+                    
+                    
+                    break;
+                case OpRelational.LESS_EQUALS:
+                    if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
+                    {
+                        if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
+                        {
+                            var less = (bool)(double.Parse(valIz.Value.ToString()) <= double.Parse(valDer.Value.ToString()));
+                            result = new Returned(less, DataType.BOOLEAN);
+                        }
+                        else
+                        {
+                            throw new Exception("Los tipos no coinciden para la operacion relacional");
+                        }
+
                     }
                     else
                     {
-                        var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType;
-                        //ErrorController.Instance.add(texto)
+                        throw new Exception("Los tipos no coinciden para la operacion relacional");
                     }
-                }
-                else
-                {
-                    var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType;
-                    //ErrorController.Instance.add(texto)
-                }
+                    break;
+                case OpRelational.HIGHER:
+                    if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
+                    {
+                        if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
+                        {
+                            var higher = (bool)(double.Parse(valIz.Value.ToString()) > double.Parse(valDer.Value.ToString()));
+                            result = new Returned(higher, DataType.BOOLEAN);
+                        }
+                        else
+                        {
+                            throw new Exception("Los tipos no coinciden para la operacion relacional");
+                        }
+                        
+                    }
+                    else
+                    {
+                        throw new Exception("Los tipos no coinciden para la operacion relacional");
+                    }
+                    break;
+                case OpRelational.HIGHER_EQUALS:
+                    if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
+                    {
+                        if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
+                        {
+                            var higher = (bool)(double.Parse(valIz.Value.ToString()) >= double.Parse(valDer.Value.ToString()));
+                            result = new Returned(higher, DataType.BOOLEAN);
+                        }
+                        else
+                        {
+                            throw new Exception("Los tipos no coinciden para la operacion relacional");
+                        }
+
+                    }
+                    else
+                    {
+                        throw new Exception("Los tipos no coinciden para la operacion relacional");
+                    }
+                    break;
+                default:
+                    break;
             }
-            else
-            {
-                var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType;
-                //ErrorController.Instance.add(texto)
-            }
-
-            
-
-            
-
 
             return result;
         }

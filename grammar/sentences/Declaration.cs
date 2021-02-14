@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using CompiPascal.controller;
 using CompiPascal.grammar.abstracts;
+using CompiPascal.grammar.expression;
 using CompiPascal.grammar.identifier;
 
 namespace CompiPascal.grammar.sentences
@@ -14,7 +15,7 @@ namespace CompiPascal.grammar.sentences
         private Expression value;
         public int row;
         public int column;
-
+        public bool isConst;
 
         public Declaration(string i, String d, Expression e, int r, int c)
             : base(r, c)
@@ -24,23 +25,44 @@ namespace CompiPascal.grammar.sentences
             this.value = e;
             this.row = r;
             this.column = c;
+            this.isConst = false;
+        }
+        public Declaration(string i, Expression e, int r, int c, bool isc)
+            : base(r, c)
+        {
+            this.id = i;
+            this.type = DataType.CONST;
+            this.value = e;
+            this.row = r;
+            this.column = c;
+            this.isConst = isc;
         }
 
-        public override void Execute(Ambit ambit)
+        public override object Execute(Ambit ambit)
         {
             try
             {
-                var val = this.value.Execute(ambit);
+                Returned val = this.value.Execute(ambit);
 
-                if (val.getDataType == this.type)
+                if (this.type == DataType.CONST)
                 {
-                    ambit.save(this.id, val.Value, val.getDataType, false);
-                    SimbolTableController.Instance.add(this.id, this.type, ambit.Ambit_name, ((Expression)val.Value), true, false);
-
+                    ambit.save(this.id, val.Value, val.getDataType, true);
+                    SimbolTableController.Instance.add(this.id, this.type, ambit.Ambit_name, new Literal(val.Value, 2), true, false);
+                    return val.Value;
 
                 } else
                 {
-                    //ErrorController.Instance.add("El tipo " + val.Value.ToString() + " no es asignable con " + this.type.ToString());
+                    if (val.getDataType == this.type)
+                    {
+                        ambit.save(this.id, val.Value, val.getDataType, false);
+                        SimbolTableController.Instance.add(this.id, this.type, ambit.Ambit_name, new Literal(val.Value, 2), true, false);
+                        return val.Value;
+                    }
+                    else
+                    {
+                        ConsolaController.Instance.Add("El tipo " + val.Value.ToString() + " no es asignable con " + this.type.ToString());
+                        throw new Exception();
+                    }
                 }
 
             }
@@ -49,6 +71,7 @@ namespace CompiPascal.grammar.sentences
 
             }
 
+            return 0;
         }
 
 

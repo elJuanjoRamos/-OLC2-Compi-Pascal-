@@ -42,13 +42,24 @@ namespace CompiPascal
 
         private void ejecutar_Click(object sender, EventArgs e)
         {
-            var a = textAnalizar.Text;
-            consola.Text = "Programa Encendido\nEn ejecucion ...";
+            //LIMPIA LA CONSOLA
+            ConsolaController.Instance.clean();
+            var texto_analizar = textAnalizar.Text;
+            if (texto_analizar != "")
+            {
             
-            Syntactic syntactic = new Syntactic();
-            syntactic.analizer(a.ToLower());
+                consola.Text = "Programa Encendido\nEn ejecucion ...";
+            
+                Syntactic syntactic = new Syntactic();
+                syntactic.analizer(texto_analizar.ToLower());
 
-            consola.Text = consola.Text + "\n" + ConsolaController.Instance.getText();
+                consola.Text = consola.Text + "\n" + ConsolaController.Instance.getText() + "\n" + "Finalizado.";
+
+            } else
+            {
+                consola.Text = "Debe escribir texto en el editor";
+            }
+
 
         }
     }

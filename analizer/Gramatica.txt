@@ -82,3 +82,47 @@ F => ( EXPLOGICA )
     | true
     | -
 
+
+
+
+
+
+
+
+
+     #region FUNCIONS NO TERMINALES
+            NonTerminal FUNCTION = new NonTerminal("FUNCTION", "FUNCTION");
+            NonTerminal FUNCTION_LIST = new NonTerminal("FUNCTION_LIST", "FUNCTION_LIST");
+            NonTerminal PARAMETERS = new NonTerminal("PARAMETERS", "PARAMETERS");
+            NonTerminal ARGUMENTS = new NonTerminal("ARGUMENTS", "ARGUMENTS");
+            NonTerminal REFERENCIA_VALOR = new NonTerminal("REFERENCIA_VALOR", "REFERENCIA_VALOR");
+            #endregion
+
+
+
+
+    
+            #region FUNCIONES Y PROCEDIMIENTOS
+            FUNCTION.Rule
+                = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETERS + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA
+                    + INSTRUCTIONS_BODY
+                    + PUNTO_COMA
+                    + FUNCTION_LIST
+                    ;
+
+            FUNCTION_LIST.Rule
+                = FUNCTION + FUNCTION_LIST
+                | Empty
+                ;
+            PARAMETERS.Rule 
+                = REFERENCIA_VALOR
+                | Empty;
+
+            REFERENCIA_VALOR.Rule
+                = RESERV_VAR + IDENTIFIER + MORE_ID + DOS_PUNTOS + DATA_TYPE + ARGUMENTS
+                | IDENTIFIER + MORE_ID + DOS_PUNTOS + DATA_TYPE + ARGUMENTS
+                ;
+            ARGUMENTS.Rule = PUNTO_COMA + REFERENCIA_VALOR
+                | Empty
+                ;
+            #endregion

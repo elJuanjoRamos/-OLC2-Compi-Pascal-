@@ -13,7 +13,8 @@ namespace CompiPascal.grammar.abstracts
         TYPE = 5,
         ARRAY = 6,
         IDENTIFIER = 7,
-        ERROR = 8
+        ERROR = 8,
+        CONST = 9
     }
 
     public enum OpRelational

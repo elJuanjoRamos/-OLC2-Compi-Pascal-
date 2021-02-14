@@ -7,9 +7,9 @@ namespace CompiPascal.grammar.identifier
 {
     public class Ambit
     {
-        private Dictionary<string, Identifier> variables;
+        Dictionary<string, Identifier> variables;
         //private Dictionary<string, Function> functions = new Dictionary<string, Function>();
-        private Dictionary<string, Identifier> types;
+        Dictionary<string, Identifier> types;
         private string ambit_name = "";
         public Ambit anterior;
         public Boolean ambit_null;
@@ -23,15 +23,6 @@ namespace CompiPascal.grammar.identifier
             this.ambit_null = isnull;
 
         }
-
-        public Ambit(string n, bool isnull)
-        {
-            this.variables = new Dictionary<string, Identifier>();
-            this.types = new Dictionary<string, Identifier>();
-            this.ambit_name = n;
-            this.ambit_null = isnull;
-        }
-
         public Ambit()
         {
 
@@ -57,14 +48,28 @@ namespace CompiPascal.grammar.identifier
 
                 amb = amb.anterior;
             }
-            this.variables.Add(id, new Identifier(valor, id, type, esconstante));
+            variables.Add(id, new Identifier(valor, id, type, esconstante));
+        }
+
+        public Identifier getVariable(string id)
+        {
+            Identifier identifier = new Identifier();
+            Ambit amb = this;
+            while (amb != null)
+            {
+                if (amb.Variables.ContainsKey(id))
+                {
+                    identifier = amb.Variables[id];
+                }
+                amb = amb.anterior;
+            }
+            return identifier;
         }
 
 
 
         public string Ambit_name { get => ambit_name; set => ambit_name = value; }
         public bool IsNull { get => ambit_null; set => ambit_null = value; }
-
-
+        internal Dictionary<string, Identifier> Variables { get => variables; set => variables = value; }
     }
 }

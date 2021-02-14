@@ -19,6 +19,8 @@ namespace CompiPascal.grammar.identifier
         }
         public Returned()
         {
+            this._value = "";
+            this.type = DataType.STRING;
             this.isNull = true;
         }
 

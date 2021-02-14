@@ -30,45 +30,41 @@ namespace CompiPascal.grammar.expression
         {
             var result = new Returned();
             var varIz = this.left.Execute(ambit);
-            var valDer = this.right.Execute(ambit);
-            var op = GetOpLogical(this.type);
+
             if (varIz.Value is bool)
             {
                 var izq = (bool)varIz.Value;
-                if (valDer.Value is bool)
+
+                var operacion = GetOpLogical(this.type);
+
+                switch (operacion)
                 {
-
-                    if (op != OpLogical.NOT)
-                    {
+                    case OpLogical.AND:
+                        var valDer = right.Execute(ambit);
                         var der = (bool)(valDer.Value);
-                        var res = false;
-                        if (op == OpLogical.AND)
-                        {
-                            res = izq && der;
-                        }
-                        if (op == OpLogical.OR)
-                        {
-                            res = izq || der;
-                        }
-                        result = new Returned(res, DataType.BOOLEAN);
+                        result = new Returned((izq && der), DataType.BOOLEAN);
 
-                    } else
-                    {
+                        break;
+                    case OpLogical.OR:
+                        var valDere = right.Execute(ambit);
+                        var dere = (bool)(valDere.Value);
+                        result = new Returned((izq || dere), DataType.BOOLEAN);
+
+
+                        break;
+                    case OpLogical.NOT:
+
                         result = new Returned(!izq, DataType.BOOLEAN);
 
-                    }
-                }
-
-                else
-                {
-                    var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                    //ErrorController.Instance.add(texto)
+                        break;
+                    default:
+                        break;
                 }
 
             }
             else
             {
-                var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
+                //var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
                 //ErrorController.Instance.add(texto)
             }
 

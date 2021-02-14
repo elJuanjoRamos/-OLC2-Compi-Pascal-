@@ -31,12 +31,12 @@ namespace CompiPascal.controller
 
         public void SyntacticError(string message, int row, int col)
         {
-            this.syntacticErrors.Add(new Error(message, row, col));
+            syntacticErrors.Add(new Error(message, row, col));
         }
 
         public void LexicalError(string message, int row, int col)
         {
-            this.lexicalErrors.Add(new Error(message, row, col));
+            lexicalErrors.Add(new Error(message, row, col));
         }
 
     }

@@ -1,0 +1,38 @@
+﻿using CompiPascal.controller;
+using CompiPascal.grammar.abstracts;
+using CompiPascal.grammar.identifier;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace CompiPascal.grammar.expression
+{
+    public class Access : Expression
+    {
+        private string id;  
+        public  int row;
+        public int column;
+
+        public string Id { get => id; set => id = value; }
+
+        public Access(string id)
+            : base("Access")
+        {
+            this.Id = id;
+        }
+
+        public override Returned Execute(Ambit ambit)
+        {
+            Identifier value = ambit.getVariable(this.id);
+            if (value.IsNull)
+            {
+                ConsolaController.Instance.Add("Este es un error: La variable '" + this.id + "' no ha sido declarada o no existe en este ambito");
+                //OutputController.getinstance().setValue("Este es un error: La variable '" + this.id + "' no ha sido declarada o no existe en este ambito" + ", en la linea: " + this.row + ", en la columna: " + this.column)
+                //ErrorController.getInstance().add("Variable '" + this.id + "' no definida ", "Semantico", this.row, this.column);
+                return new Returned();
+
+            }
+            return new Returned(value.Value, value.DataType);
+        }
+    }
+}

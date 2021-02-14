@@ -17,7 +17,7 @@ namespace CompiPascal.grammar.sentences
             this.value = v;
             this.isln = s;
         }
-        public override void Execute(Ambit a)
+        public override object Execute(Ambit a)
         {
             var texto = "";
             foreach (var el in value)
@@ -31,8 +31,8 @@ namespace CompiPascal.grammar.sentences
                 }
                 
             }
-
             ConsolaController.Instance.Add(texto);
+            return 0;
         }
     }
 }

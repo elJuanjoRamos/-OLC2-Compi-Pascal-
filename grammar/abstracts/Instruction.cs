@@ -15,6 +15,6 @@ namespace CompiPascal.grammar.abstracts
             this.row = r;
             this.column = c;
         }
-        public abstract void Execute(Ambit a);
+        public abstract object Execute(Ambit ambit);
     }
 }
