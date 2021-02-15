@@ -16,9 +16,10 @@ namespace CompiPascal.grammar.sentences
         public int row;
         public int column;
         public bool isConst;
+        public bool isAssigned;
 
-        public Declaration(string i, String d, Expression e, int r, int c)
-            : base(r, c)
+        public Declaration(string i, String d, Expression e, int r, int c, bool isAs)
+            : base(r, c, "Declaration")
         {
             this.id = i;
             this.type = GetDataType(d);
@@ -26,9 +27,10 @@ namespace CompiPascal.grammar.sentences
             this.row = r;
             this.column = c;
             this.isConst = false;
+            this.isAssigned = isAs;
         }
         public Declaration(string i, Expression e, int r, int c, bool isc)
-            : base(r, c)
+            : base(r, c, "Declaration")
         {
             this.id = i;
             this.type = DataType.CONST;
@@ -36,6 +38,7 @@ namespace CompiPascal.grammar.sentences
             this.row = r;
             this.column = c;
             this.isConst = isc;
+            this.isAssigned = true;
         }
 
         public override object Execute(Ambit ambit)
@@ -53,7 +56,7 @@ namespace CompiPascal.grammar.sentences
 
                 if (this.type == DataType.CONST)
                 {
-                    ambit.save(this.id, val.Value, val.getDataType, true);
+                    ambit.save(this.id, val.Value, val.getDataType, true, true);
                     SimbolTableController.Instance.add(this.id, this.type, ambit.Ambit_name, new Literal(val.Value, 2), true, false);
                     return val.Value;
 
@@ -61,7 +64,7 @@ namespace CompiPascal.grammar.sentences
                 {
                     if (val.getDataType == this.type)
                     {
-                        ambit.save(this.id, val.Value, val.getDataType, false);
+                        ambit.save(this.id, val.Value, val.getDataType, false, isAssigned);
                         SimbolTableController.Instance.add(this.id, this.type, ambit.Ambit_name, new Literal(val.Value, 2), true, false);
                         return val.Value;
                     }

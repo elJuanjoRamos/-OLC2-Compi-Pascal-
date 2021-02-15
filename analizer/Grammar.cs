@@ -106,7 +106,7 @@ namespace CompiPascal.analizer
             #region FOR TERMINALES
             var RESERV_FOR = ToTerm("for", "RESERV_FOR");
             var RESERV_TO = ToTerm("to", "RESERV_TO");
-            var RESERV_DOWN = ToTerm("down", "RESERV_DOWN");
+            var RESERV_DOWN = ToTerm("downto", "RESERV_DOWN");
             var RESERV_BREAK = ToTerm("break", "RESERV_BREAK");
             var RESERV_CONTINUE = ToTerm("continue", "RESERV_CONTINUE");
 
@@ -478,12 +478,12 @@ namespace CompiPascal.analizer
             FOR.Rule
                 = RESERV_FOR + IDENTIFIER + DOS_PUNTOS + EQUALS + LOGIC_EXPRESION + TODOWN + LOGIC_EXPRESION
                     + RESERV_DO
-                        + INSTRUCTIONS_BODY //+ PUNTO_COMA
+                        + INSTRUCTIONS_BODY + PUNTO_COMA
                 ;
 
             TODOWN.Rule 
                 = RESERV_TO
-                | RESERV_DOWN + RESERV_TO
+                | RESERV_DOWN
                 ;
             #endregion
 

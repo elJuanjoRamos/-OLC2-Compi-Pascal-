@@ -54,16 +54,18 @@ namespace CompiPascal.grammar.expression
                         }
                         else
                         {
-                            throw new Exception("Los tipos no coinciden para la operacion relacional");
+                            ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                            return new Returned();
                         }
 
                     } else
                     {
-                        throw new Exception("Los tipos no coinciden para la operacion relacional"); 
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
 
-                    
-                    
+
+
                     break;
                 case OpRelational.LESS_EQUALS:
                     if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
@@ -75,13 +77,15 @@ namespace CompiPascal.grammar.expression
                         }
                         else
                         {
-                            throw new Exception("Los tipos no coinciden para la operacion relacional");
+                            ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                            return new Returned();
                         }
 
                     }
                     else
                     {
-                        throw new Exception("Los tipos no coinciden para la operacion relacional");
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
                     break;
                 case OpRelational.HIGHER:
@@ -94,13 +98,15 @@ namespace CompiPascal.grammar.expression
                         }
                         else
                         {
-                            throw new Exception("Los tipos no coinciden para la operacion relacional");
+                            ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                            return new Returned();
                         }
-                        
+
                     }
                     else
                     {
-                        throw new Exception("Los tipos no coinciden para la operacion relacional");
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
                     break;
                 case OpRelational.HIGHER_EQUALS:
@@ -113,13 +119,15 @@ namespace CompiPascal.grammar.expression
                         }
                         else
                         {
-                            throw new Exception("Los tipos no coinciden para la operacion relacional");
+                            ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                            return new Returned();
                         }
 
                     }
                     else
                     {
-                        throw new Exception("Los tipos no coinciden para la operacion relacional");
+                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                        return new Returned();
                     }
                     break;
                 default:
@@ -134,19 +142,23 @@ namespace CompiPascal.grammar.expression
             {
                 return OpRelational.HIGHER;
             }
-            if (simb.Equals("<"))
+            else if (simb.Equals("<"))
             {
                 return OpRelational.LESS;
             }
-            if (simb.Equals(">="))
+            else if (simb.Equals(">="))
             {
                 return OpRelational.HIGHER_EQUALS;
             }
-            if (simb.Equals("<"))
+            else if (simb.Equals("<"))
             {
                 return OpRelational.HIGHER;
             }
-            if (simb.Equals("<>"))
+            else if (simb.Equals("<="))
+            {
+                return OpRelational.LESS_EQUALS;
+            }
+            else if (simb.Equals("<>"))
             {
                 return OpRelational.DISCTINCT;
             }

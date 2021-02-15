@@ -12,7 +12,7 @@ namespace CompiPascal.grammar.sentences
         private LinkedList<Expression> value;
         private bool isln;
         public Write(LinkedList<Expression> v, bool s) : 
-            base(0,0)
+            base(0,0, "Write")
         {
             this.value = v;
             this.isln = s;
@@ -29,19 +29,14 @@ namespace CompiPascal.grammar.sentences
                     return null;
                 } else
                 {
-                    if (this.isln)
-                    {
-                        texto = texto + "\n" + (element.Value.ToString());
-                    }
-                    else
-                    {
-                        texto = texto + " " + (element.Value.ToString());
-                    }
+                    texto = texto + (element.Value.ToString()) + " ";
                 }
-
-                
-                
             }
+            if (this.isln)
+            {
+                texto = texto + "\n";
+            }
+            
             ConsolaController.Instance.Add(texto);
             return 0;
         }

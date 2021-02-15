@@ -17,7 +17,7 @@ namespace CompiPascal.grammar.sentences
         private int column;
 
         public Assignation(string id, Expression value):
-            base(0,0)
+            base(0,0, "Assignation")
         {
             this.id = id;
             this.value = value;
@@ -54,53 +54,14 @@ namespace CompiPascal.grammar.sentences
                         */
                         if (variable.DataType == val.getDataType)
                         {
-                            ambit.setVariable(id, val.Value, val.getDataType);
+                            ambit.setVariable(id, val.Value, val.getDataType, false);
+                            return ambit.getVariable(id);
                         } else
                         {
                             ConsolaController.Instance.Add("El tipo " + val.getDataType + " no es asignable con " + variable.DataType);
                             ErrorController.Instance.SyntacticError("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, 0, 0);
                             return null;
                         }
-
-                        /*switch (val.getDataType)
-                        {
-                            case DataType.INTEGER:
-
-                                if (variable.DataType == DataType.INTEGER)
-                                {
-                                    ambit.setVariable(id, val.Value, val.getDataType);
-                                } else
-                                {
-                                    ErrorController.Instance.SyntacticError("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, 0, 0);
-                                    return new Error("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, 0, 0);
-                                } 
-
-                                
-                                break;
-                            case DataType.STRING:
-                                if (variable.DataType == DataType.STRING)
-                                {
-                                    ambit.setVariable(id, val.Value, val.getDataType);
-                                }
-                                else
-                                {
-                                    
-                                }
-
-
-
-                                break;
-                            case DataType.BOOLEAN:
-                                break;
-                            case DataType.REAL:
-                                break;
-                            case DataType.TYPE:
-                                break;
-                            case DataType.ARRAY:
-                                break;
-                             default:
-                                break;
-                        }*/
                     }
 
                 } else
@@ -116,9 +77,16 @@ namespace CompiPascal.grammar.sentences
             catch (Exception)
             {
 
-                return new Error("Error Irrecuperable", 0, 0);
+                ConsolaController.Instance.Add("Error Irrecuperable");
+                return null;
             }
-            return 0;
-        } 
+            return null;
+        }
+
+
+
+        public string Id { get => id; set => id = value; }
+        public Expression Value { get => value; set => this.value = value; }
+
     }
 }

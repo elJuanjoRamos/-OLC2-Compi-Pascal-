@@ -9,12 +9,21 @@ namespace CompiPascal.grammar.abstracts
     {
         private int row;
         private int column;
-
-        public Instruction(int r, int c)
+        private string name;
+        private bool isNull;
+        public Instruction(int r, int c, string name)
         {
             this.row = r;
             this.column = c;
+            this.Name = name;
         }
+        public Instruction()
+        {
+        }
+
+        public string Name { get => name; set => name = value; }
+        public bool IsNull { get => isNull; set => isNull = value; }
+
         public abstract object Execute(Ambit ambit);
     }
 }

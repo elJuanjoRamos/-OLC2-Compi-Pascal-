@@ -34,7 +34,7 @@ namespace CompiPascal.grammar.identifier
 
 
 
-        public void save(string id, object valor, DataType type, bool esconstante)
+        public void save(string id, object valor, DataType type, bool esconstante, bool isAssigned)
         {
             Ambit amb = this;
 
@@ -42,13 +42,13 @@ namespace CompiPascal.grammar.identifier
             {
                 if (amb.variables.ContainsKey(id))
                 {
-                    amb.variables[id] = (new Identifier(valor, id, type, esconstante));
-                    break;
+                    amb.variables[id] = (new Identifier(valor, id, type, esconstante, isAssigned));
+                    return;
                 }
 
                 amb = amb.anterior;
             }
-            variables.Add(id, new Identifier(valor, id, type, esconstante));
+            variables.Add(id, new Identifier(valor, id, type, esconstante, isAssigned));
         }
 
         public Identifier getVariable(string id)
@@ -68,7 +68,7 @@ namespace CompiPascal.grammar.identifier
             return identifier;
         }
 
-        public void setVariable(string id, object valor, DataType type)
+        public void setVariable(string id, object valor, DataType type, bool isAssigned)
         {
             Ambit env = this;
             
@@ -76,7 +76,7 @@ namespace CompiPascal.grammar.identifier
             {
                 if (env.Variables.ContainsKey(id))
                 {
-                    env.Variables[id] = new Identifier(valor, id, type, false);
+                    env.Variables[id] = new Identifier(valor, id, type, false, isAssigned);
                     return;
                 }
                 env = env.anterior;

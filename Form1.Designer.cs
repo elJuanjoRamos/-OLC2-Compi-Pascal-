@@ -72,7 +72,7 @@
             this.textAnalizar.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textAnalizar.Location = new System.Drawing.Point(30, 79);
             this.textAnalizar.Name = "textAnalizar";
-            this.textAnalizar.Size = new System.Drawing.Size(653, 522);
+            this.textAnalizar.Size = new System.Drawing.Size(653, 507);
             this.textAnalizar.TabIndex = 2;
             this.textAnalizar.Text = "";
             // 
@@ -82,7 +82,7 @@
             this.analizar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.analizar.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.analizar.Image = ((System.Drawing.Image)(resources.GetObject("analizar.Image")));
-            this.analizar.Location = new System.Drawing.Point(718, 607);
+            this.analizar.Location = new System.Drawing.Point(717, 591);
             this.analizar.Name = "analizar";
             this.analizar.Size = new System.Drawing.Size(653, 35);
             this.analizar.TabIndex = 3;
@@ -123,7 +123,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label5.Location = new System.Drawing.Point(30, 666);
+            this.label5.Location = new System.Drawing.Point(30, 629);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(171, 20);
             this.label5.TabIndex = 13;
@@ -134,9 +134,9 @@
             this.consola.BackColor = System.Drawing.SystemColors.WindowText;
             this.consola.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.consola.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.consola.Location = new System.Drawing.Point(30, 689);
+            this.consola.Location = new System.Drawing.Point(30, 652);
             this.consola.Name = "consola";
-            this.consola.Size = new System.Drawing.Size(1341, 148);
+            this.consola.Size = new System.Drawing.Size(1341, 185);
             this.consola.TabIndex = 12;
             this.consola.Text = "";
             // 
@@ -145,7 +145,7 @@
             this.ejecutar.BackColor = System.Drawing.Color.White;
             this.ejecutar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ejecutar.Image = ((System.Drawing.Image)(resources.GetObject("ejecutar.Image")));
-            this.ejecutar.Location = new System.Drawing.Point(30, 607);
+            this.ejecutar.Location = new System.Drawing.Point(30, 591);
             this.ejecutar.Name = "ejecutar";
             this.ejecutar.Size = new System.Drawing.Size(653, 35);
             this.ejecutar.TabIndex = 11;
@@ -178,7 +178,7 @@
             this.traduccion.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.traduccion.Location = new System.Drawing.Point(718, 79);
             this.traduccion.Name = "traduccion";
-            this.traduccion.Size = new System.Drawing.Size(653, 522);
+            this.traduccion.Size = new System.Drawing.Size(653, 507);
             this.traduccion.TabIndex = 8;
             this.traduccion.Text = "";
             // 

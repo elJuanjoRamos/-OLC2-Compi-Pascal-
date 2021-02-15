@@ -83,7 +83,7 @@ namespace CompiPascal.grammar.expression
                 /**
                 * SI EL IZQUIERDO ES REAL
                 * REAL + REAL : REAL
-                * REAL + INT: INT
+                * REAL + INT: REAL
                 * REAL + STRING : STRING
                 * REAL + OTRO : ERROR
                 * 
@@ -137,7 +137,7 @@ namespace CompiPascal.grammar.expression
                     INT - REAL: REAL
                     INT - OTRO : ERROR
                  */
-
+                
                 if (varIz.getDataType == DataType.INTEGER)
                 {
                     if (valDer.getDataType == DataType.INTEGER)
@@ -222,7 +222,7 @@ namespace CompiPascal.grammar.expression
                     if (valDer.getDataType == DataType.REAL || valDer.getDataType == DataType.INTEGER)
                     {
                         result = new Returned((double.Parse(varIz.Value.ToString()) * double.Parse(valDer.Value.ToString())), DataType.REAL);
-                    }
+                    } 
                     else
                     {
                         ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
@@ -248,7 +248,11 @@ namespace CompiPascal.grammar.expression
 
                 if (varIz.getDataType == DataType.INTEGER)
                 {
-                    if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
+                    if (valDer.getDataType == DataType.INTEGER)
+                    {
+                        result = new Returned((int.Parse(varIz.Value.ToString()) / int.Parse(valDer.Value.ToString())), DataType.INTEGER);
+                    }
+                    else if (valDer.getDataType == DataType.REAL)
                     {
                         result = new Returned((double.Parse(varIz.Value.ToString()) / double.Parse(valDer.Value.ToString())), DataType.REAL);
                     }

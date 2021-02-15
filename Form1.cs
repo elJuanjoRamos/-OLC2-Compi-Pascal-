@@ -48,12 +48,12 @@ namespace CompiPascal
             if (texto_analizar != "")
             {
             
-                consola.Text = "Programa Encendido\nEn ejecucion ...";
+                consola.Text = "Programa Encendido\nEn ejecucion ...\n";
             
                 Syntactic syntactic = new Syntactic();
                 syntactic.analizer(texto_analizar.ToLower());
 
-                consola.Text = consola.Text + "\n" + ConsolaController.Instance.getText() + "\n" + "Finalizado.";
+                consola.Text = consola.Text + "\n" + ConsolaController.Instance.getText() + "\n" + "\nFinalizado.";
 
             } else
             {

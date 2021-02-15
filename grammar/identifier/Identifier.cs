@@ -12,13 +12,15 @@ namespace CompiPascal.grammar.identifier
         private DataType type;
         private bool esconsante;
         private bool isNull;
-        public Identifier(object v, string i, DataType t, bool ec)
+        private bool isAssiged;
+        public Identifier(object v, string i, DataType t, bool ec, bool isa)
         {
             this._value = v;
             this.id = i;
             this.type = t;
             this.esconsante = ec;
             this.isNull = false;
+            this.isAssiged = isa;
         }
         public Identifier()
         {
@@ -53,5 +55,6 @@ namespace CompiPascal.grammar.identifier
             set { isNull = value; }
         }
 
+        public bool IsAssiged { get => isAssiged; set => isAssiged = value; }
     }
 }

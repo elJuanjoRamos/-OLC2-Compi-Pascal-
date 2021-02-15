@@ -16,7 +16,7 @@ namespace CompiPascal.grammar.sentences
         private int column;
 
         public While(Expression condition, Sentence sentences)
-            : base(1,1)
+            : base(0,0, "While")
         {
             this.condition = condition;
             this.sentences = sentences;
@@ -31,7 +31,7 @@ namespace CompiPascal.grammar.sentences
             }
 
 
-            var cond = this.condition.Execute(ambit);
+            var cond = condition.Execute(ambit);
 
             if (cond.getDataType != DataType.BOOLEAN)
             {
@@ -42,20 +42,31 @@ namespace CompiPascal.grammar.sentences
 
             while ((bool)cond.Value == true)
             {
-                var element = this.sentences.Execute(ambit);
-
-                //VERIFICA QUE NO HAYA ERROR
-                if (element == null)
+                //VERIFICA QUE LA SENTENCIA NO ESTE VACIA
+                if (!sentences.IsNull)
                 {
-                    return null;
+                    //EJECUTA LA SENTENCIA
+                    var element = sentences.Execute(ambit);
+
+                    //VERIFICA QUE NO HAYA ERROR
+                    if (element == null)
+                    {
+                        return null;
+                    }
+
+                    cond = condition.Execute(ambit);
+                    if (cond.getDataType != DataType.BOOLEAN)
+                    {
+
+                        ConsolaController.Instance.Add("La condicion del While no es booleana");
+                        return null;
+                    }
+
+
                 }
-
-                cond = this.condition.Execute(ambit);
-                if (cond.getDataType != DataType.BOOLEAN)
+                else
                 {
-
-                    ConsolaController.Instance.Add("La condicion del While no es booleana");
-                    return null;
+                    break;
                 }
             }
 

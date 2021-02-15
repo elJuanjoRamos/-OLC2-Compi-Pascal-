@@ -63,7 +63,7 @@ namespace CompiPascal.analizer
             lista_declaraciones = LIST_DECLARATIONS(program_body.ChildNodes.ElementAt(0), lista_declaraciones, elemetos_heredados);
 
 
-            LinkedList<Instruction> listaInstrucciones = instructions(program_body.ChildNodes.ElementAt(2));
+            LinkedList<Instruction> listaInstrucciones = INSTRUCTIONS_BODY(program_body.ChildNodes.ElementAt(2));
             ejecutar(listaInstrucciones, lista_declaraciones);
             //instructions();
 
@@ -74,35 +74,28 @@ namespace CompiPascal.analizer
 
         public LinkedList<Instruction> INSTRUCTIONS_BODY(ParseTreeNode actual)
         {
-            LinkedList<Instruction> instructions = new LinkedList<Instruction>();
             var begind = actual.ChildNodes.ElementAt(0);
 
-            var lista_instruciones = actual.ChildNodes.ElementAt(1);
-
-            foreach (var item in lista_instruciones.ChildNodes)
-            {
-                instructions.AddLast(instruction(item.ChildNodes[0]));
-            }
+            LinkedList<Instruction> lista_instruciones = ISTRUCCIONES(actual.ChildNodes.ElementAt(1));
 
 
             var end = actual.ChildNodes.ElementAt(2);
-            return instructions;
+            return lista_instruciones;
         }
 
-        public LinkedList<Instruction> instructions(ParseTreeNode actual)
+        public LinkedList<Instruction> ISTRUCCIONES(ParseTreeNode actual)
         {
 
             LinkedList<Instruction> listaInstrucciones = new LinkedList<Instruction>();
 
-            var instructions = actual.ChildNodes[1];
-            foreach (ParseTreeNode nodo in instructions.ChildNodes)
+            foreach (ParseTreeNode nodo in actual.ChildNodes)
             {
-                var inst = instruction(nodo.ChildNodes[0]);
+                var inst = INSTRUCCION(nodo.ChildNodes[0]);
                 listaInstrucciones.AddLast(inst);
             }
             return listaInstrucciones;
         }
-        public Instruction instruction(ParseTreeNode actual)
+        public Instruction INSTRUCCION(ParseTreeNode actual)
         {
             if (actual.Term.ToString().Equals("WRITE"))
             {
@@ -122,8 +115,8 @@ namespace CompiPascal.analizer
             }
             else if (actual.Term.ToString().Equals("IF-THEN"))
             {
-                IF ifs = IFTHEN(actual);
-                return ifs;
+                IF _ifs = IFTHEN(actual);
+                return _ifs;
             }
             else if (actual.Term.ToString().Equals("WHILE"))
             {
@@ -132,8 +125,18 @@ namespace CompiPascal.analizer
             }
             else if (actual.Term.ToString().Equals("VAR_ASSIGNATE"))
             {
-                Assignation assignation = VAR_ASSIGNATE(actual);
-                return assignation;
+                Assignation _assignation = VAR_ASSIGNATE(actual);
+                return _assignation;
+            }
+            else if (actual.Term.ToString().Equals("REPEAT_UNTIL"))
+            {
+                Repeat _repeat = REPEAT_UNTIL(actual);
+                return _repeat;
+            }
+            else if (actual.Term.ToString().Equals("FOR"))
+            {
+                FOR _for = SENCECIA_FOR(actual);
+                return _for;
             }
 
             return null;
@@ -262,7 +265,7 @@ namespace CompiPascal.analizer
             if (actual.ChildNodes.Count > 0)
             {
                 var exp = expresion(actual.ChildNodes[1]);
-                lista_actual.AddLast(new Declaration(elementos_her[0].ToString(), elementos_her[1].ToString(), exp, 0,0));
+                lista_actual.AddLast(new Declaration(elementos_her[0].ToString(), elementos_her[1].ToString(), exp, 0,0, true));
                 elementos_her.Clear();
             } 
             // VAR A:TIPO;
@@ -288,19 +291,19 @@ namespace CompiPascal.analizer
         {
             if (datatype.Equals("integer"))
             {
-                return new Declaration(identifier.ToString(), datatype, new Literal(0, 0), 0, 0);
+                return new Declaration(identifier.ToString(), datatype, new Literal(0, 1), 0, 0, false);
             }
             else if (datatype.Equals("real"))
             {
-                return new Declaration(identifier.ToString(), datatype, new Literal(0, 4), 0, 0);
+                return new Declaration(identifier.ToString(), datatype, new Literal(0, 4), 0, 0, false);
             }
             else if (datatype.Equals("string"))
             {
-                return new Declaration(identifier.ToString(), datatype, new Literal("", 2), 0, 0);
+                return new Declaration(identifier.ToString(), datatype, new Literal("", 2), 0, 0, false);
             }
             else if (datatype.Equals("boolean"))
             {
-                return new Declaration(identifier.ToString(), datatype, new Literal(false, 3), 0, 0);
+                return new Declaration(identifier.ToString(), datatype, new Literal(false, 3), 0, 0, false);
             }
             return null;
         }
@@ -420,6 +423,51 @@ namespace CompiPascal.analizer
 
         #endregion
 
+        #region REPEAT UTIL
+        public Repeat REPEAT_UNTIL(ParseTreeNode actual)
+        {
+            //REPEAT_UNTIL.Rule = RESERV_REPEAT + INSTRUCTIONS + RESERV_UNTIL + LOGIC_EXPRESION + PUNTO_COMA;
+            
+            //SE OBTIENEN LOS VALORES
+            var instrucciones = actual.ChildNodes[1];
+            var condicion = expresion(actual.ChildNodes[3]);
+            
+            //OBTENGO LA LISTA DE INSTRUCCIONES
+            LinkedList<Instruction> lista_instrucciones = ISTRUCCIONES(instrucciones);
+            
+
+            //RETORNO EL NUEVO REPEAT-UTIL
+            return new Repeat(condicion, new Sentence(lista_instrucciones));
+
+        }
+        #endregion
+
+        #region FOR
+        public FOR SENCECIA_FOR(ParseTreeNode actual)
+        {
+            /*
+             FOR.Rule
+                = RESERV_FOR + IDENTIFIER + DOS_PUNTOS + EQUALS + LOGIC_EXPRESION + TODOWN + LOGIC_EXPRESION
+                    + RESERV_DO
+                        + INSTRUCTIONS_BODY //+ PUNTO_COMA
+                ;
+
+            TODOWN.Rule 
+                = RESERV_TO
+                | RESERV_DOWN + RESERV_TO
+                ;
+             */
+            var ident = actual.ChildNodes[1].Token.Text;
+            var inicio = expresion(actual.ChildNodes[4]);
+            var direccion = actual.ChildNodes[5].ChildNodes.ElementAt(0).Token.Text;
+            var fin = expresion(actual.ChildNodes[6]);
+            var lista_instrucciones = INSTRUCTIONS_BODY(actual.ChildNodes[8]);
+            return new FOR(ident,inicio, fin, new Sentence(lista_instrucciones), direccion);
+
+
+
+        }
+        #endregion
         #endregion
 
 

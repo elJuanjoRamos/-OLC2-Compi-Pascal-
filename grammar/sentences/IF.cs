@@ -20,7 +20,7 @@ namespace CompiPascal.grammar.sentences
        
 
         public IF(Expression condition, Sentence sentences, Sentence elif)
-            : base(0,0)
+            : base(0,0, "IF")
         {
             this.condition = condition;
             this.sentences = sentences;
@@ -29,7 +29,7 @@ namespace CompiPascal.grammar.sentences
         }
 
         public IF()
-            : base(0,0)
+            : base(0,0, "IF")
         {
             this.IsNull = true;
         }
@@ -45,8 +45,9 @@ namespace CompiPascal.grammar.sentences
 
             var ifAmbit = new Ambit(ambit, ambitName, false);
 
+            //CONDICION
             var condition = this.condition.Execute(ifAmbit);
-
+            //VERIFICA QUE LLA CONDICION SEA BOOLEANA
             if (condition.getDataType != DataType.BOOLEAN)
             {
                 ConsolaController.Instance.Add("Semantico - La condicion del If no es booleana");
@@ -55,9 +56,10 @@ namespace CompiPascal.grammar.sentences
 
             if ((bool)condition.Value == true)
             {
+
                 if (!sentences.IsNull)
                 {
-                    return this.sentences.Execute(ifAmbit);
+                    return sentences.Execute(ifAmbit);
                 }
                 else {
                     return 0;
@@ -68,7 +70,7 @@ namespace CompiPascal.grammar.sentences
                 if (!elif.IsNull)
                 {
                     var elseAmbit = new Ambit(ambit, ambitName, false);
-                    return this.elif.Execute(elseAmbit);
+                    return elif.Execute(elseAmbit);
                 }
                 else
                 {
