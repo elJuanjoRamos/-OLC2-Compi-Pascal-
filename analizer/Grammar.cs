@@ -249,10 +249,7 @@ namespace CompiPascal.analizer
             PROGRAM_BODY.Rule
                 = DECLARATION_LIST
                 + FUNCTION_LIST
-                + INSTRUCTIONS_BODY;
-
-
-
+                + INSTRUCTIONS_BODY + PUNTO;
 
             INSTRUCTIONS_BODY.Rule 
                 = RESERV_BEGIN + INSTRUCTIONS + RESERV_END
@@ -453,7 +450,7 @@ namespace CompiPascal.analizer
             #endregion
 
             #region CASE
-            SENTENCE_CASE.Rule = RESERV_CASE + PAR_IZQ + LOGIC_EXPRESION + PAR_DER + RESERV_OF + CASES + CASE_ELSE + RESERV_END + PUNTO_COMA;
+            SENTENCE_CASE.Rule = RESERV_CASE  + LOGIC_EXPRESION + RESERV_OF + CASES + CASE_ELSE + RESERV_END + PUNTO_COMA;
 
             CASES.Rule = MakePlusRule(CASES, CASE)
                 | CASE
@@ -467,7 +464,7 @@ namespace CompiPascal.analizer
             #endregion
 
             #region WHILE DO
-            WHILE.Rule = RESERV_WHILE + LOGIC_EXPRESION + RESERV_DO + INSTRUCTIONS_BODY;// + PUNTO_COMA;
+            WHILE.Rule = RESERV_WHILE + LOGIC_EXPRESION + RESERV_DO + INSTRUCTIONS_BODY + PUNTO_COMA;
             #endregion
 
             #region REPEAT UNTIL

@@ -1,6 +1,7 @@
 ﻿using CompiPascal.controller;
 using CompiPascal.grammar.abstracts;
 using CompiPascal.grammar.identifier;
+using CompiPascal.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -28,24 +29,40 @@ namespace CompiPascal.grammar.expression
         {
             var valIz = this.left.Execute(ambit);
             var valDer = this.right.Execute(ambit);
+
+
+            TablaTipo tablaTipo = new TablaTipo();
+
+            var res = tablaTipo.getTipoRel(valIz.getDataType, valDer.getDataType);
+
+            if (res == DataType.ERROR)
+            {
+                ErrorController.Instance.SemantycErrors("Operador '" + this.type + "' NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
+                return new Returned();
+            }
+
+
             var result = new Returned();
             var op = GetType(this.type);
 
-
-
             switch (op)
             {
+
+
                 case OpRelational.EQUALS:
-                    var equals = (bool)(valIz.Value == valDer.Value);
+
+                    var equals = (bool)(valIz.Value.ToString() == valDer.Value.ToString());
                     result = new Returned(equals, DataType.BOOLEAN);
                     break;
                 case OpRelational.DISCTINCT:
-                    var distict = (bool)(valIz.Value != valDer.Value);
+                    var distict = (bool)(valIz.Value.ToString() != valDer.Value.ToString());
                     result = new Returned(distict, DataType.BOOLEAN);
                     break;
                 case OpRelational.LESS:
+                    var less = (bool)(double.Parse(valIz.Value.ToString()) < double.Parse(valDer.Value.ToString()));
+                    result = new Returned(less, DataType.BOOLEAN);
 
-                    if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
+                    /*if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
                     {
                         if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
                         {
@@ -54,21 +71,24 @@ namespace CompiPascal.grammar.expression
                         }
                         else
                         {
-                            ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                            ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType,0,0);
                             return new Returned();
                         }
 
                     } else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
                         return new Returned();
-                    }
+                    }*/
 
 
 
                     break;
                 case OpRelational.LESS_EQUALS:
-                    if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
+                    var lessE = (bool)(double.Parse(valIz.Value.ToString()) <= double.Parse(valDer.Value.ToString()));
+                    result = new Returned(lessE, DataType.BOOLEAN);
+
+                    /*if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
                     {
                         if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
                         {
@@ -77,19 +97,22 @@ namespace CompiPascal.grammar.expression
                         }
                         else
                         {
-                            ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                            ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
                             return new Returned();
                         }
 
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
                         return new Returned();
-                    }
+                    }*/
                     break;
                 case OpRelational.HIGHER:
-                    if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
+                    var higher = (bool)(double.Parse(valIz.Value.ToString()) > double.Parse(valDer.Value.ToString()));
+                    result = new Returned(higher, DataType.BOOLEAN);
+
+                    /*if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
                     {
                         if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
                         {
@@ -98,19 +121,22 @@ namespace CompiPascal.grammar.expression
                         }
                         else
                         {
-                            ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                            ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
                             return new Returned();
                         }
 
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
                         return new Returned();
-                    }
+                    }*/
                     break;
                 case OpRelational.HIGHER_EQUALS:
-                    if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
+                    var higherE = (bool)(double.Parse(valIz.Value.ToString()) >= double.Parse(valDer.Value.ToString()));
+                    result = new Returned(higherE, DataType.BOOLEAN);
+
+                    /*if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
                     {
                         if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
                         {
@@ -119,16 +145,16 @@ namespace CompiPascal.grammar.expression
                         }
                         else
                         {
-                            ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                            ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
                             return new Returned();
                         }
 
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
                         return new Returned();
-                    }
+                    }*/
                     break;
                 default:
                     break;

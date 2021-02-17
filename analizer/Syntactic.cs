@@ -30,12 +30,9 @@ namespace CompiPascal.analizer
                 System.Diagnostics.Debug.WriteLine(item);
             }*/
             Parser parser = new Parser(new LanguageData(grammar));
-            ParseTree tree = parser.Parse(cadena.ToLower());
+            ParseTree tree = parser.Parse(cadena);
             ParseTreeNode root = tree.Root;
-            if (root == null)
-            {
-                return;
-            }
+            
 
             if (tree.ParserMessages.Count > 0)
             {
@@ -54,9 +51,13 @@ namespace CompiPascal.analizer
                 }
                 return;
             }
+            if (root == null)
+            {
+                return;
+            }
+            //SE MANDA A GRAFICAR
+            GraphController.Instance.getGraph(root);
 
-
-            getGraph(root);
 
             var program_body = root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(3);
 
@@ -65,15 +66,74 @@ namespace CompiPascal.analizer
 
             LinkedList<Instruction> listaInstrucciones = INSTRUCTIONS_BODY(program_body.ChildNodes.ElementAt(2));
             ejecutar(listaInstrucciones, lista_declaraciones);
-            //instructions();
-
+            
         }
 
 
+        #region EJECUCION
+
+
+        public void ejecutar(LinkedList<Instruction> actual, LinkedList<Instruction> lista_declaraciones)
+        {
+            //GUARDAR VARIABLES
+
+            var error_variable = false;
+
+
+            foreach (var item in lista_declaraciones)
+            {
+                try
+                {
+                    var result = item.Execute(general);
+                    if (result == null)
+                    {
+                        error_variable = true;
+                        break;
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
+            if (!error_variable)
+            {
+                foreach (var item in actual)
+                {
+                    try
+                    {
+                        var result = item.Execute(general);
+                        if (result == null)
+                        {
+                            break;
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                        break;
+                    }
+
+                }
+            }
+
+        }
+
+        
+
+        #endregion
+
+
+        //EMPIEZA LA EJECUCION
 
 
         public LinkedList<Instruction> INSTRUCTIONS_BODY(ParseTreeNode actual)
         {
+            /*INSTRUCTIONS_BODY.Rule 
+                = RESERV_BEGIN + INSTRUCTIONS + RESERV_END  + PUNTO
+                ;*/
             var begind = actual.ChildNodes.ElementAt(0);
 
             LinkedList<Instruction> lista_instruciones = ISTRUCCIONES(actual.ChildNodes.ElementAt(1));
@@ -137,6 +197,11 @@ namespace CompiPascal.analizer
             {
                 FOR _for = SENCECIA_FOR(actual);
                 return _for;
+            }
+            else if (actual.Term.ToString().Equals("SENTENCE_CASE"))
+            {
+                Switch _SW = SENTENCE_CASE(actual);
+                return _SW;
             }
 
             return null;
@@ -468,6 +533,74 @@ namespace CompiPascal.analizer
 
         }
         #endregion
+
+        #region CASE
+        public Switch SENTENCE_CASE(ParseTreeNode actual)
+        {
+            /*
+             *  SENTENCE_CASE.Rule = RESERV_CASE  + LOGIC_EXPRESION + RESERV_OF + CASES + CASE_ELSE + RESERV_END + PUNTO_COMA;
+
+          
+
+            CASE_ELSE.Rule = RESERV_ELSE + INSTRUCTIONS
+                | Empty
+                ;
+             */
+
+            var condicion = expresion(actual.ChildNodes[1]);
+            
+            var lista_cases = CASES(actual.ChildNodes[3]);
+
+            var else_case = CASE_ELSE(actual.ChildNodes[4]);
+            return new Switch(condicion, lista_cases, else_case);
+        }
+
+        public ArrayList CASES(ParseTreeNode actual)
+        {
+            /*
+               CASES.Rule = MakePlusRule(CASES, CASE)
+                | CASE
+                ;
+             */
+            ArrayList lista_cases = new ArrayList();
+            if (actual.ChildNodes.Count> 0)
+            {
+                foreach (var item in actual.ChildNodes)
+                {
+                    lista_cases.Add(CaseSing(item));
+                }
+            }
+
+            return lista_cases;
+        }
+
+        public Case CaseSing(ParseTreeNode actual)
+        {
+            /* CASE.Rule = LOGIC_EXPRESION + DOS_PUNTOS + INSTRUCTIONS;*/
+            var condicion = expresion(actual.ChildNodes[0]);
+            var lista_instrucciones = ISTRUCCIONES(actual.ChildNodes[2]);
+
+            return new Case(condicion, new Sentence(lista_instrucciones));
+            
+        }
+
+        public Case CASE_ELSE(ParseTreeNode actual)
+        {
+            /*
+             CASE_ELSE.Rule = RESERV_ELSE + INSTRUCTIONS
+                | Empty
+                ;
+             */
+            Case _case = new Case();
+            if (actual.ChildNodes.Count > 0)
+            {
+                var lista_declaraciones = ISTRUCCIONES(actual.ChildNodes[1]);
+                _case = new Case(new Sentence(lista_declaraciones));
+            }
+
+            return _case;
+        }
+        #endregion
         #endregion
 
 
@@ -498,7 +631,7 @@ namespace CompiPascal.analizer
                     {
                         opcion = 1;
                     }
-                    else if (simb.Equals("<") || simb.Equals("<=") || simb.Equals(">") || simb.Equals(">="))
+                    else if (simb.Equals("<") || simb.Equals("<=") || simb.Equals(">") || simb.Equals(">=") || simb.Equals("=") || simb.Equals("<>"))
                     {
                         opcion = 2;
                     }
@@ -590,77 +723,7 @@ namespace CompiPascal.analizer
 
 
 
-        #region EJECUCION
-
-     
-        public void ejecutar(LinkedList<Instruction> actual, LinkedList<Instruction> lista_declaraciones)
-        {
-            //GUARDAR VARIABLES
-
-            var error_variable = false;
-
-
-            foreach (var item in lista_declaraciones)
-            {
-                try
-                {
-                    var result = item.Execute(general);
-                    if (result == null)
-                    {
-                        error_variable = true;
-                        break;
-                    }
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
-            }
-
-            if (!error_variable)
-            {
-                foreach (var item in actual)
-                {
-                    try
-                    {
-                        var result = item.Execute(general);
-                        if (result == null)
-                        {
-                            break;
-                        }
-                    }
-                    catch (Exception)
-                    {
-
-                        throw;
-                    }
-
-                }
-            }
-            
-        }
-
-        public void getGraph(ParseTreeNode root)
-        {
-            GraphController graph = new GraphController();
-            string dot = graph.getDot(root);
-            var path = "ast.txt";
-            try
-            {
-                using (FileStream fs = File.Create(path))
-                {
-                    byte[] info = new UTF8Encoding(true).GetBytes(dot);
-                    fs.Write(info, 0, info.Length);
-                }
-            }
-            catch (Exception)
-            {
-                System.Diagnostics.Debug.WriteLine("ERROR AL GENERAR EL DOT");
-            }
-        }
-
-        #endregion
+    
 
     }
 

@@ -1,6 +1,7 @@
 ﻿using CompiPascal.controller;
 using CompiPascal.grammar.abstracts;
 using CompiPascal.grammar.identifier;
+using CompiPascal.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,15 +30,15 @@ namespace CompiPascal.grammar.expression
 
 
             //VERIFICA QUE NO HAYA ERROR
-            if (varIz.getDataType == DataType.ERROR)
-            {
-                return new Returned(varIz.Value.ToString());
-            }
-            else if (valDer.getDataType == DataType.ERROR)
-            {
-                return new Returned(valDer.Value.ToString());
-            }
+            TablaTipo tablaTipo = new TablaTipo();
 
+            var res = tablaTipo.getTipoArith(varIz.getDataType, valDer.getDataType);
+
+            if (res == DataType.ERROR)
+            {
+                ErrorController.Instance.SemantycErrors("Operador '" + this.type + "' NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, 0, 0);
+                return new Returned();
+            }
 
 
 

@@ -45,7 +45,8 @@ namespace CompiPascal.grammar.sentences
                     */
                     if (variable.Esconstante)
                     {
-                        ErrorController.Instance.SyntacticError("No se puede asignar a una constante", 0,0);
+                        ConsolaController.Instance.Add("No se puede cambiar el valo a una constante");
+                        ErrorController.Instance.SyntacticError("No se puede cambiar el valor a una constante",0,0);
                         return null;
                     } else
                     {

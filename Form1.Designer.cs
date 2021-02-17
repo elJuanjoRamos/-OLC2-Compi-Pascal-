@@ -36,6 +36,7 @@
             this.analizar = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.linenumber = new System.Windows.Forms.RichTextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.consola = new System.Windows.Forms.RichTextBox();
             this.ejecutar = new System.Windows.Forms.Button();
@@ -70,11 +71,15 @@
             this.textAnalizar.BackColor = System.Drawing.SystemColors.Menu;
             this.textAnalizar.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textAnalizar.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.textAnalizar.Location = new System.Drawing.Point(30, 79);
+            this.textAnalizar.Location = new System.Drawing.Point(39, 79);
             this.textAnalizar.Name = "textAnalizar";
-            this.textAnalizar.Size = new System.Drawing.Size(653, 507);
+            this.textAnalizar.Size = new System.Drawing.Size(644, 507);
             this.textAnalizar.TabIndex = 2;
             this.textAnalizar.Text = "";
+            this.textAnalizar.SelectionChanged += new System.EventHandler(this.textAnalizar_SelectionChanged);
+            this.textAnalizar.VScroll += new System.EventHandler(this.textAnalizar_VScroll);
+            this.textAnalizar.FontChanged += new System.EventHandler(this.textAnalizar_FontChanged);
+            this.textAnalizar.TextChanged += new System.EventHandler(this.textAnalizar_TextChanged);
             // 
             // analizar
             // 
@@ -101,6 +106,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.linenumber);
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.consola);
             this.tabPage1.Controls.Add(this.ejecutar);
@@ -119,11 +125,23 @@
             this.tabPage1.Text = "Ejecución";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // linenumber
+            // 
+            this.linenumber.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.linenumber.Cursor = System.Windows.Forms.Cursors.PanNE;
+            this.linenumber.Location = new System.Drawing.Point(6, 79);
+            this.linenumber.Name = "linenumber";
+            this.linenumber.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
+            this.linenumber.Size = new System.Drawing.Size(27, 506);
+            this.linenumber.TabIndex = 14;
+            this.linenumber.Text = "";
+            this.linenumber.MouseDown += new System.Windows.Forms.MouseEventHandler(this.linenumber_MouseDown);
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label5.Location = new System.Drawing.Point(30, 629);
+            this.label5.Location = new System.Drawing.Point(39, 629);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(171, 20);
             this.label5.TabIndex = 13;
@@ -134,9 +152,9 @@
             this.consola.BackColor = System.Drawing.SystemColors.WindowText;
             this.consola.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.consola.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.consola.Location = new System.Drawing.Point(30, 652);
+            this.consola.Location = new System.Drawing.Point(39, 652);
             this.consola.Name = "consola";
-            this.consola.Size = new System.Drawing.Size(1341, 185);
+            this.consola.Size = new System.Drawing.Size(1332, 185);
             this.consola.TabIndex = 12;
             this.consola.Text = "";
             // 
@@ -145,9 +163,9 @@
             this.ejecutar.BackColor = System.Drawing.Color.White;
             this.ejecutar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ejecutar.Image = ((System.Drawing.Image)(resources.GetObject("ejecutar.Image")));
-            this.ejecutar.Location = new System.Drawing.Point(30, 591);
+            this.ejecutar.Location = new System.Drawing.Point(39, 591);
             this.ejecutar.Name = "ejecutar";
-            this.ejecutar.Size = new System.Drawing.Size(653, 35);
+            this.ejecutar.Size = new System.Drawing.Size(644, 35);
             this.ejecutar.TabIndex = 11;
             this.ejecutar.UseVisualStyleBackColor = false;
             this.ejecutar.Click += new System.EventHandler(this.ejecutar_Click);
@@ -245,6 +263,7 @@
         private System.Windows.Forms.Button ejecutar;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.RichTextBox consola;
+        private System.Windows.Forms.RichTextBox linenumber;
     }
 }
 

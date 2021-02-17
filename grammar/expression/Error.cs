@@ -30,5 +30,9 @@ namespace CompiPascal.grammar.expression
         {
             return new Returned(message, type);
         }
+
+        public string toString() {
+            return "Se encontro un error: Sintactico"   + " - En la linea " + this.row + ", columna " + this.column + " - Mensaje: " + this.message;
+        }
     }
 }

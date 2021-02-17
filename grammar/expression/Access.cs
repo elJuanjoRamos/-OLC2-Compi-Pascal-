@@ -23,10 +23,12 @@ namespace CompiPascal.grammar.expression
 
         public override Returned Execute(Ambit ambit)
         {
-            Identifier value = ambit.getVariable(this.id);
+            Identifier value = ambit.getVariable(this.id.ToLower());
             if (value.IsNull)
             {
                 ConsolaController.Instance.Add("Este es un error: La variable '" + this.id + "' no ha sido declarada o no existe en el ambito " + ambit.Ambit_name);
+                ErrorController.Instance.SemantycErrors("Este es un error: La variable '" + this.id + "' no ha sido declarada o no existe en el ambito " + ambit.Ambit_name, 0, 0);
+
                 return new Returned("Este es un error: La variable '" + this.id + "' no ha sido declarada o no existe en este ambito " +ambit.Ambit_name);
 
             }

@@ -43,43 +43,60 @@ namespace CompiPascal.grammar.sentences
 
         public override object Execute(Ambit ambit)
         {
-            try
+            //BUSCA LA VARIABLE SI NO HA SIDO DECLARADA
+            Identifier buscar = ambit.getVariable(id);
+
+            if (buscar.IsNull)
             {
-                Returned val = this.value.Execute(ambit);
-
-                //VERIFICA QUE NO HAYA ERROR
-                if (val.getDataType == DataType.ERROR)
+                try
                 {
-                    return null;
-                }
+                    Returned val = this.value.Execute(ambit);
 
-
-                if (this.type == DataType.CONST)
-                {
-                    ambit.save(this.id, val.Value, val.getDataType, true, true);
-                    SimbolTableController.Instance.add(this.id, this.type, ambit.Ambit_name, new Literal(val.Value, 2), true, false);
-                    return val.Value;
-
-                } else
-                {
-                    if (val.getDataType == this.type)
+                    //VERIFICA QUE NO HAYA ERROR
+                    if (val.getDataType == DataType.ERROR)
                     {
-                        ambit.save(this.id, val.Value, val.getDataType, false, isAssigned);
+                        return null;
+                    }
+
+
+                    if (this.type == DataType.CONST)
+                    {
+                        ambit.save(this.id.ToLower(), val.Value, val.getDataType, true, true);
                         SimbolTableController.Instance.add(this.id, this.type, ambit.Ambit_name, new Literal(val.Value, 2), true, false);
                         return val.Value;
+
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("El tipo " + val.Value.ToString() + " no es asignable con " + this.type.ToString());
-                        return null;
+                        if (val.getDataType == this.type)
+                        {
+                            ambit.save(this.id.ToLower(), val.Value, val.getDataType, false, isAssigned);
+                            SimbolTableController.Instance.add(this.id, this.type, ambit.Ambit_name, new Literal(val.Value, 2), true, false);
+                            return val.Value;
+                        }
+                        else
+                        {
+                            ConsolaController.Instance.Add("El tipo " + val.Value.ToString() + " no es asignable con " + this.type.ToString());
+                            ErrorController.Instance.SemantycErrors("El tipo " + val.Value.ToString() + " no es asignable con " + this.type.ToString(),0,0);
+
+                            return null;
+                        }
                     }
+
+                }
+                catch (Exception)
+                {
+
                 }
 
             }
-            catch (Exception)
+            else
             {
-
+                ConsolaController.Instance.Add("La variable '" + id + "' ya fue declarada");
+                return null;
             }
+
+
 
             return 0;
         }

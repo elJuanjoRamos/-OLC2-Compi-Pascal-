@@ -27,6 +27,7 @@ namespace CompiPascal.controller
 
         ArrayList syntacticErrors = new ArrayList();
         ArrayList lexicalErrors = new ArrayList();
+        ArrayList semantycErrors = new ArrayList();
 
 
 
@@ -39,6 +40,48 @@ namespace CompiPascal.controller
         {
             lexicalErrors.Add(new Error(message, row, col));
         }
+        public void SemantycErrors(string message, int row, int col)
+        {
+            semantycErrors.Add(new Error(message, row, col));
+        }
 
+        public void Clean()
+        {
+            semantycErrors.Clear();
+            syntacticErrors.Clear();
+            lexicalErrors.Clear();
+        }
+
+
+        public string getLexicalError()
+        {
+            return getText(lexicalErrors);
+        }
+        public string getSemantycError()
+        {
+            return getText(semantycErrors);
+        }
+
+        public string getSintactycError()
+        {
+            return getText(syntacticErrors);
+        }
+
+
+        public string getText(ArrayList ar)
+        {
+            var text = "";
+            if (ar.Count > 0)
+            {
+                foreach (var item in ar)
+                {
+                    var err = (Error)item;
+                    text = text + err.toString() + "\n";
+                }
+                text = "\n" + text;
+            }
+            return text;
+
+        }
     }
 }

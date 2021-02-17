@@ -64,7 +64,8 @@ namespace CompiPascal.grammar.sentences
 
                         if (condicion.getDataType != DataType.BOOLEAN)
                         {
-                            ConsolaController.Instance.Add("La condicion no es boleana");
+                            ConsolaController.Instance.Add("La condicion del for no es boleana");
+
                             return null;
                         }
 
@@ -211,6 +212,8 @@ namespace CompiPascal.grammar.sentences
                 } else
                 {
                     ConsolaController.Instance.Add("Variable de contador ilegal: La variable '" + initId + "' no debe estar asignada al momento de su declaracion");
+                    ErrorController.Instance.SyntacticError("Variable de contador ilegal: La variable '" + initId + "' no debe estar asignada al momento de su declaracion",0,0);
+
                     return null;
                 }
 
@@ -218,6 +221,7 @@ namespace CompiPascal.grammar.sentences
             else
             {
                 ConsolaController.Instance.Add("La variable '" + initId + "' no esta declarada.");
+                ErrorController.Instance.SyntacticError("La variable '" + initId + "' no esta declarada.", 0, 0);
                 return null;
             }
 

@@ -33,28 +33,35 @@ namespace CompiPascal.grammar.sentences
         {
             //console.error("SENTENCIA")
             var newAmbit = new Ambit(ambit, ambit.Ambit_name, false);
-            object retorno = null;
 
-            foreach (var inst in this.list)
+
+            if (!isNull)
             {
-                try
+                foreach (var inst in this.list)
                 {
-                    var element = inst.Execute(newAmbit);
-                    if (element != null)
+                    try
                     {
-                        retorno = element;
-                    } else
-                    {
-                        break;
-                    }
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
+                        var element = inst.Execute(newAmbit);
 
+                        if (element == null)
+                        {
+                            return null;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        return null;
+                    }
+
+                }
+            } else
+            {
+                return 0;
             }
-            return retorno;
+
+            
+            return 0;
         }
 
         public string obtenerTipo(DataType tipo) {
@@ -83,6 +90,6 @@ namespace CompiPascal.grammar.sentences
         }
 
         public bool IsNull { get => isNull; set => isNull = value; }
-
+        public LinkedList<Instruction> List { get => list; set => list = value; }
     }
 }

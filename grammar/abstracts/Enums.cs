@@ -6,6 +6,7 @@ namespace CompiPascal.grammar.abstracts
 {
     public enum DataType
     {
+        ANY = 0,
         INTEGER = 1,
         STRING = 2,
         BOOLEAN = 3,

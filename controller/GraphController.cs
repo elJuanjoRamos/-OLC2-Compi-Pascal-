@@ -1,6 +1,7 @@
 ﻿using Irony.Parsing;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace CompiPascal.controller
@@ -10,7 +11,38 @@ namespace CompiPascal.controller
         private static int cont;
         private static string graph;
 
-        public GraphController() { }
+
+        private readonly static GraphController _instance = new GraphController();
+
+        private GraphController()
+        {
+        }
+
+        public static GraphController Instance
+        {
+            get
+            {
+                return _instance;
+            }
+        }
+
+        public void getGraph(ParseTreeNode root)
+        {
+            string dot = getDot(root);
+            var path = "ast.txt";
+            try
+            {
+                using (FileStream fs = File.Create(path))
+                {
+                    byte[] info = new UTF8Encoding(true).GetBytes(dot);
+                    fs.Write(info, 0, info.Length);
+                }
+            }
+            catch (Exception)
+            {
+                System.Diagnostics.Debug.WriteLine("ERROR AL GENERAR EL DOT");
+            }
+        }
 
 
         public string getDot(ParseTreeNode root)
