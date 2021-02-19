@@ -13,10 +13,10 @@ namespace CompiPascal.grammar.sentences
         private string initId;
         private Expression inicializacion;
         private Expression actualizacion;
-        private Sentence sentence;
+        private Instruction sentence;
         private string direccion;
 
-        public FOR(string initId, Expression inicializacion, Expression actualizacion, Sentence sentence, string dir)
+        public FOR(string initId, Expression inicializacion, Expression actualizacion, Instruction sentence, string dir)
             : base(0,0, "For")
         {
             this.initId = initId;
@@ -33,7 +33,7 @@ namespace CompiPascal.grammar.sentences
             {
                 ambitName = ambit.Ambit_name + "_For";
             }
-            var forAmbit = new Ambit(ambit, ambitName, false);
+            var forAmbit = new Ambit(ambit, ambitName, "For", false);
 
 
             //SE HACE LA ASIGNACION INICIAL
@@ -75,6 +75,7 @@ namespace CompiPascal.grammar.sentences
                         while ((bool)condicion.Value == true)
                         {
 
+                           
                             //VERIFICA QUE LA SENTENCIAS NO ESTEN VACIAS
                             if (!sentence.IsNull)
                             {
@@ -94,10 +95,6 @@ namespace CompiPascal.grammar.sentences
                                         else if (ins.Name.Equals("Continue"))
                                         {
                                             continue;
-                                        }
-                                        else if (ins.Name.Equals("Return"))
-                                        {
-
                                         }
                                         //return ins.;
                                     }

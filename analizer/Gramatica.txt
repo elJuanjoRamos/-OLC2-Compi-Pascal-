@@ -126,3 +126,66 @@ F => ( EXPLOGICA )
                 | Empty
                 ;
             #endregion
+
+
+
+
+
+            /*LOGIC_EXPRESION.Rule = RELATIONAL_EXPRESION + LOGIC_EXPRESION_P;
+
+            LOGIC_EXPRESION_P.Rule = AND + RELATIONAL_EXPRESION + LOGIC_EXPRESION_P
+                | OR + RELATIONAL_EXPRESION + LOGIC_EXPRESION_P
+                | NOT + RELATIONAL_EXPRESION + LOGIC_EXPRESION_P
+                | Empty
+                ;
+
+            RELATIONAL_EXPRESION.Rule = EXPRESSION + RELATIONAL_EXPRESION_P;
+
+            RELATIONAL_EXPRESION_P.Rule = HIGHER + COMPARE
+                | LESS + DIFFERENT
+                | EQUALS + EXPRESSION
+                | Empty
+                ;
+
+            COMPARE.Rule = EXPRESSION + RELATIONAL_EXPRESION_P
+                | EQUALS + EXPRESSION + RELATIONAL_EXPRESION_P
+                ;
+
+            DIFFERENT.Rule = HIGHER + EXPRESSION + RELATIONAL_EXPRESION_P
+                | COMPARE;
+
+
+            EXPRESSION.Rule = TERM + EXPRESSION_P;
+
+            EXPRESSION_P.Rule = PLUS + TERM + EXPRESSION_P
+                | MIN + TERM + EXPRESSION_P
+                | Empty
+                ;
+
+            TERM.Rule = FACTOR + TERM_P;
+
+            TERM_P.Rule = POR + FACTOR + TERM_P
+                | DIVI + FACTOR + TERM_P
+                | MODULE + FACTOR + TERM_P
+                | Empty
+                ;
+
+            FACTOR.Rule = 
+                 CADENA
+                | IDENTIFIER
+                | REAL
+                | NUMERO
+                | RESERV_TRUE
+                | RESERV_FALSE
+                | PAR_IZQ + LOGIC_EXPRESION + PAR_DER;*/
+
+
+
+                   /*NonTerminal LOGIC_EXPRESION_P = new NonTerminal("LOGIC_EXPRESION_P", "LOGIC_EXPRESION_P");
+            NonTerminal RELATIONAL_EXPRESION = new NonTerminal("RELATIONAL_EXPRESION", "RELATIONAL_EXPRESION");
+            NonTerminal RELATIONAL_EXPRESION_P = new NonTerminal("RELATIONAL_EXPRESION_P", "RELATIONAL_EXPRESION_P");
+            NonTerminal EXPRESSION = new NonTerminal("EXPRESSION");
+            NonTerminal EXPRESSION_P = new NonTerminal("EXPRESSION_P");
+            NonTerminal TERM = new NonTerminal("TERM");
+            NonTerminal TERM_P = new NonTerminal("TERM_P");
+            NonTerminal FACTOR = new NonTerminal("FACTOR");*/s

@@ -26,10 +26,10 @@ namespace CompiPascal.grammar.sentences
 
         public override object Execute(Ambit ambit)
         {
-            var ambitName = "Global_Switch";
+            var ambitName = "Global_Case";
             if (ambit != null)
             {
-                ambitName = ambit.Ambit_name + "_Switch";
+                ambitName = ambit.Ambit_name + "_Case";
             }
 
            
@@ -51,7 +51,7 @@ namespace CompiPascal.grammar.sentences
                 {
                     numeroCaso = i;
 
-                    var switchAmbit = new Ambit(ambit, ambitName, false);
+                    var switchAmbit = new Ambit(ambit, ambitName, "Case", false);
                     var element = (Case)cases[i];
                     var resultado = element.Execute(switchAmbit);
 

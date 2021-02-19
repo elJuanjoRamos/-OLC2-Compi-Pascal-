@@ -11,14 +11,16 @@ namespace CompiPascal.grammar.identifier
         //private Dictionary<string, Function> functions = new Dictionary<string, Function>();
         Dictionary<string, Identifier> types;
         private string ambit_name = "";
+        private string ambit_name_inmediato = "";
         public Ambit anterior;
         public Boolean ambit_null;
 
-        public Ambit(Ambit a, string n, bool isnull)
+        public Ambit(Ambit a, string n, string ni, bool isnull)
         {
             this.variables = new Dictionary<string, Identifier>();
             this.types = new Dictionary<string, Identifier>();
             this.ambit_name = n;
+            this.ambit_name_inmediato = ni;
             this.anterior = a;
             this.ambit_null = isnull;
 
@@ -30,6 +32,7 @@ namespace CompiPascal.grammar.identifier
             this.types = new Dictionary<string, Identifier>();
             this.ambit_null = true;
             this.ambit_name = "General";
+            this.ambit_name_inmediato = "General";
         }
 
 
@@ -88,5 +91,6 @@ namespace CompiPascal.grammar.identifier
         public string Ambit_name { get => ambit_name; set => ambit_name = value; }
         public bool IsNull { get => ambit_null; set => ambit_null = value; }
         internal Dictionary<string, Identifier> Variables { get => variables; set => variables = value; }
+        public string Ambit_name_inmediato { get => ambit_name_inmediato; set => ambit_name_inmediato = value; }
     }
 }

@@ -29,7 +29,7 @@ namespace CompiPascal.grammar.sentences
             {
                 ambitName = ambit.Ambit_name + "_Repeat";
             }
-            var repeatAmbit = new Ambit(ambit, ambitName, false);
+            var repeatAmbit = new Ambit(ambit, ambitName, "Repeat", false);
 
 
             //CONDICION
@@ -50,7 +50,7 @@ namespace CompiPascal.grammar.sentences
                 do
                 {
 
-                    var element = sentences.Execute(ambit);
+                    var element = sentences.Execute(repeatAmbit);
                     if (element == null)
                     {
                         break;
@@ -72,14 +72,14 @@ namespace CompiPascal.grammar.sentences
                         }
                         
                     }
-                    condicion = this.condition.Execute(ambit);
+                    condicion = this.condition.Execute(repeatAmbit);
                     if (condicion.getDataType != DataType.BOOLEAN)
                     {
                         ConsolaController.Instance.Add("La condicion no es booleana");
                         return null;
                     }
 
-                } while ((bool)condicion.Value == true);
+                } while ((bool)condicion.Value == false);
 
             } else
             {

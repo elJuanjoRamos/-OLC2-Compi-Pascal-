@@ -34,7 +34,6 @@ namespace CompiPascal.analizer
             var REAL = new RegexBasedTerminal("REAL", "[0-9]+[.][0-9]+");
             var NUMERO = new NumberLiteral("NUMERO");
             var IDENTIFIER = new IdentifierTerminal("IDENTIFIER", "[_a-zA-Z][_a-zA-Z0-9]");
-            //var CADENA = new RegexBasedTerminal("CADENA", "\'[_a-zA-Z][_a-zA-Z0-9]\'");
             var CADENA = new StringLiteral("CADENA", "\'");
             #endregion
 
@@ -65,7 +64,7 @@ namespace CompiPascal.analizer
             var EQUALS = ToTerm("=", "TK_EQUALS");
             var DISCTINCT = ToTerm("<>", "TK_DISCTINCT");
             //Reservadas
-            
+
             var RESERV_INT = ToTerm("integer", "RESERV_INT");
             var RESERV_STR = ToTerm("string", "RESERV_STR");
             var RESERV_REAL = ToTerm("real", "RESERV_REAL");
@@ -144,22 +143,12 @@ namespace CompiPascal.analizer
             NonTerminal INSTRUCTIONS_BODY = new NonTerminal("INSTRUCTIONS_BODY");
             NonTerminal PROGRAM_BODY = new NonTerminal("PROGRAM_BODY", "PROGRAM_BODY");
 
-
-
-
-            NonTerminal LOGIC_EXPRESION = new NonTerminal("LOGIC_EXPRESION", "LOGIC_EXPRESION");
-            /*NonTerminal LOGIC_EXPRESION_P = new NonTerminal("LOGIC_EXPRESION_P", "LOGIC_EXPRESION_P");
-            NonTerminal RELATIONAL_EXPRESION = new NonTerminal("RELATIONAL_EXPRESION", "RELATIONAL_EXPRESION");
-            NonTerminal RELATIONAL_EXPRESION_P = new NonTerminal("RELATIONAL_EXPRESION_P", "RELATIONAL_EXPRESION_P");
-            NonTerminal EXPRESSION = new NonTerminal("EXPRESSION");
-            NonTerminal EXPRESSION_P = new NonTerminal("EXPRESSION_P");
-            NonTerminal TERM = new NonTerminal("TERM");
-            NonTerminal TERM_P = new NonTerminal("TERM_P");
-            NonTerminal FACTOR = new NonTerminal("FACTOR");*/
-
-
             NonTerminal start = new NonTerminal("start");
+
+            #region EXPRESION
+            NonTerminal EXPRESION = new NonTerminal("EXPRESION", "EXPRESION");
             NonTerminal DATA_TYPE = new NonTerminal("DATA_TYPE", "DATA_TYPE");
+            #endregion
 
 
             #region VAR Y CONST 
@@ -177,17 +166,16 @@ namespace CompiPascal.analizer
 
             #endregion
 
-            //NonTerminal ASSIGNATION_P = new NonTerminal("ASSIGNATION_P", "ASSIGNATION_P");
-            //NonTerminal MORE_DECLARATION = new NonTerminal("MORE_DECLARATION", "MORE_DECLARATION");
-            //NonTerminal MORE_DECLARATION_P = new NonTerminal("MORE_DECLARATION_P", "MORE_DECLARATION_P");
-            //NonTerminal COMPARE = new NonTerminal("COMPARE", "COMPARE");
-            //NonTerminal DIFFERENT = new NonTerminal("DIFFERENT", "DIFFERENT");
-
-
+            //NO ESTAN TERMINADOS
+            #region ARRAY Y TYPES NO TERMINADO
             NonTerminal TYPE = new NonTerminal("TYPE", "TYPE");
             NonTerminal TYPE_P = new NonTerminal("TYPE_P", "TYPE_P");
             NonTerminal ARRAY = new NonTerminal("ARRAY", "ARRAY");
             NonTerminal OBJECT = new NonTerminal("OBJECT", "OBJECT");
+
+
+
+            #endregion
 
             #region IF-THEN NO TERMINALES
             NonTerminal IFTHEN = new NonTerminal("IF-THEN", "IF-THEN");
@@ -209,32 +197,34 @@ namespace CompiPascal.analizer
 
             #region REPEAT UNTIL
             NonTerminal REPEAT_UNTIL = new NonTerminal("REPEAT_UNTIL", "REPEAT_UNTIL");
+            NonTerminal CONTINUE = new NonTerminal("CONTINUE", "CONTINUE");
+
             #endregion
 
             #region FOR
             NonTerminal FOR = new NonTerminal("FOR", "FOR");
             NonTerminal TODOWN = new NonTerminal("TODOWN", "TODOWN");
-            NonTerminal TRANSFER = new NonTerminal("TRANSFER", "TRANSFER");
+            NonTerminal BREAK = new NonTerminal("BREAK", "BREAK");
 
             #endregion
 
-           
 
-            #region  Funciones nativas NO TERMINALES
+            #region  FUNCIONES NATIVAS NO TERMINALES
             NonTerminal WRITE = new NonTerminal("WRITE", "WRITE");
             NonTerminal WRHITE_PARAMETER = new NonTerminal("WRHITE_PARAMETER", "WRHITE_PARAMETER");
             NonTerminal MORE_WRHITE_PARAMETER = new NonTerminal("WRHITE_PARAMETER", "WRHITE_PARAMETER");
-
-
             NonTerminal EXIT = new NonTerminal("EXIT", "EXIT");
-            NonTerminal GRAFICAR = new NonTerminal("GRAFICAR", "GRAFICAR");
 
             #endregion
 
             #region FUNCIONS NO TERMINALES
-            //NonTerminal FUNCTION = new NonTerminal("FUNCTION", "FUNCTION");
             NonTerminal FUNCTION_LIST = new NonTerminal("FUNCTION_LIST", "FUNCTION_LIST");
-            //NonTerminal PARAMETERS = new NonTerminal("PARAMETERS", "PARAMETERS");
+            NonTerminal FUNCTION = new NonTerminal("FUNCTION", "FUNCTION");
+            NonTerminal PARAMETER = new NonTerminal("PARAMETER", "PARAMETER");
+            NonTerminal PARAMETER_BODY = new NonTerminal("PARAMETER_BODY", "PARAMETER_BODY");
+            NonTerminal PARAMETER_END = new NonTerminal("PARAMETER_END", "PARAMETER_END");
+
+            
             //NonTerminal ARGUMENTS = new NonTerminal("ARGUMENTS", "ARGUMENTS");
             //NonTerminal REFERENCIA_VALOR = new NonTerminal("REFERENCIA_VALOR", "REFERENCIA_VALOR");
             #endregion
@@ -251,7 +241,7 @@ namespace CompiPascal.analizer
                 + FUNCTION_LIST
                 + INSTRUCTIONS_BODY + PUNTO;
 
-            INSTRUCTIONS_BODY.Rule 
+            INSTRUCTIONS_BODY.Rule
                 = RESERV_BEGIN + INSTRUCTIONS + RESERV_END
                 ;
 
@@ -265,8 +255,8 @@ namespace CompiPascal.analizer
                 | WHILE
                 | REPEAT_UNTIL
                 | FOR
-                | TRANSFER
-                //| FUNCTION
+                | BREAK
+                | CONTINUE
                 | WRITE
                 ;
 
@@ -280,7 +270,7 @@ namespace CompiPascal.analizer
 
             DECLARATION_LIST.Rule
                = RESERV_VAR + IDENTIFIER + DECLARATION_BODY + VAR_DECLARATION + DECLARATION_LIST
-               | RESERV_CONST + IDENTIFIER + EQUALS + LOGIC_EXPRESION + PUNTO_COMA + CONST_DECLARATION + DECLARATION_LIST
+               | RESERV_CONST + IDENTIFIER + EQUALS + EXPRESION + PUNTO_COMA + CONST_DECLARATION + DECLARATION_LIST
                | Empty
                ;
 
@@ -292,27 +282,27 @@ namespace CompiPascal.analizer
                 | Empty
                 ;
 
-            CONST_DECLARATION.Rule = IDENTIFIER + EQUALS + LOGIC_EXPRESION + PUNTO_COMA + CONST_DECLARATION
+            CONST_DECLARATION.Rule = IDENTIFIER + EQUALS + EXPRESION + PUNTO_COMA + CONST_DECLARATION
                 | Empty
                 ;
 
             DECLARATION_BODY.Rule
-                = DOS_PUNTOS + DATA_TYPE + ASSIGNATION + PUNTO_COMA 
+                = DOS_PUNTOS + DATA_TYPE + ASSIGNATION + PUNTO_COMA
                 | COMA + IDENTIFIER + MORE_ID + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA
                 ;
 
             ASSIGNATION.Rule
-                = EQUALS + LOGIC_EXPRESION
+                = EQUALS + EXPRESION
                 | Empty;
-                ;
+            ;
 
             MORE_ID.Rule = COMA + IDENTIFIER + MORE_ID
                 | Empty
                 ;
 
-          
 
-            VAR_ASSIGNATE.Rule = IDENTIFIER + DOS_PUNTOS + EQUALS + LOGIC_EXPRESION + PUNTO_COMA;
+
+            VAR_ASSIGNATE.Rule = IDENTIFIER + DOS_PUNTOS + EQUALS + EXPRESION + PUNTO_COMA;
 
 
             DATA_TYPE.Rule = RESERV_REAL
@@ -339,84 +329,38 @@ namespace CompiPascal.analizer
 
             OBJECT.Rule = RESERV_OBJ + DECLARATION + RESERV_END;
 
-            ARRAY.Rule = RESERV_ARRAY + COR_IZQ + LOGIC_EXPRESION + COR_DER + PUNTO + PUNTO + LOGIC_EXPRESION + PAR_DER + RESERV_OF + DATA_TYPE;
+            ARRAY.Rule = RESERV_ARRAY + COR_IZQ + EXPRESION + COR_DER + PUNTO + PUNTO + EXPRESION + PAR_DER + RESERV_OF + DATA_TYPE;
             #endregion
 
             #region EXPRESSION
 
-            LOGIC_EXPRESION.Rule
-                = LOGIC_EXPRESION + PLUS + LOGIC_EXPRESION
-                | LOGIC_EXPRESION + MIN + LOGIC_EXPRESION
-                | LOGIC_EXPRESION + POR + LOGIC_EXPRESION
-                | LOGIC_EXPRESION + DIVI + LOGIC_EXPRESION
-                | LOGIC_EXPRESION + MODULE + LOGIC_EXPRESION
-                | LOGIC_EXPRESION + LESS + LOGIC_EXPRESION
-                | LOGIC_EXPRESION + HIGHER + LOGIC_EXPRESION
-                | LOGIC_EXPRESION + LESS_EQUAL + LOGIC_EXPRESION
-                | LOGIC_EXPRESION + HIGHER_EQUAL + LOGIC_EXPRESION
-                | LOGIC_EXPRESION + EQUALS + LOGIC_EXPRESION
-                | LOGIC_EXPRESION + DISCTINCT + LOGIC_EXPRESION
-                | LOGIC_EXPRESION + AND + LOGIC_EXPRESION
-                | LOGIC_EXPRESION + OR + LOGIC_EXPRESION
-                | NOT + LOGIC_EXPRESION
-                | MIN + LOGIC_EXPRESION
+            EXPRESION.Rule
+                = EXPRESION + PLUS + EXPRESION
+                | EXPRESION + MIN + EXPRESION
+                | EXPRESION + POR + EXPRESION
+                | EXPRESION + DIVI + EXPRESION
+                | EXPRESION + MODULE + EXPRESION
+                | EXPRESION + LESS + EXPRESION
+                | EXPRESION + HIGHER + EXPRESION
+                | EXPRESION + LESS_EQUAL + EXPRESION
+                | EXPRESION + HIGHER_EQUAL + EXPRESION
+                | EXPRESION + EQUALS + EXPRESION
+                | EXPRESION + DISCTINCT + EXPRESION
+                | EXPRESION + AND + EXPRESION
+                | EXPRESION + OR + EXPRESION
+                | NOT + EXPRESION
+                | MIN + EXPRESION
                 | IDENTIFIER
                 | NUMERO
                 | CADENA
                 | REAL
                 | RESERV_TRUE
                 | RESERV_FALSE
-                | PAR_IZQ + LOGIC_EXPRESION + PAR_DER
+                | PAR_IZQ + EXPRESION + PAR_DER
 
                 ;
 
-            /*LOGIC_EXPRESION.Rule = RELATIONAL_EXPRESION + LOGIC_EXPRESION_P;
 
-            LOGIC_EXPRESION_P.Rule = AND + RELATIONAL_EXPRESION + LOGIC_EXPRESION_P
-                | OR + RELATIONAL_EXPRESION + LOGIC_EXPRESION_P
-                | NOT + RELATIONAL_EXPRESION + LOGIC_EXPRESION_P
-                | Empty
-                ;
-
-            RELATIONAL_EXPRESION.Rule = EXPRESSION + RELATIONAL_EXPRESION_P;
-
-            RELATIONAL_EXPRESION_P.Rule = HIGHER + COMPARE
-                | LESS + DIFFERENT
-                | EQUALS + EXPRESSION
-                | Empty
-                ;
-
-            COMPARE.Rule = EXPRESSION + RELATIONAL_EXPRESION_P
-                | EQUALS + EXPRESSION + RELATIONAL_EXPRESION_P
-                ;
-
-            DIFFERENT.Rule = HIGHER + EXPRESSION + RELATIONAL_EXPRESION_P
-                | COMPARE;
-
-
-            EXPRESSION.Rule = TERM + EXPRESSION_P;
-
-            EXPRESSION_P.Rule = PLUS + TERM + EXPRESSION_P
-                | MIN + TERM + EXPRESSION_P
-                | Empty
-                ;
-
-            TERM.Rule = FACTOR + TERM_P;
-
-            TERM_P.Rule = POR + FACTOR + TERM_P
-                | DIVI + FACTOR + TERM_P
-                | MODULE + FACTOR + TERM_P
-                | Empty
-                ;
-
-            FACTOR.Rule = 
-                 CADENA
-                | IDENTIFIER
-                | REAL
-                | NUMERO
-                | RESERV_TRUE
-                | RESERV_FALSE
-                | PAR_IZQ + LOGIC_EXPRESION + PAR_DER;*/
             #endregion
 
 
@@ -431,12 +375,12 @@ namespace CompiPascal.analizer
 
             #region IF-THEN
             IFTHEN.Rule
-                = RESERV_IF + LOGIC_EXPRESION
+                = RESERV_IF + EXPRESION
                     + RESERV_THEN
                         + IF_SENTENCE
                     + ELIF;
 
-            IF_SENTENCE.Rule = INSTRUCTIONS_BODY 
+            IF_SENTENCE.Rule = INSTRUCTIONS_BODY
                 | Empty
                 ;
 
@@ -450,12 +394,12 @@ namespace CompiPascal.analizer
             #endregion
 
             #region CASE
-            SENTENCE_CASE.Rule = RESERV_CASE  + LOGIC_EXPRESION + RESERV_OF + CASES + CASE_ELSE + RESERV_END + PUNTO_COMA;
+            SENTENCE_CASE.Rule = RESERV_CASE + EXPRESION + RESERV_OF + CASES + CASE_ELSE + RESERV_END + PUNTO_COMA;
 
             CASES.Rule = MakePlusRule(CASES, CASE)
                 | CASE
                 ;
-            CASE.Rule = LOGIC_EXPRESION + DOS_PUNTOS + INSTRUCTIONS;
+            CASE.Rule = EXPRESION + DOS_PUNTOS + INSTRUCTIONS;
 
 
             CASE_ELSE.Rule = RESERV_ELSE + INSTRUCTIONS
@@ -464,21 +408,21 @@ namespace CompiPascal.analizer
             #endregion
 
             #region WHILE DO
-            WHILE.Rule = RESERV_WHILE + LOGIC_EXPRESION + RESERV_DO + INSTRUCTIONS_BODY + PUNTO_COMA;
+            WHILE.Rule = RESERV_WHILE + EXPRESION + RESERV_DO + INSTRUCTIONS_BODY + PUNTO_COMA;
             #endregion
 
             #region REPEAT UNTIL
-            REPEAT_UNTIL.Rule = RESERV_REPEAT + INSTRUCTIONS + RESERV_UNTIL + LOGIC_EXPRESION + PUNTO_COMA;
+            REPEAT_UNTIL.Rule = RESERV_REPEAT + INSTRUCTIONS + RESERV_UNTIL + EXPRESION + PUNTO_COMA;
             #endregion
 
             #region FOR
             FOR.Rule
-                = RESERV_FOR + IDENTIFIER + DOS_PUNTOS + EQUALS + LOGIC_EXPRESION + TODOWN + LOGIC_EXPRESION
+                = RESERV_FOR + IDENTIFIER + DOS_PUNTOS + EQUALS + EXPRESION + TODOWN + EXPRESION
                     + RESERV_DO
                         + INSTRUCTIONS_BODY + PUNTO_COMA
                 ;
 
-            TODOWN.Rule 
+            TODOWN.Rule
                 = RESERV_TO
                 | RESERV_DOWN
                 ;
@@ -487,14 +431,38 @@ namespace CompiPascal.analizer
             #endregion
 
             #region SENTENCIAS DE TRANSFERENCIA
-            TRANSFER.Rule
+            CONTINUE.Rule
                = RESERV_CONTINUE + PUNTO_COMA
-               | RESERV_BREAK + PUNTO_COMA
-               | Empty;
+               ;
+
+            BREAK.Rule
+               = RESERV_BREAK + PUNTO_COMA
+               ;
+
+
             #endregion
 
             #region FUNCIONES Y PROCEDIMIENTOS
-            FUNCTION_LIST.Rule = Empty;
+            FUNCTION_LIST.Rule
+                = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA 
+                + INSTRUCTIONS_BODY
+                + PUNTO_COMA
+                + FUNCTION_LIST
+                | Empty
+                ;
+
+            PARAMETER.Rule
+                = RESERV_VAR + IDENTIFIER + PARAMETER_BODY + DOS_PUNTOS + DATA_TYPE + PARAMETER_END
+                | IDENTIFIER + PARAMETER_BODY + DOS_PUNTOS + DATA_TYPE + PARAMETER_END
+                | Empty;
+
+            PARAMETER_BODY.Rule 
+                =  COMA + IDENTIFIER + PARAMETER_BODY
+                | Empty
+                ;
+            PARAMETER_END.Rule = PUNTO_COMA + PARAMETER
+                | Empty
+                ;
             #endregion
 
             #region FUNCIONES NATIVAS
@@ -504,18 +472,17 @@ namespace CompiPascal.analizer
                 ;
             
             WRHITE_PARAMETER.Rule
-                = LOGIC_EXPRESION + MORE_WRHITE_PARAMETER
+                = EXPRESION + MORE_WRHITE_PARAMETER
                 | Empty
                 ;
             MORE_WRHITE_PARAMETER.Rule
-                = COMA + LOGIC_EXPRESION + MORE_WRHITE_PARAMETER
+                = COMA + EXPRESION + MORE_WRHITE_PARAMETER
                 | Empty
                 ;
 
             EXIT.Rule = RESERV_EXIT;
 
-            GRAFICAR.Rule = RESERV_GRAF;
-
+           
             #endregion
             
             #region Preferencias

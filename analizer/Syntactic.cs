@@ -203,6 +203,14 @@ namespace CompiPascal.analizer
                 Switch _SW = SENTENCE_CASE(actual);
                 return _SW;
             }
+            else if (actual.Term.ToString().Equals("CONTINUE"))
+            {
+                return new Continue(0, 0);
+            }
+            else if (actual.Term.ToString().Equals("BREAK"))
+            {
+                return new Break(0,0);
+            }
 
             return null;
         }
@@ -604,6 +612,7 @@ namespace CompiPascal.analizer
         #endregion
 
 
+        
 
 
         #region EXPRESIONES
@@ -686,38 +695,37 @@ namespace CompiPascal.analizer
 
         public Expression GetLiteral(ParseTreeNode node)
         {
-            Expression result = null;
-
+            
             if (node.Term.ToString().ToString().Equals("NUMERO"))
             {
-                result = new Literal(node.Token.Value, 1);
+                return new Literal(node.Token.Value, 1);
             }
             else if (node.Term.ToString().Equals("CADENA"))
             {
-                result = new Literal(node.Token.Value, 2);
+                return new Literal(node.Token.Value, 2);
             }
             else if (node.Term.ToString().Equals("RESERV_TRUE") || node.Term.ToString().Equals("RESERV_FALSE"))
             {
-                result = new Literal(node.Token.Value, 3);
+                return new Literal(node.Token.Value, 3);
             }
             else if (node.Term.ToString().Equals("REAL"))
             {
-                result = new Literal(node.Token.Value, 4);
+                return new Literal(node.Token.Value, 4);
             }
             else if (node.Term.ToString().Equals("TYPE"))
             {
-                result = new Literal(node.Token.Value, 5);
+                return new Literal(node.Token.Value, 5);
             }
             else if (node.Term.ToString().Equals("ARRAY"))
             {
-                result = new Literal(node.Token.Value, 6);
+                return new Literal(node.Token.Value, 6);
             }
             else if (node.Term.ToString().Equals("IDENTIFIER"))
             {
-                result = new Access(node.Token.Value.ToString());
+                return new Access(node.Token.Value.ToString());
             }
 
-            return result;
+            return null;
         }
         #endregion
 

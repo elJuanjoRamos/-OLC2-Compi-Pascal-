@@ -30,8 +30,10 @@ namespace CompiPascal.grammar.sentences
                 ambitName = ambit.Ambit_name + "_While";
             }
 
+            var whileAmbit = new Ambit(ambit, ambitName, "While", false);
 
-            var cond = condition.Execute(ambit);
+
+            var cond = condition.Execute(whileAmbit);
 
             if (cond.getDataType != DataType.BOOLEAN)
             {
@@ -46,7 +48,7 @@ namespace CompiPascal.grammar.sentences
                 if (!sentences.IsNull)
                 {
                     //EJECUTA LA SENTENCIA
-                    var element = sentences.Execute(ambit);
+                    var element = sentences.Execute(whileAmbit);
 
                     //VERIFICA QUE NO HAYA ERROR
                     if (element == null)
@@ -54,7 +56,23 @@ namespace CompiPascal.grammar.sentences
                         return null;
                     }
 
-                    cond = condition.Execute(ambit);
+                    if (element is Instruction)
+                    {
+                        Instruction ins = (Instruction)element;
+
+                        //console.log(element);
+                        if (ins.Name.Equals("Break"))
+                        {
+                            break;
+                        }
+                        else if (ins.Name.Equals("Continue"))
+                        {
+                            continue;
+                        }
+                    }
+
+
+                    cond = condition.Execute(whileAmbit);
                     if (cond.getDataType != DataType.BOOLEAN)
                     {
 

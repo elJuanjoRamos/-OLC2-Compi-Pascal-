@@ -32,35 +32,37 @@ namespace CompiPascal.grammar.sentences
         public override object Execute(Ambit ambit)
         {
             //console.error("SENTENCIA")
-            var newAmbit = new Ambit(ambit, ambit.Ambit_name, false);
+            var newAmbit = new Ambit(ambit, ambit.Ambit_name, ambit.Ambit_name_inmediato, false);
 
 
-            if (!isNull)
-            {
-                foreach (var inst in this.list)
-                {
-                    try
-                    {
-                        var element = inst.Execute(newAmbit);
-
-                        if (element == null)
-                        {
-                            return null;
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-
-                        return null;
-                    }
-
-                }
-            } else
+            if (isNull)
             {
                 return 0;
             }
 
-            
+            foreach (var inst in this.list)
+            {
+                try
+                {
+                    var element = inst.Execute(newAmbit);
+
+                    if (element == null)
+                    {
+                        return null;
+                    }
+                    if (element is Instruction)
+                    {
+                        return element;
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                    return null;
+                }
+
+            }
+
             return 0;
         }
 

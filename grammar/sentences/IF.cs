@@ -11,15 +11,15 @@ namespace CompiPascal.grammar.sentences
     class IF : Instruction
     {
         private Expression condition;
-        private Sentence sentences;
-        private Sentence elif;
+        private Instruction sentences;
+        private Instruction elif;
         private bool isNull;
         public  int row;
         public int column;
 
        
 
-        public IF(Expression condition, Sentence sentences, Sentence elif)
+        public IF(Expression condition, Instruction sentences, Instruction elif)
             : base(0,0, "IF")
         {
             this.condition = condition;
@@ -43,7 +43,7 @@ namespace CompiPascal.grammar.sentences
 
 
 
-            var ifAmbit = new Ambit(ambit, ambitName, false);
+            var ifAmbit = new Ambit(ambit, ambitName, "If", false);
 
             //CONDICION
             var condition = this.condition.Execute(ifAmbit);
@@ -56,28 +56,22 @@ namespace CompiPascal.grammar.sentences
 
             if ((bool)condition.Value == true)
             {
-
-                if (!sentences.IsNull)
+                if (sentences.IsNull)
                 {
-                    return sentences.Execute(ifAmbit);
-                }
-                else {
                     return 0;
                 }
+                return this.sentences.Execute(ifAmbit);
             }
             else
             {
-                if (!elif.IsNull)
-                {
-                    var elseAmbit = new Ambit(ambit, ambitName, false);
-                    return elif.Execute(elseAmbit);
-                }
-                else
+                if (elif.IsNull)
                 {
                     return 0;
                 }
- 
+                var elseAmbit = new Ambit(ambit, ambitName, "Else", false);
+                return elif.Execute(elseAmbit);
             }
+
         } 
         
         public bool IsNull { get => isNull; set => isNull = value; }

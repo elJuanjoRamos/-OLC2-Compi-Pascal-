@@ -4,428 +4,164 @@ nodo1[ label ="start"]
 nodo0->nodo1; 
 nodo2[ label ="program (Keyword)"]
 nodo1->nodo2; 
-nodo3[ label ="checkCase (IDENTIFIER)"]
+nodo3[ label ="Hello (IDENTIFIER)"]
 nodo1->nodo3; 
 nodo4[ label ="; (Key symbol)"]
 nodo1->nodo4; 
 nodo5[ label ="PROGRAM_BODY"]
 nodo1->nodo5; 
-nodo6[ label ="DECLARATION_LIST"]
+nodo6[ label ="FUNCTION_LIST"]
 nodo5->nodo6; 
-nodo7[ label ="var (Keyword)"]
+nodo7[ label ="function (Keyword)"]
 nodo6->nodo7; 
-nodo8[ label ="grade (IDENTIFIER)"]
+nodo8[ label ="a (IDENTIFIER)"]
 nodo6->nodo8; 
-nodo9[ label ="DECLARATION_BODY"]
+nodo9[ label ="( (Key symbol)"]
 nodo6->nodo9; 
-nodo10[ label =": (Key symbol)"]
-nodo9->nodo10; 
-nodo11[ label ="DATA_TYPE"]
-nodo9->nodo11; 
-nodo12[ label ="string (Keyword)"]
-nodo11->nodo12; 
-nodo13[ label ="; (Key symbol)"]
-nodo9->nodo13; 
-nodo14[ label ="VAR_DECLARATION"]
-nodo6->nodo14; 
-nodo15[ label ="grade1 (IDENTIFIER)"]
-nodo14->nodo15; 
-nodo16[ label ="DECLARATION_BODY"]
-nodo14->nodo16; 
-nodo17[ label =": (Key symbol)"]
-nodo16->nodo17; 
-nodo18[ label ="DATA_TYPE"]
-nodo16->nodo18; 
-nodo19[ label ="real (Keyword)"]
-nodo18->nodo19; 
-nodo20[ label ="; (Key symbol)"]
-nodo16->nodo20; 
-nodo21[ label ="VAR_DECLARATION"]
-nodo14->nodo21; 
-nodo22[ label ="grade2 (IDENTIFIER)"]
+nodo10[ label ="PARAMETER"]
+nodo6->nodo10; 
+nodo11[ label ="x (IDENTIFIER)"]
+nodo10->nodo11; 
+nodo12[ label ="PARAMETER_BODY"]
+nodo10->nodo12; 
+nodo13[ label =", (Key symbol)"]
+nodo12->nodo13; 
+nodo14[ label ="y (IDENTIFIER)"]
+nodo12->nodo14; 
+nodo15[ label ="PARAMETER_BODY"]
+nodo12->nodo15; 
+nodo16[ label =", (Key symbol)"]
+nodo15->nodo16; 
+nodo17[ label ="z (IDENTIFIER)"]
+nodo15->nodo17; 
+nodo18[ label =": (Key symbol)"]
+nodo10->nodo18; 
+nodo19[ label ="DATA_TYPE"]
+nodo10->nodo19; 
+nodo20[ label ="integer (Keyword)"]
+nodo19->nodo20; 
+nodo21[ label ="PARAMETER_END"]
+nodo10->nodo21; 
+nodo22[ label ="; (Key symbol)"]
 nodo21->nodo22; 
-nodo23[ label ="DECLARATION_BODY"]
+nodo23[ label ="PARAMETER"]
 nodo21->nodo23; 
-nodo24[ label =": (Key symbol)"]
+nodo24[ label ="var (Keyword)"]
 nodo23->nodo24; 
-nodo25[ label ="DATA_TYPE"]
+nodo25[ label ="b (IDENTIFIER)"]
 nodo23->nodo25; 
-nodo26[ label ="string (Keyword)"]
-nodo25->nodo26; 
-nodo27[ label ="; (Key symbol)"]
-nodo23->nodo27; 
-nodo28[ label ="DECLARATION_LIST"]
-nodo6->nodo28; 
-nodo29[ label ="var (Keyword)"]
-nodo28->nodo29; 
-nodo30[ label ="a (IDENTIFIER)"]
-nodo28->nodo30; 
-nodo31[ label ="DECLARATION_BODY"]
-nodo28->nodo31; 
+nodo26[ label ="PARAMETER_BODY"]
+nodo23->nodo26; 
+nodo27[ label =", (Key symbol)"]
+nodo26->nodo27; 
+nodo28[ label ="C (IDENTIFIER)"]
+nodo26->nodo28; 
+nodo29[ label ="PARAMETER_BODY"]
+nodo26->nodo29; 
+nodo30[ label =", (Key symbol)"]
+nodo29->nodo30; 
+nodo31[ label ="D (IDENTIFIER)"]
+nodo29->nodo31; 
 nodo32[ label =": (Key symbol)"]
-nodo31->nodo32; 
+nodo23->nodo32; 
 nodo33[ label ="DATA_TYPE"]
-nodo31->nodo33; 
+nodo23->nodo33; 
 nodo34[ label ="integer (Keyword)"]
 nodo33->nodo34; 
-nodo35[ label ="; (Key symbol)"]
-nodo31->nodo35; 
-nodo36[ label ="INSTRUCTIONS_BODY"]
-nodo5->nodo36; 
-nodo37[ label ="begin (Keyword)"]
-nodo36->nodo37; 
-nodo38[ label ="INSTRUCTIONS"]
-nodo36->nodo38; 
-nodo39[ label ="INSTRUCTION"]
-nodo38->nodo39; 
-nodo40[ label ="VAR_ASSIGNATE"]
-nodo39->nodo40; 
-nodo41[ label ="grade (IDENTIFIER)"]
+nodo35[ label =") (Key symbol)"]
+nodo6->nodo35; 
+nodo36[ label =": (Key symbol)"]
+nodo6->nodo36; 
+nodo37[ label ="DATA_TYPE"]
+nodo6->nodo37; 
+nodo38[ label ="integer (Keyword)"]
+nodo37->nodo38; 
+nodo39[ label ="; (Key symbol)"]
+nodo6->nodo39; 
+nodo40[ label ="INSTRUCTIONS_BODY"]
+nodo6->nodo40; 
+nodo41[ label ="begin (Keyword)"]
 nodo40->nodo41; 
-nodo42[ label =": (Key symbol)"]
+nodo42[ label ="INSTRUCTIONS"]
 nodo40->nodo42; 
-nodo43[ label ="= (Key symbol)"]
-nodo40->nodo43; 
-nodo44[ label ="LOGIC_EXPRESION"]
-nodo40->nodo44; 
-nodo45[ label ="A (CADENA)"]
+nodo43[ label ="INSTRUCTION"]
+nodo42->nodo43; 
+nodo44[ label ="IF-THEN"]
+nodo43->nodo44; 
+nodo45[ label ="if (Keyword)"]
 nodo44->nodo45; 
-nodo46[ label ="; (Key symbol)"]
-nodo40->nodo46; 
-nodo47[ label ="INSTRUCTION"]
-nodo38->nodo47; 
-nodo48[ label ="VAR_ASSIGNATE"]
+nodo46[ label ="EXPRESION"]
+nodo44->nodo46; 
+nodo47[ label ="EXPRESION"]
+nodo46->nodo47; 
+nodo48[ label ="y (IDENTIFIER)"]
 nodo47->nodo48; 
-nodo49[ label ="grade1 (IDENTIFIER)"]
-nodo48->nodo49; 
-nodo50[ label =": (Key symbol)"]
-nodo48->nodo50; 
-nodo51[ label ="= (Key symbol)"]
-nodo48->nodo51; 
-nodo52[ label ="LOGIC_EXPRESION"]
-nodo48->nodo52; 
-nodo53[ label ="1.5 (REAL)"]
-nodo52->nodo53; 
-nodo54[ label ="; (Key symbol)"]
-nodo48->nodo54; 
-nodo55[ label ="INSTRUCTION"]
-nodo38->nodo55; 
-nodo56[ label ="VAR_ASSIGNATE"]
-nodo55->nodo56; 
-nodo57[ label ="grade2 (IDENTIFIER)"]
+nodo49[ label ="< (Key symbol)"]
+nodo46->nodo49; 
+nodo50[ label ="EXPRESION"]
+nodo46->nodo50; 
+nodo51[ label ="5 (NUMERO)"]
+nodo50->nodo51; 
+nodo52[ label ="then (Keyword)"]
+nodo44->nodo52; 
+nodo53[ label ="IF_SENTENCE"]
+nodo44->nodo53; 
+nodo54[ label ="INSTRUCTIONS_BODY"]
+nodo53->nodo54; 
+nodo55[ label ="begin (Keyword)"]
+nodo54->nodo55; 
+nodo56[ label ="INSTRUCTIONS"]
+nodo54->nodo56; 
+nodo57[ label ="INSTRUCTION"]
 nodo56->nodo57; 
-nodo58[ label =": (Key symbol)"]
-nodo56->nodo58; 
-nodo59[ label ="= (Key symbol)"]
-nodo56->nodo59; 
-nodo60[ label ="LOGIC_EXPRESION"]
-nodo56->nodo60; 
-nodo61[ label ="LOGIC_EXPRESION"]
-nodo60->nodo61; 
-nodo62[ label ="grade (IDENTIFIER)"]
+nodo58[ label ="WRITE"]
+nodo57->nodo58; 
+nodo59[ label ="writeln (Keyword)"]
+nodo58->nodo59; 
+nodo60[ label ="( (Key symbol)"]
+nodo58->nodo60; 
+nodo61[ label ="WRHITE_PARAMETER"]
+nodo58->nodo61; 
+nodo62[ label ="EXPRESION"]
 nodo61->nodo62; 
-nodo63[ label ="+ (Key symbol)"]
-nodo60->nodo63; 
-nodo64[ label ="LOGIC_EXPRESION"]
-nodo60->nodo64; 
-nodo65[ label ="grade1 (IDENTIFIER)"]
-nodo64->nodo65; 
-nodo66[ label ="; (Key symbol)"]
-nodo56->nodo66; 
-nodo67[ label ="INSTRUCTION"]
-nodo38->nodo67; 
-nodo68[ label ="VAR_ASSIGNATE"]
-nodo67->nodo68; 
-nodo69[ label ="a (IDENTIFIER)"]
-nodo68->nodo69; 
-nodo70[ label =": (Key symbol)"]
-nodo68->nodo70; 
-nodo71[ label ="= (Key symbol)"]
-nodo68->nodo71; 
-nodo72[ label ="LOGIC_EXPRESION"]
-nodo68->nodo72; 
-nodo73[ label ="5 (NUMERO)"]
+nodo63[ label ="x (IDENTIFIER)"]
+nodo62->nodo63; 
+nodo64[ label =") (Key symbol)"]
+nodo58->nodo64; 
+nodo65[ label ="; (Key symbol)"]
+nodo58->nodo65; 
+nodo66[ label ="end (Keyword)"]
+nodo54->nodo66; 
+nodo67[ label ="end (Keyword)"]
+nodo40->nodo67; 
+nodo68[ label ="; (Key symbol)"]
+nodo6->nodo68; 
+nodo69[ label ="INSTRUCTIONS_BODY"]
+nodo5->nodo69; 
+nodo70[ label ="begin (Keyword)"]
+nodo69->nodo70; 
+nodo71[ label ="INSTRUCTIONS"]
+nodo69->nodo71; 
+nodo72[ label ="INSTRUCTION"]
+nodo71->nodo72; 
+nodo73[ label ="WRITE"]
 nodo72->nodo73; 
-nodo74[ label ="; (Key symbol)"]
-nodo68->nodo74; 
-nodo75[ label ="INSTRUCTION"]
-nodo38->nodo75; 
-nodo76[ label ="SENTENCE_CASE"]
-nodo75->nodo76; 
-nodo77[ label ="case (Keyword)"]
+nodo74[ label ="writeln (Keyword)"]
+nodo73->nodo74; 
+nodo75[ label ="( (Key symbol)"]
+nodo73->nodo75; 
+nodo76[ label ="WRHITE_PARAMETER"]
+nodo73->nodo76; 
+nodo77[ label ="EXPRESION"]
 nodo76->nodo77; 
-nodo78[ label ="LOGIC_EXPRESION"]
-nodo76->nodo78; 
-nodo79[ label ="( (Key symbol)"]
-nodo78->nodo79; 
-nodo80[ label ="LOGIC_EXPRESION"]
-nodo78->nodo80; 
-nodo81[ label ="grade (IDENTIFIER)"]
-nodo80->nodo81; 
-nodo82[ label =") (Key symbol)"]
-nodo78->nodo82; 
-nodo83[ label ="of (Keyword)"]
-nodo76->nodo83; 
-nodo84[ label ="CASES"]
-nodo76->nodo84; 
-nodo85[ label ="CASE"]
-nodo84->nodo85; 
-nodo86[ label ="LOGIC_EXPRESION"]
-nodo85->nodo86; 
-nodo87[ label ="A (CADENA)"]
-nodo86->nodo87; 
-nodo88[ label =": (Key symbol)"]
-nodo85->nodo88; 
-nodo89[ label ="INSTRUCTIONS"]
-nodo85->nodo89; 
-nodo90[ label ="INSTRUCTION"]
-nodo89->nodo90; 
-nodo91[ label ="FOR"]
-nodo90->nodo91; 
-nodo92[ label ="for (Keyword)"]
-nodo91->nodo92; 
-nodo93[ label ="a (IDENTIFIER)"]
-nodo91->nodo93; 
-nodo94[ label =": (Key symbol)"]
-nodo91->nodo94; 
-nodo95[ label ="= (Key symbol)"]
-nodo91->nodo95; 
-nodo96[ label ="LOGIC_EXPRESION"]
-nodo91->nodo96; 
-nodo97[ label ="15 (NUMERO)"]
-nodo96->nodo97; 
-nodo98[ label ="TODOWN"]
-nodo91->nodo98; 
-nodo99[ label ="downto (Keyword)"]
-nodo98->nodo99; 
-nodo100[ label ="LOGIC_EXPRESION"]
-nodo91->nodo100; 
-nodo101[ label ="7 (NUMERO)"]
-nodo100->nodo101; 
-nodo102[ label ="do (Keyword)"]
-nodo91->nodo102; 
-nodo103[ label ="INSTRUCTIONS_BODY"]
-nodo91->nodo103; 
-nodo104[ label ="begin (Keyword)"]
-nodo103->nodo104; 
-nodo105[ label ="INSTRUCTIONS"]
-nodo103->nodo105; 
-nodo106[ label ="INSTRUCTION"]
-nodo105->nodo106; 
-nodo107[ label ="WRITE"]
-nodo106->nodo107; 
-nodo108[ label ="writeln (Keyword)"]
-nodo107->nodo108; 
-nodo109[ label ="( (Key symbol)"]
-nodo107->nodo109; 
-nodo110[ label ="WRHITE_PARAMETER"]
-nodo107->nodo110; 
-nodo111[ label ="LOGIC_EXPRESION"]
-nodo110->nodo111; 
-nodo112[ label ="i= (CADENA)"]
-nodo111->nodo112; 
-nodo113[ label ="WRHITE_PARAMETER"]
-nodo110->nodo113; 
-nodo114[ label =", (Key symbol)"]
-nodo113->nodo114; 
-nodo115[ label ="LOGIC_EXPRESION"]
-nodo113->nodo115; 
-nodo116[ label ="a (IDENTIFIER)"]
-nodo115->nodo116; 
-nodo117[ label =") (Key symbol)"]
-nodo107->nodo117; 
-nodo118[ label ="; (Key symbol)"]
-nodo107->nodo118; 
-nodo119[ label ="end (Keyword)"]
-nodo103->nodo119; 
-nodo120[ label ="; (Key symbol)"]
-nodo91->nodo120; 
-nodo121[ label ="INSTRUCTION"]
-nodo89->nodo121; 
-nodo122[ label ="WRITE"]
-nodo121->nodo122; 
-nodo123[ label ="writeln (Keyword)"]
-nodo122->nodo123; 
-nodo124[ label ="( (Key symbol)"]
-nodo122->nodo124; 
-nodo125[ label ="WRHITE_PARAMETER"]
-nodo122->nodo125; 
-nodo126[ label ="LOGIC_EXPRESION"]
-nodo125->nodo126; 
-nodo127[ label ="value of a fuera del for:  (CADENA)"]
-nodo126->nodo127; 
-nodo128[ label ="WRHITE_PARAMETER"]
-nodo125->nodo128; 
-nodo129[ label =", (Key symbol)"]
-nodo128->nodo129; 
-nodo130[ label ="LOGIC_EXPRESION"]
-nodo128->nodo130; 
-nodo131[ label ="a (IDENTIFIER)"]
-nodo130->nodo131; 
-nodo132[ label =") (Key symbol)"]
-nodo122->nodo132; 
-nodo133[ label ="; (Key symbol)"]
-nodo122->nodo133; 
-nodo134[ label ="CASE"]
-nodo84->nodo134; 
-nodo135[ label ="LOGIC_EXPRESION"]
-nodo134->nodo135; 
-nodo136[ label ="B (CADENA)"]
-nodo135->nodo136; 
-nodo137[ label =": (Key symbol)"]
-nodo134->nodo137; 
-nodo138[ label ="INSTRUCTIONS"]
-nodo134->nodo138; 
-nodo139[ label ="INSTRUCTION"]
-nodo138->nodo139; 
-nodo140[ label ="IF-THEN"]
-nodo139->nodo140; 
-nodo141[ label ="if (Keyword)"]
-nodo140->nodo141; 
-nodo142[ label ="LOGIC_EXPRESION"]
-nodo140->nodo142; 
-nodo143[ label ="LOGIC_EXPRESION"]
-nodo142->nodo143; 
-nodo144[ label ="grade1 (IDENTIFIER)"]
-nodo143->nodo144; 
-nodo145[ label ="<= (Key symbol)"]
-nodo142->nodo145; 
-nodo146[ label ="LOGIC_EXPRESION"]
-nodo142->nodo146; 
-nodo147[ label ="5 (NUMERO)"]
-nodo146->nodo147; 
-nodo148[ label ="then (Keyword)"]
-nodo140->nodo148; 
-nodo149[ label ="IF_SENTENCE"]
-nodo140->nodo149; 
-nodo150[ label ="INSTRUCTIONS_BODY"]
-nodo149->nodo150; 
-nodo151[ label ="begin (Keyword)"]
-nodo150->nodo151; 
-nodo152[ label ="INSTRUCTIONS"]
-nodo150->nodo152; 
-nodo153[ label ="INSTRUCTION"]
-nodo152->nodo153; 
-nodo154[ label ="WRITE"]
-nodo153->nodo154; 
-nodo155[ label ="writeln (Keyword)"]
-nodo154->nodo155; 
-nodo156[ label ="( (Key symbol)"]
-nodo154->nodo156; 
-nodo157[ label ="WRHITE_PARAMETER"]
-nodo154->nodo157; 
-nodo158[ label ="LOGIC_EXPRESION"]
-nodo157->nodo158; 
-nodo159[ label ="simon (CADENA)"]
-nodo158->nodo159; 
-nodo160[ label =") (Key symbol)"]
-nodo154->nodo160; 
-nodo161[ label ="; (Key symbol)"]
-nodo154->nodo161; 
-nodo162[ label ="end (Keyword)"]
-nodo150->nodo162; 
-nodo163[ label ="INSTRUCTION"]
-nodo138->nodo163; 
-nodo164[ label ="WRITE"]
-nodo163->nodo164; 
-nodo165[ label ="writeln (Keyword)"]
-nodo164->nodo165; 
-nodo166[ label ="( (Key symbol)"]
-nodo164->nodo166; 
-nodo167[ label ="WRHITE_PARAMETER"]
-nodo164->nodo167; 
-nodo168[ label ="LOGIC_EXPRESION"]
-nodo167->nodo168; 
-nodo169[ label ="Well done (CADENA)"]
-nodo168->nodo169; 
-nodo170[ label =") (Key symbol)"]
-nodo164->nodo170; 
-nodo171[ label ="; (Key symbol)"]
-nodo164->nodo171; 
-nodo172[ label ="CASE"]
-nodo84->nodo172; 
-nodo173[ label ="LOGIC_EXPRESION"]
-nodo172->nodo173; 
-nodo174[ label ="D (CADENA)"]
-nodo173->nodo174; 
-nodo175[ label =": (Key symbol)"]
-nodo172->nodo175; 
-nodo176[ label ="INSTRUCTIONS"]
-nodo172->nodo176; 
-nodo177[ label ="INSTRUCTION"]
-nodo176->nodo177; 
-nodo178[ label ="WRITE"]
-nodo177->nodo178; 
-nodo179[ label ="writeln (Keyword)"]
-nodo178->nodo179; 
-nodo180[ label ="( (Key symbol)"]
-nodo178->nodo180; 
-nodo181[ label ="WRHITE_PARAMETER"]
-nodo178->nodo181; 
-nodo182[ label ="LOGIC_EXPRESION"]
-nodo181->nodo182; 
-nodo183[ label ="You passed (CADENA)"]
-nodo182->nodo183; 
-nodo184[ label =") (Key symbol)"]
-nodo178->nodo184; 
-nodo185[ label ="; (Key symbol)"]
-nodo178->nodo185; 
-nodo186[ label ="CASE_ELSE"]
-nodo76->nodo186; 
-nodo187[ label ="else (Keyword)"]
-nodo186->nodo187; 
-nodo188[ label ="INSTRUCTIONS"]
-nodo186->nodo188; 
-nodo189[ label ="INSTRUCTION"]
-nodo188->nodo189; 
-nodo190[ label ="WRITE"]
-nodo189->nodo190; 
-nodo191[ label ="writeln (Keyword)"]
-nodo190->nodo191; 
-nodo192[ label ="( (Key symbol)"]
-nodo190->nodo192; 
-nodo193[ label ="WRHITE_PARAMETER"]
-nodo190->nodo193; 
-nodo194[ label ="LOGIC_EXPRESION"]
-nodo193->nodo194; 
-nodo195[ label ="You really did not study right! (CADENA)"]
-nodo194->nodo195; 
-nodo196[ label =") (Key symbol)"]
-nodo190->nodo196; 
-nodo197[ label ="; (Key symbol)"]
-nodo190->nodo197; 
-nodo198[ label ="end (Keyword)"]
-nodo76->nodo198; 
-nodo199[ label ="; (Key symbol)"]
-nodo76->nodo199; 
-nodo200[ label ="INSTRUCTION"]
-nodo38->nodo200; 
-nodo201[ label ="WRITE"]
-nodo200->nodo201; 
-nodo202[ label ="writeln (Keyword)"]
-nodo201->nodo202; 
-nodo203[ label ="( (Key symbol)"]
-nodo201->nodo203; 
-nodo204[ label ="WRHITE_PARAMETER"]
-nodo201->nodo204; 
-nodo205[ label ="LOGIC_EXPRESION"]
-nodo204->nodo205; 
-nodo206[ label ="Your grade is   (CADENA)"]
-nodo205->nodo206; 
-nodo207[ label ="WRHITE_PARAMETER"]
-nodo204->nodo207; 
-nodo208[ label =", (Key symbol)"]
-nodo207->nodo208; 
-nodo209[ label ="LOGIC_EXPRESION"]
-nodo207->nodo209; 
-nodo210[ label ="grade2 (IDENTIFIER)"]
-nodo209->nodo210; 
-nodo211[ label =") (Key symbol)"]
-nodo201->nodo211; 
-nodo212[ label ="; (Key symbol)"]
-nodo201->nodo212; 
-nodo213[ label ="end (Keyword)"]
-nodo36->nodo213; 
-nodo214[ label =". (Key symbol)"]
-nodo5->nodo214; 
+nodo78[ label ="Hello World (CADENA)"]
+nodo77->nodo78; 
+nodo79[ label =") (Key symbol)"]
+nodo73->nodo79; 
+nodo80[ label ="; (Key symbol)"]
+nodo73->nodo80; 
+nodo81[ label ="end (Keyword)"]
+nodo69->nodo81; 
+nodo82[ label =". (Key symbol)"]
+nodo5->nodo82; 
 }
