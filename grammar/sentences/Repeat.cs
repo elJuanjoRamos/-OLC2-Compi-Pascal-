@@ -53,7 +53,7 @@ namespace CompiPascal.grammar.sentences
                     var element = sentences.Execute(repeatAmbit);
                     if (element == null)
                     {
-                        break;
+                        return null;
                     }
                     else
                     {

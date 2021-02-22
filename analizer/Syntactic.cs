@@ -18,17 +18,15 @@ namespace CompiPascal.analizer
         //VARIABLES GLOBALES
         public Ambit general = new Ambit();
         public LinkedList<Instruction> lista_declaraciones = new LinkedList<Instruction>();
-
+        public LinkedList<Instruction> lista_funciones = new LinkedList<Instruction>();
+        
         public void analizer(String cadena)
         {
             Grammar grammar = new Grammar();
             LanguageData languageData = new LanguageData(grammar);
             ArrayList elemetos_heredados = new ArrayList();
             
-            /*foreach (var item in languageData.Errors)
-            {
-                System.Diagnostics.Debug.WriteLine(item);
-            }*/
+            
             Parser parser = new Parser(new LanguageData(grammar));
             ParseTree tree = parser.Parse(cadena);
             ParseTreeNode root = tree.Root;
@@ -41,12 +39,12 @@ namespace CompiPascal.analizer
                     //Errores lexicos
                     if (err.Message.Contains("Invalid character"))
                     {
-                        ErrorController.Instance.LexicalError(err.Message, err.Location.Line, err.Location.Column);
+                        ErrorController.Instance.LexicalError(err.Message, err.Location.Line-1, err.Location.Column);
                     } 
                     //Errores sintacticos
                     else
                     {
-                        ErrorController.Instance.SyntacticError(err.Message, err.Location.Line, err.Location.Column);
+                        ErrorController.Instance.SyntacticError(err.Message, err.Location.Line-1, err.Location.Column);
                     }
                 }
                 return;
@@ -58,72 +56,21 @@ namespace CompiPascal.analizer
             //SE MANDA A GRAFICAR
             GraphController.Instance.getGraph(root);
 
-
+            //PROGRAM BODY -> GRAMATICA
             var program_body = root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(3);
-
+            //LISTA DE DECLARCION DE VARIABLES
             lista_declaraciones = LIST_DECLARATIONS(program_body.ChildNodes.ElementAt(0), lista_declaraciones, elemetos_heredados);
+            //LISTA DE DECLARACION DE FUNCIONES
+            elemetos_heredados.Clear();
+            lista_funciones = FUNCTION_LIST(program_body.ChildNodes.ElementAt(1), lista_funciones, elemetos_heredados);
 
-
+            //LISTADO DE SENTENCIAS SENTENCIAS 
             LinkedList<Instruction> listaInstrucciones = INSTRUCTIONS_BODY(program_body.ChildNodes.ElementAt(2));
-            ejecutar(listaInstrucciones, lista_declaraciones);
+            
+            //COMENZAR A EJECUTAR
+            ejecutar(listaInstrucciones, lista_declaraciones, lista_funciones);
             
         }
-
-
-        #region EJECUCION
-
-
-        public void ejecutar(LinkedList<Instruction> actual, LinkedList<Instruction> lista_declaraciones)
-        {
-            //GUARDAR VARIABLES
-
-            var error_variable = false;
-
-
-            foreach (var item in lista_declaraciones)
-            {
-                try
-                {
-                    var result = item.Execute(general);
-                    if (result == null)
-                    {
-                        error_variable = true;
-                        break;
-                    }
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
-            }
-
-            if (!error_variable)
-            {
-                foreach (var item in actual)
-                {
-                    try
-                    {
-                        var result = item.Execute(general);
-                        if (result == null)
-                        {
-                            break;
-                        }
-                    }
-                    catch (Exception)
-                    {
-
-                        break;
-                    }
-
-                }
-            }
-
-        }
-
-        
-
-        #endregion
 
 
         //EMPIEZA LA EJECUCION
@@ -142,7 +89,7 @@ namespace CompiPascal.analizer
             var end = actual.ChildNodes.ElementAt(2);
             return lista_instruciones;
         }
-
+        //INSTRUCCIONES
         public LinkedList<Instruction> ISTRUCCIONES(ParseTreeNode actual)
         {
 
@@ -155,6 +102,7 @@ namespace CompiPascal.analizer
             }
             return listaInstrucciones;
         }
+        //INSTRUCCION
         public Instruction INSTRUCCION(ParseTreeNode actual)
         {
             if (actual.Term.ToString().Equals("WRITE"))
@@ -211,6 +159,14 @@ namespace CompiPascal.analizer
             {
                 return new Break(0,0);
             }
+            else if (actual.Term.ToString().Equals("CALL"))
+            {
+                return CALL(actual);
+            }
+            else if (actual.Term.ToString().Equals("EXIT"))
+            {
+                return new Exit(expresion(actual.ChildNodes[2]));
+            }
 
             return null;
         }
@@ -259,11 +215,6 @@ namespace CompiPascal.analizer
 
                 }
 
-
-
-
-
-
                 return lista_actual;
 
 
@@ -289,7 +240,7 @@ namespace CompiPascal.analizer
 
                 foreach (var item in elementos_her)
                 {
-                    lista_actual.AddLast(GetDeclarationValue(item.ToString(), datatype));
+                    lista_actual.AddLast(GetDeclarationValue(item.ToString(), datatype, false));
                 }
                 elementos_her.Clear();
 
@@ -344,7 +295,7 @@ namespace CompiPascal.analizer
             // VAR A:TIPO;
             else
             {
-                lista_actual.AddLast(GetDeclarationValue(elementos_her[0].ToString(), elementos_her[1].ToString()));
+                lista_actual.AddLast(GetDeclarationValue(elementos_her[0].ToString(), elementos_her[1].ToString(), false));
                 elementos_her.Clear();
             }
             return lista_actual;
@@ -360,7 +311,7 @@ namespace CompiPascal.analizer
             }
             return elementos_her;
         }
-        public Declaration GetDeclarationValue(string identifier, string datatype)
+        public Declaration GetDeclarationValue(string identifier, string datatype, bool perteneceFuncion )
         {
             if (datatype.Equals("integer"))
             {
@@ -394,6 +345,172 @@ namespace CompiPascal.analizer
 
         #endregion
 
+        #endregion
+
+        #region FUNCIONES Y PROCEDIMIENTOS
+
+        #region FUNCIONES
+
+       
+        public LinkedList<Instruction> FUNCTION_LIST(ParseTreeNode actual, LinkedList<Instruction> lista_funciones, ArrayList elementos_her)
+        {
+            /*
+              FUNCTION_LIST.Rule
+                = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA 
+                + INSTRUCTIONS_BODY
+                + PUNTO_COMA
+                + FUNCTION_LIST
+                | Empty
+                ;
+             */
+            //EMPTY
+            if (actual.ChildNodes.Count > 0)
+            {
+                LinkedList<Instruction> parametros = new LinkedList<Instruction>();
+
+                var identifier = actual.ChildNodes[1].Token.Text;
+
+                parametros = PARAMETER(actual.ChildNodes[3], parametros, elementos_her);
+
+                var function_type = actual.ChildNodes[6].ChildNodes[0].Token.Text;
+
+                var function_instructions = INSTRUCTIONS_BODY(actual.ChildNodes[8]);
+
+                lista_funciones.AddLast(new Function(identifier, parametros, function_type, new Sentence(function_instructions)));
+
+                elementos_her.Clear();
+                lista_funciones = FUNCTION_LIST(actual.ChildNodes[10], lista_funciones, elementos_her);
+            }
+            return lista_funciones;
+        }
+        public LinkedList<Instruction> PARAMETER(ParseTreeNode actual, LinkedList<Instruction> parametros, ArrayList elementos_her)
+        {
+            /*
+               PARAMETER.Rule
+                = RESERV_VAR + IDENTIFIER + PARAMETER_BODY + DOS_PUNTOS + DATA_TYPE + PARAMETER_END
+                | IDENTIFIER + PARAMETER_BODY + DOS_PUNTOS + DATA_TYPE + PARAMETER_END
+                | Empty;
+             */
+            if (actual.ChildNodes.Count > 0)
+            {
+                //CON RESERVADA VAR
+                if (actual.ChildNodes.Count == 6)
+                {
+                    elementos_her.Add(actual.ChildNodes[1].Token.Text);
+                    elementos_her = PARAMETER_BODY(actual.ChildNodes[2], elementos_her);
+                    var dataType = actual.ChildNodes[4].ChildNodes[0].Token.Text;
+
+
+                    foreach (var item in elementos_her)
+                    {
+                        parametros.AddLast(GetDeclarationValue(item.ToString(), dataType, true));
+                    }
+
+                    //SI VIENEN MAS PARAMETROS
+                    elementos_her.Clear();
+                    parametros = PARAMETER_END(actual.ChildNodes[5], parametros, elementos_her);
+
+
+
+                }
+
+                //SIN RESERVADA VAR
+                else
+                {
+                    elementos_her.Add(actual.ChildNodes[0].Token.Text);
+                    elementos_her = PARAMETER_BODY(actual.ChildNodes[1], elementos_her);
+                    var dataType = actual.ChildNodes[3].ChildNodes[0].Token.Text;
+
+
+                    foreach (var item in elementos_her)
+                    {
+                        parametros.AddLast(GetDeclarationValue(item.ToString(), dataType, true));
+                    } 
+
+                    //SI VIENEN MAS PARAMETROS
+                    elementos_her.Clear();
+                    parametros = PARAMETER_END(actual.ChildNodes[4], parametros, elementos_her);
+
+                }
+
+            }
+            return parametros;
+        }
+        public ArrayList PARAMETER_BODY(ParseTreeNode actual, ArrayList elementos_her)
+        {
+
+            /*
+             PARAMETER_BODY.Rule 
+                =  COMA + IDENTIFIER + PARAMETER_BODY
+                | Empty
+                ;
+             */
+
+            if (actual.ChildNodes.Count >0)
+            {
+                elementos_her.Add(actual.ChildNodes[1].Token.Text);
+                elementos_her = PARAMETER_BODY(actual.ChildNodes[2], elementos_her);
+            }
+
+            return elementos_her;
+        }
+        public LinkedList<Instruction> PARAMETER_END(ParseTreeNode actual, LinkedList<Instruction> parametros, ArrayList elementos_her)
+        {
+            /*
+             PARAMETER_END.Rule = PUNTO_COMA + PARAMETER
+                | Empty
+                ;
+             */
+            if (actual.ChildNodes.Count > 0)
+            {
+                parametros = PARAMETER(actual.ChildNodes[1], parametros, elementos_her);
+            }
+
+            return parametros;
+        }
+        #endregion
+
+
+        #region LLAMADAS
+        public Call CALL(ParseTreeNode actual)
+        {
+            // CALL.Rule = IDENTIFIER + PAR_IZQ + CALL_PARAMETERS + PAR_DER + PUNTO_COMA;
+            ArrayList prametros_llamada = new ArrayList();
+            prametros_llamada = CALL_PARAMETERS(actual.ChildNodes[2], prametros_llamada);
+
+            return new Call(actual.ChildNodes[0].Token.Text, prametros_llamada);
+        }
+
+        public ArrayList CALL_PARAMETERS(ParseTreeNode actual,  ArrayList expresiones)
+        {
+            /*
+             CALL_PARAMETERS.Rule
+                = EXPRESION + CALL_PARAMETERS
+                | COMA + EXPRESION + CALL_PARAMETERS 
+                | Empty
+                ;
+             */
+            if (actual.ChildNodes.Count > 0)
+            {
+                if (actual.ChildNodes.Count == 2)
+                {
+                    var expr = expresion(actual.ChildNodes[0]);
+                    expresiones.Add(expr);
+                    expresiones = CALL_PARAMETERS(actual.ChildNodes[1], expresiones);
+                } 
+
+                else
+                {
+                    var expr = expresion(actual.ChildNodes[1]);
+                    expresiones.Add(expr);
+                    expresiones = CALL_PARAMETERS(actual.ChildNodes[2], expresiones);
+                }
+
+                
+            }
+            return expresiones;
+        }
+        #endregion
         #endregion
 
         #region FUNCIONES NATIVAS 
@@ -665,8 +782,6 @@ namespace CompiPascal.analizer
 
                     return null;
                 }
-
-                
             }
             else if (actual.ChildNodes.Count == 2)
             {
@@ -730,8 +845,88 @@ namespace CompiPascal.analizer
         #endregion
 
 
+        #region EJECUCION
 
-    
+
+        public void ejecutar(LinkedList<Instruction> actual, LinkedList<Instruction> lista_declaraciones, LinkedList<Instruction> lista_funciones)
+        {
+            //GUARDAR VARIABLES
+
+            var error_variable = false;
+            var error_funcion = false;
+
+
+            foreach (var item in lista_declaraciones)
+            {
+                try
+                {
+                    var result = item.Execute(general);
+                    if (result == null)
+                    {
+                        error_variable = true;
+                        break;
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
+            if (!error_variable)
+            {
+                foreach (var item in lista_funciones)
+                {
+                    try
+                    {
+                        var res = item.Execute(general);
+                        if (res == null)
+                        {
+                            error_funcion = true;
+                            break;
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+                }
+            }
+
+
+
+            if (!error_variable && !error_funcion)
+            {
+                foreach (var item in actual)
+                {
+                    try
+                    {
+                        var result = item.Execute(general);
+                        if (result == null)
+                        {
+                            break;
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                        break;
+                    }
+
+                }
+            }
+
+        }
+
+
+
+        #endregion
+
+
+
+
 
     }
 

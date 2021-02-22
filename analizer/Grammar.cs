@@ -223,8 +223,9 @@ namespace CompiPascal.analizer
             NonTerminal PARAMETER = new NonTerminal("PARAMETER", "PARAMETER");
             NonTerminal PARAMETER_BODY = new NonTerminal("PARAMETER_BODY", "PARAMETER_BODY");
             NonTerminal PARAMETER_END = new NonTerminal("PARAMETER_END", "PARAMETER_END");
+            NonTerminal CALL = new NonTerminal("CALL", "CALL");
+            NonTerminal CALL_PARAMETERS = new NonTerminal("CALL_PARAMETERS", "CALL_PARAMETERS");
 
-            
             //NonTerminal ARGUMENTS = new NonTerminal("ARGUMENTS", "ARGUMENTS");
             //NonTerminal REFERENCIA_VALOR = new NonTerminal("REFERENCIA_VALOR", "REFERENCIA_VALOR");
             #endregion
@@ -258,6 +259,8 @@ namespace CompiPascal.analizer
                 | BREAK
                 | CONTINUE
                 | WRITE
+                | CALL
+                | EXIT
                 ;
 
             INSTRUCTION.ErrorRule
@@ -463,6 +466,15 @@ namespace CompiPascal.analizer
             PARAMETER_END.Rule = PUNTO_COMA + PARAMETER
                 | Empty
                 ;
+
+
+            CALL.Rule = IDENTIFIER + PAR_IZQ + CALL_PARAMETERS + PAR_DER + PUNTO_COMA;
+
+            CALL_PARAMETERS.Rule
+                = EXPRESION + CALL_PARAMETERS
+                | COMA + EXPRESION + CALL_PARAMETERS 
+                | Empty
+                ;
             #endregion
 
             #region FUNCIONES NATIVAS
@@ -480,7 +492,7 @@ namespace CompiPascal.analizer
                 | Empty
                 ;
 
-            EXIT.Rule = RESERV_EXIT;
+            EXIT.Rule = RESERV_EXIT + PAR_IZQ + EXPRESION + PAR_DER + PUNTO_COMA;
 
            
             #endregion

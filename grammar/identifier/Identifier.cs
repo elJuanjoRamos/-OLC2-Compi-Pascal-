@@ -13,7 +13,9 @@ namespace CompiPascal.grammar.identifier
         private bool esconsante;
         private bool isNull;
         private bool isAssiged;
-        public Identifier(object v, string i, DataType t, bool ec, bool isa)
+        private bool perteneceFucion;
+
+        public Identifier(object v, string i, DataType t, bool ec, bool isa, bool perteneceFuc)
         {
             this._value = v;
             this.id = i;
@@ -21,6 +23,7 @@ namespace CompiPascal.grammar.identifier
             this.esconsante = ec;
             this.isNull = false;
             this.isAssiged = isa;
+            this.perteneceFucion = perteneceFuc;
         }
         public Identifier()
         {
@@ -56,5 +59,6 @@ namespace CompiPascal.grammar.identifier
         }
 
         public bool IsAssiged { get => isAssiged; set => isAssiged = value; }
+        public bool PerteneceFucion { get => perteneceFucion; set => perteneceFucion = value; }
     }
 }
