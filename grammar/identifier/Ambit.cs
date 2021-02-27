@@ -10,6 +10,7 @@ namespace CompiPascal.grammar.identifier
     {
         Dictionary<string, Identifier> variables;
         Dictionary<string, Function> functions;
+        Dictionary<string, Procedure> procedures;
         private string ambit_name = "";
         private string ambit_name_inmediato = "";
         public Ambit anterior;
@@ -19,6 +20,7 @@ namespace CompiPascal.grammar.identifier
         {
             this.variables = new Dictionary<string, Identifier>();
             this.functions = new Dictionary<string, Function>();
+            this.procedures = new Dictionary<string, Procedure>();
             this.ambit_name = n;
             this.ambit_name_inmediato = ni;
             this.anterior = a;
@@ -30,6 +32,7 @@ namespace CompiPascal.grammar.identifier
 
             this.variables = new Dictionary<string, Identifier>();
             this.functions = new Dictionary<string, Function>();
+            this.procedures = new Dictionary<string, Procedure>();
             this.ambit_null = true;
             this.ambit_name = "General";
             this.ambit_name_inmediato = "General";
@@ -100,6 +103,22 @@ namespace CompiPascal.grammar.identifier
         {
             Identifier identifier = new Identifier();
             Ambit amb = this;
+            while (amb != null)
+            {
+                if (amb.Variables.ContainsKey(id))
+                {
+                    identifier = amb.Variables[id];
+                }
+                amb = amb.anterior;
+            }
+            
+            return identifier;
+        }
+
+        public Identifier getVariableFunctionInAmbit(string id)
+        {
+            Identifier identifier = new Identifier();
+            Ambit amb = this;
             if (amb.Variables.ContainsKey(id))
             {
                 identifier = amb.Variables[id];
@@ -115,6 +134,19 @@ namespace CompiPascal.grammar.identifier
                 if (amb.Functions.ContainsKey(id))
                 {
                     return amb.Functions[id];
+                }
+                amb = amb.anterior;
+            }
+            return null;
+        }
+        public Procedure getProcedure(string id)
+        {
+            Ambit amb = this;
+            while (amb != null)
+            {
+                if (amb.procedures.ContainsKey(id))
+                {
+                    return amb.procedures[id];
                 }
                 amb = amb.anterior;
             }
@@ -168,6 +200,28 @@ namespace CompiPascal.grammar.identifier
             functions.Add(id, function);*/
         }
 
+        public void saveProcedure(string id, Procedure procedure)
+        {
+            Ambit amb = this;
+
+            if (!amb.procedures.ContainsKey(id))
+            {
+                amb.procedures[id] = procedure;
+            }
+
+            /*while (amb != null)
+            {
+                if (amb.functions.ContainsKey(id))
+                {
+                    amb.functions[id] = function;
+                    return;
+                }
+
+                amb = amb.anterior;
+            }
+            functions.Add(id, function);*/
+        }
+
         public Ambit getGeneral()
         {
             Ambit amb = this;
@@ -184,5 +238,6 @@ namespace CompiPascal.grammar.identifier
         internal Dictionary<string, Identifier> Variables { get => variables; set => variables = value; }
         public string Ambit_name_inmediato { get => ambit_name_inmediato; set => ambit_name_inmediato = value; }
         internal Dictionary<string, Function> Functions { get => functions; set => functions = value; }
+        public Dictionary<string, Procedure> Procedures { get => procedures; set => procedures = value; }
     }
 }

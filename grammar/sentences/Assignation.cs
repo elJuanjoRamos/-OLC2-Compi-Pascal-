@@ -29,7 +29,7 @@ namespace CompiPascal.grammar.sentences
             {
                 var val = this.value.Execute(ambit);
 
-                if (val.getDataType == DataType.ERROR)
+                if (val == null || val.getDataType == DataType.ERROR ) 
                 {
                     return null;
                 }

@@ -20,7 +20,7 @@ namespace CompiPascal.analizer
         public LinkedList<Instruction> lista_declaraciones = new LinkedList<Instruction>();
         public LinkedList<Instruction> lista_funciones = new LinkedList<Instruction>();
         
-        public void analizer(String cadena)
+        public void analizer(String cadena, string paths)
         {
             Grammar grammar = new Grammar();
             LanguageData languageData = new LanguageData(grammar);
@@ -54,7 +54,7 @@ namespace CompiPascal.analizer
                 return;
             }
             //SE MANDA A GRAFICAR
-            GraphController.Instance.getGraph(root);
+            //GraphController.Instance.getGraph(root, paths);
 
             //PROGRAM BODY -> GRAMATICA
             var program_body = root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(3);
@@ -339,8 +339,34 @@ namespace CompiPascal.analizer
         {
             //VAR_ASSIGNATE.Rule = IDENTIFIER + DOS_PUNTOS + EQUALS + LOGIC_EXPRESION + PUNTO_COMA;
             var identifier = actual.ChildNodes[0].Token.Text;
-            var exp = expresion(actual.ChildNodes[3]);
-            return new Assignation(identifier, exp);
+
+            Expression exp = null;
+
+
+            var encontrado = false;
+            for (int i = 0; i < actual.ChildNodes[3].ChildNodes.Count; i++)
+            {
+                var a = actual.ChildNodes[3].ChildNodes[i];
+                if (a.Term.ToString().Equals("CALL_FUNCTION_PROCEDURE"))
+                {
+                    encontrado= true;
+                    break;
+                }
+            }
+            //SOLO ES UNA EXPRESION
+            if (!encontrado)
+            {
+                exp = expresion(actual.ChildNodes[3]);
+                return new Assignation(identifier, exp);
+            }
+            //ES UNA LLAMADA
+            else
+            {
+                var llamada_funcion = CALLFUNCTION(actual.ChildNodes[3].ChildNodes[0]);
+                return new Assignation(identifier, llamada_funcion);
+            }
+
+            return null;
         }
 
         #endregion
@@ -351,7 +377,7 @@ namespace CompiPascal.analizer
 
         #region FUNCIONES
 
-       
+
         public LinkedList<Instruction> FUNCTION_LIST(ParseTreeNode actual, LinkedList<Instruction> lista_funciones, ArrayList elementos_her)
         {
             /*
@@ -366,23 +392,86 @@ namespace CompiPascal.analizer
             //EMPTY
             if (actual.ChildNodes.Count > 0)
             {
-                LinkedList<Instruction> parametros = new LinkedList<Instruction>();
 
-                var identifier = actual.ChildNodes[1].Token.Text;
 
-                parametros = PARAMETER(actual.ChildNodes[3], parametros, elementos_her);
+                var tipo = actual.ChildNodes[0].Term.ToString();
 
-                var function_type = actual.ChildNodes[6].ChildNodes[0].Token.Text;
+                if (tipo.Equals("RESERV_PROCEDURE"))
+                {
+                    lista_funciones = getProcedimientos(actual, lista_funciones, elementos_her);
+                } else
+                {
+                    lista_funciones = getFunciones(actual, lista_funciones, elementos_her);
+                }
 
-                var function_instructions = INSTRUCTIONS_BODY(actual.ChildNodes[8]);
-
-                lista_funciones.AddLast(new Function(identifier, parametros, function_type, new Sentence(function_instructions)));
-
-                elementos_her.Clear();
-                lista_funciones = FUNCTION_LIST(actual.ChildNodes[10], lista_funciones, elementos_her);
+                
             }
             return lista_funciones;
         }
+
+        public LinkedList<Instruction> getFunciones(ParseTreeNode actual, LinkedList<Instruction> lista_funciones, ArrayList elementos_her)
+        {
+            /*
+              FUNCTION_LIST.Rule
+                = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA 
+                + INSTRUCTIONS_BODY
+                + PUNTO_COMA
+                + FUNCTION_LIST
+                | Empty
+                ;
+             */
+
+            LinkedList<Instruction> parametros = new LinkedList<Instruction>();
+
+            var identifier = actual.ChildNodes[1].Token.Text;
+
+            parametros = PARAMETER(actual.ChildNodes[3], parametros, elementos_her);
+
+            var function_type = actual.ChildNodes[6].ChildNodes[0].Token.Text;
+
+            var function_instructions = INSTRUCTIONS_BODY(actual.ChildNodes[8]);
+
+            lista_funciones.AddLast(new Function(identifier, parametros, function_type, new Sentence(function_instructions), false));
+
+            elementos_her.Clear();
+            lista_funciones = FUNCTION_LIST(actual.ChildNodes[10], lista_funciones, elementos_her);
+
+            return lista_funciones;
+        }   
+
+
+        public LinkedList<Instruction> getProcedimientos(ParseTreeNode actual, LinkedList<Instruction> lista_funciones, ArrayList elementos_her)
+        {
+
+            /*
+             FUNCTION_LIST.Rule
+                =  RESERV_PROCEDURE + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + PUNTO_COMA
+                + INSTRUCTIONS_BODY
+                + PUNTO_COMA
+                + FUNCTION_LIST
+                | Empty
+                ;
+             */
+
+
+            LinkedList<Instruction> parametros = new LinkedList<Instruction>();
+
+            var identifier = actual.ChildNodes[1].Token.Text;
+
+            parametros = PARAMETER(actual.ChildNodes[3], parametros, elementos_her);
+
+           
+            var function_instructions = INSTRUCTIONS_BODY(actual.ChildNodes[6]);
+
+            lista_funciones.AddLast(new Function(identifier, parametros, "any", new Sentence(function_instructions), true));
+
+            elementos_her.Clear();
+            lista_funciones = FUNCTION_LIST(actual.ChildNodes[8], lista_funciones, elementos_her);
+
+            return lista_funciones;
+        }
+
+
         public LinkedList<Instruction> PARAMETER(ParseTreeNode actual, LinkedList<Instruction> parametros, ArrayList elementos_her)
         {
             /*
@@ -472,6 +561,23 @@ namespace CompiPascal.analizer
 
 
         #region LLAMADAS
+
+        #region LLAMADA COMO EXPRESION
+
+        #endregion
+
+        #region LLAMADA COMO INSTRUCCION
+        public CallFunction CALLFUNCTION(ParseTreeNode actual)
+        {
+            // CALL.Rule = IDENTIFIER + PAR_IZQ + CALL_PARAMETERS + PAR_DER + PUNTO_COMA;
+            ArrayList prametros_llamada = new ArrayList();
+            prametros_llamada = CALL_PARAMETERS(actual.ChildNodes[2], prametros_llamada);
+
+            return new CallFunction(actual.ChildNodes[0].Token.Text, prametros_llamada);
+        }
+        #endregion
+
+
         public Call CALL(ParseTreeNode actual)
         {
             // CALL.Rule = IDENTIFIER + PAR_IZQ + CALL_PARAMETERS + PAR_DER + PUNTO_COMA;
@@ -494,7 +600,7 @@ namespace CompiPascal.analizer
             {
                 if (actual.ChildNodes.Count == 2)
                 {
-                    var expr = expresion(actual.ChildNodes[0]);
+                    var expr = (expresion(actual.ChildNodes[0]));
                     expresiones.Add(expr);
                     expresiones = CALL_PARAMETERS(actual.ChildNodes[1], expresiones);
                 } 
@@ -803,7 +909,15 @@ namespace CompiPascal.analizer
             }
             else
             {
-                 return GetLiteral(actual.ChildNodes.ElementAt(0));
+                //verifica que no sea una llamada a funcion
+                var a = actual.ChildNodes[0].Term;
+                if (a.ToString().Equals("CALL_FUNCTION_PROCEDURE"))
+                {
+                    return CALLFUNCTION(actual.ChildNodes[0]);
+                } else {
+                    return GetLiteral(actual.ChildNodes.ElementAt(0));
+                }
+
             }
 
         }

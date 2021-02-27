@@ -1,48 +1,48 @@
 ﻿using CompiPascal.controller;
 using CompiPascal.grammar.abstracts;
 using CompiPascal.grammar.identifier;
+using CompiPascal.grammar.sentences;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CompiPascal.grammar.sentences
+namespace CompiPascal.grammar.expression
 {
-    class Call : Instruction
+    class CallFunction  : Expression
     {
         private string id;
         private ArrayList parametros;
         private int row;
         private int column;
 
-        public Call(string id, ArrayList expresion): 
-            base(0,0,"Call")
+        public CallFunction(string id, ArrayList expresion) :
+            base("Call")
         {
             this.id = id;
             this.parametros = expresion;
         }
 
-        public override object Execute(Ambit ambit)
+        public override Returned Execute(Ambit ambit)
         {
             {
                 var funcion_llamada = ambit.getFuncion(this.id);
                 if (funcion_llamada == null)
                 {
                     ConsolaController.Instance.Add("La funcion o procediminento '" + this.id + "' no esta definido");
-                    return null;
+                    return new Returned();
                 }
 
                 if (funcion_llamada.Parametos.Count != parametros.Count)
                 {
-                    ConsolaController.Instance.Add("La funcion '" + this.id + "' no recibe la misma cantidad de parametros");
-                    return null;
+                    ConsolaController.Instance.Add("La funcion o procedimiento '" + this.id + "' no recibe la misma cantidad de parametros");
+                    return new Returned();
 
                 }
-
-
                 //GUARDAR LOS PARAMETROS EN LA TABLA DE SIMBOLOS
 
                 Ambit function_ambit = new Ambit();
+
 
                 if (funcion_llamada.IsProcedure)
                 {
@@ -52,6 +52,10 @@ namespace CompiPascal.grammar.sentences
                 {
                     function_ambit = new Ambit(ambit, ambit.Ambit_name + "_Function", "Function", false);
                 }
+
+
+
+
 
                 //FOREACH PARA GUARDAR LOS PARAMETROS EN EL AMBITO,
                 //LOS PARAMETROS QUE RECIBE LA FUNCION CUANDO SE DECLARA SON 'DECLARACIONES'
@@ -75,7 +79,7 @@ namespace CompiPascal.grammar.sentences
                     {
                         ConsolaController.Instance.Add("El tipo " + result.getDataType + " no es asignable con " + variable.getDataType);
                         ErrorController.Instance.SyntacticError("El tipo " + result.getDataType + " no es asignable con " + variable.getDataType, 0, 0);
-                        return null;
+                        return new Returned();
                     }
                 }
 
@@ -84,9 +88,10 @@ namespace CompiPascal.grammar.sentences
 
                 var funcion_Elementos = funcion_llamada.Sentences.Execute(function_ambit);
 
+                //si viene null significa que viene error
                 if (funcion_Elementos == null)
                 {
-                    return null;
+                    return new Returned();
                 }
 
                 else
@@ -100,23 +105,37 @@ namespace CompiPascal.grammar.sentences
                             {
                                 var result = ((Exit)funcion_Elementos).Value.Execute(function_ambit);
 
-                                return new Returned(result.Value, result.getDataType);
+
+                                //HAY ERROR
+                                if (result.getDataType == DataType.ERROR || result == null)
+                                {
+                                    return new Returned();
+                                }
+
+
+                                //VERIFICA QUE EL TIPO DE RETORNO SEA VALIDO
+                                if (result.getDataType == funcion_llamada.Tipe)
+                                {
+                                    return new Returned(result.Value, result.getDataType);
+                                } else
+                                {
+                                    ErrorController.Instance.SemantycErrors("Tipos incompatibles, la funcion '" + funcion_llamada.Name +"' retorna " + funcion_llamada.Tipe + " en lugar de" + result.getDataType, 0, 0);
+                                    return new Returned();
+                                }
+
                             }
                             else
                             {
                                 ErrorController.Instance.SemantycErrors("Procedures can't return a value", 0, 0);
-                                return null;
+                                return new Returned();
                             }
                         }
                     }
                 }
 
 
-                return 0;
+                return new Returned();
             }
         }
     }
-
-
-
 }

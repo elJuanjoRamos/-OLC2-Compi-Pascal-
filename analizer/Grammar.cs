@@ -12,6 +12,7 @@ namespace CompiPascal.analizer
     {
 
         public Grammar()
+            :base(caseSensitive: false)
         {
             #region Lexical structure
 
@@ -33,7 +34,8 @@ namespace CompiPascal.analizer
             #region ER
             var REAL = new RegexBasedTerminal("REAL", "[0-9]+[.][0-9]+");
             var NUMERO = new NumberLiteral("NUMERO");
-            var IDENTIFIER = new IdentifierTerminal("IDENTIFIER", "[_a-zA-Z][_a-zA-Z0-9]");
+            //var IDENTIFIER = new IdentifierTerminal("IDENTIFIER", "[_a-zA-Z][_a-zA-Z0-9]");
+            var IDENTIFIER = TerminalFactory.CreateCSharpIdentifier("IDENTIFIER");
             var CADENA = new StringLiteral("CADENA", "\'");
             #endregion
 
@@ -224,6 +226,7 @@ namespace CompiPascal.analizer
             NonTerminal PARAMETER_BODY = new NonTerminal("PARAMETER_BODY", "PARAMETER_BODY");
             NonTerminal PARAMETER_END = new NonTerminal("PARAMETER_END", "PARAMETER_END");
             NonTerminal CALL = new NonTerminal("CALL", "CALL");
+            NonTerminal CALL_FUNCTION_PROCEDURE = new NonTerminal("CALL_FUNCTION_PROCEDURE", "CALL_FUNCTION_PROCEDURE");
             NonTerminal CALL_PARAMETERS = new NonTerminal("CALL_PARAMETERS", "CALL_PARAMETERS");
 
             //NonTerminal ARGUMENTS = new NonTerminal("ARGUMENTS", "ARGUMENTS");
@@ -351,8 +354,9 @@ namespace CompiPascal.analizer
                 | EXPRESION + DISCTINCT + EXPRESION
                 | EXPRESION + AND + EXPRESION
                 | EXPRESION + OR + EXPRESION
+                //| MIN + EXPRESION
                 | NOT + EXPRESION
-                | MIN + EXPRESION
+                | CALL_FUNCTION_PROCEDURE
                 | IDENTIFIER
                 | NUMERO
                 | CADENA
@@ -360,7 +364,6 @@ namespace CompiPascal.analizer
                 | RESERV_TRUE
                 | RESERV_FALSE
                 | PAR_IZQ + EXPRESION + PAR_DER
-
                 ;
 
 
@@ -451,8 +454,14 @@ namespace CompiPascal.analizer
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
                 + FUNCTION_LIST
+                | RESERV_PROCEDURE + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + PUNTO_COMA
+                + INSTRUCTIONS_BODY
+                + PUNTO_COMA
+                + FUNCTION_LIST
                 | Empty
                 ;
+            FUNCTION_LIST.ErrorRule
+                = SyntaxError + PUNTO_COMA;
 
             PARAMETER.Rule
                 = RESERV_VAR + IDENTIFIER + PARAMETER_BODY + DOS_PUNTOS + DATA_TYPE + PARAMETER_END
@@ -475,6 +484,8 @@ namespace CompiPascal.analizer
                 | COMA + EXPRESION + CALL_PARAMETERS 
                 | Empty
                 ;
+
+            CALL_FUNCTION_PROCEDURE.Rule = IDENTIFIER + PAR_IZQ + CALL_PARAMETERS + PAR_DER;
             #endregion
 
             #region FUNCIONES NATIVAS

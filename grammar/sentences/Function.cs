@@ -14,14 +14,15 @@ namespace CompiPascal.grammar.sentences
         private Instruction sentences;
         private int row;
         private int column;
-        
-        public Function(string id, LinkedList<Instruction> parametos, string tipe, Instruction sentences)
+        private bool isProcedure;
+        public Function(string id, LinkedList<Instruction> parametos, string tipe, Instruction sentences, bool isProcedure)
         : base(0,0,"Function")
         {
             this.id = id;
             this.parametos = parametos;
             this.tipe = GetDataType(tipe);
             this.sentences = sentences;
+            this.isProcedure = isProcedure;
         }
 
         public override object Execute(Ambit ambit)
@@ -45,6 +46,10 @@ namespace CompiPascal.grammar.sentences
             {
                 return DataType.REAL;
             }
+            else if (d.Equals("any"))
+            {
+                return DataType.ANY;
+            }
             return DataType.STRING;
 
         }
@@ -65,5 +70,7 @@ namespace CompiPascal.grammar.sentences
 
         public LinkedList<Instruction> Parametos { get => parametos; set => parametos = value; }
         public Instruction Sentences { get => sentences; set => sentences = value; }
+        public bool IsProcedure { get => isProcedure; set => isProcedure = value; }
+        public DataType Tipe { get => tipe; set => tipe = value; }
     }
 }

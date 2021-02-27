@@ -52,10 +52,13 @@ namespace CompiPascal
             if (texto_analizar != "")
             {
             
-                consola.Text = "Programa Encendido\nEn ejecucion ...\n";
-            
+                consola.Text = "$fpc -vw main.pas\nCompi-Pascal Compiler version 3.0.2 ["+ DateTime.Now + "] for x86_64\n";
+                consola.Text = consola.Text + "Copyright (c) 2021-2100 by Juan Jose Ramos 201801262\nTarget OS: Windows for x86-64\n";
+                consola.Text = consola.Text + "Compiling main.pas\n$main\n\n";
+
+
                 Syntactic syntactic = new Syntactic();
-                syntactic.analizer(texto_analizar);
+                syntactic.analizer(texto_analizar, Application.StartupPath);
 
                 consola.Text = consola.Text + ErrorController.Instance.getLexicalError();
                 consola.Text = consola.Text + ErrorController.Instance.getSintactycError();
@@ -67,6 +70,7 @@ namespace CompiPascal
                 consola.Text = "Debe escribir texto en el editor";
             }
         }
+
 
 
 
@@ -154,5 +158,7 @@ namespace CompiPascal
         {
 
         }
+
+  
     }
 }

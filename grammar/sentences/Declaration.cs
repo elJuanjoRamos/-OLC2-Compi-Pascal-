@@ -55,7 +55,7 @@ namespace CompiPascal.grammar.sentences
             //SIGFINICA QUE ES UNA DECLARACION EN FUNCION
             else
             {
-                buscar = ambit.getVariableFunction(id);
+                buscar = ambit.getVariableFunctionInAmbit(id);
             }
 
 

@@ -31,9 +31,7 @@ namespace CompiPascal.grammar.sentences
 
         public override object Execute(Ambit ambit)
         {
-            //console.error("SENTENCIA")
             var newAmbit = new Ambit(ambit, ambit.Ambit_name, ambit.Ambit_name_inmediato, false);
-
 
             if (isNull)
             {
@@ -44,6 +42,7 @@ namespace CompiPascal.grammar.sentences
             {
                 try
                 {
+                    //EJECUTA LAS INSTRUCCIONES
                     var element = inst.Execute(newAmbit);
 
                     if (element == null)

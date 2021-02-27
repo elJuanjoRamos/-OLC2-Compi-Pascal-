@@ -1,6 +1,7 @@
 ﻿using Irony.Parsing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 
@@ -26,11 +27,28 @@ namespace CompiPascal.controller
             }
         }
 
-        public void getGraph(ParseTreeNode root)
+        public void getGraph(ParseTreeNode root, string path_startup)
         {
             string dot = getDot(root);
-            var path = "ast.txt";
+
+            Console.WriteLine(dot);
+
             try
+            {
+                System.IO.File.WriteAllText(path_startup + "\\"  + "ast.dot", dot);
+                var command = "dot -Tpng \"" + path_startup + "\\" +  "ast.dot\"  -o \"" + path_startup + "\\" + "ast.png\"   ";
+                var procStarInfo = new ProcessStartInfo("cmd", "/C" + command);
+                var proc = new System.Diagnostics.Process();
+                proc.StartInfo = procStarInfo;
+                proc.Start();
+                proc.WaitForExit();
+            }
+            catch (Exception)
+            {
+
+                System.Diagnostics.Debug.WriteLine("ERROR AL GENERAR EL DOT");
+            }
+            /*try
             {
                 using (FileStream fs = File.Create(path))
                 {
@@ -41,7 +59,7 @@ namespace CompiPascal.controller
             catch (Exception)
             {
                 System.Diagnostics.Debug.WriteLine("ERROR AL GENERAR EL DOT");
-            }
+            }*/
         }
 
 
