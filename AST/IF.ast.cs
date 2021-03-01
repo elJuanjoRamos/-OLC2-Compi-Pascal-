@@ -20,20 +20,7 @@ namespace CompiPascal.AST
 
         #region IF
 
-        /*
-         
-        
-
-            IF_SENTENCE.Rule = INSTRUCTIONS_BODY
-                | Empty
-                ;
-
-            ELIF.Rule
-                = RESERV_ELSE + IF_SENTENCE //+ PUNTO_COMA
-                | RESERV_ELSE + IFTHEN
-                | Empty
-                ;
-         */
+ 
 
         public IF IFTHEN(ParseTreeNode actual)
         {
@@ -57,6 +44,12 @@ namespace CompiPascal.AST
 
         public Sentence IF_SENTENCE(ParseTreeNode actual)
         {
+            /*
+               IF_SENTENCE.Rule = INSTRUCTIONS_BODY
+                | Empty
+                ;
+
+             */
             Sentence sentence = new Sentence();
             if (actual.ChildNodes.Count > 0)
             {

@@ -43,7 +43,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.consolaTraduccion = new System.Windows.Forms.RichTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -193,7 +193,7 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.richTextBox1);
+            this.tabPage2.Controls.Add(this.consolaTraduccion);
             this.tabPage2.Controls.Add(this.label3);
             this.tabPage2.Controls.Add(this.label4);
             this.tabPage2.Controls.Add(this.label7);
@@ -208,16 +208,16 @@
             this.tabPage2.Text = "Traduccion";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // richTextBox1
+            // consolaTraduccion
             // 
-            this.richTextBox1.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.richTextBox1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.richTextBox1.Location = new System.Drawing.Point(732, 71);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(644, 689);
-            this.richTextBox1.TabIndex = 18;
-            this.richTextBox1.Text = "";
+            this.consolaTraduccion.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.consolaTraduccion.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.consolaTraduccion.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.consolaTraduccion.Location = new System.Drawing.Point(732, 71);
+            this.consolaTraduccion.Name = "consolaTraduccion";
+            this.consolaTraduccion.Size = new System.Drawing.Size(644, 689);
+            this.consolaTraduccion.TabIndex = 18;
+            this.consolaTraduccion.Text = "";
             // 
             // label3
             // 
@@ -270,6 +270,7 @@
             this.analizar.Size = new System.Drawing.Size(644, 35);
             this.analizar.TabIndex = 13;
             this.analizar.UseVisualStyleBackColor = false;
+            this.analizar.Click += new System.EventHandler(this.analizar_Click_1);
             // 
             // traduccion
             // 
@@ -330,7 +331,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button analizar;
         private System.Windows.Forms.RichTextBox traduccion;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox consolaTraduccion;
     }
 }
 

@@ -58,12 +58,15 @@ namespace CompiPascal.analizer
                 return;
             }
             //SE MANDA A GRAFICAR
-            //GraphController.Instance.getGraph(root, paths);
+            GraphController.Instance.getGraph(root, paths);
 
             //PROGRAM BODY -> GRAMATICA
             var program_body = root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(3);
+
             //LISTA DE DECLARCION DE VARIABLES
+            
             lista_declaraciones = (new DeclarationAST()).LIST_DECLARATIONS(program_body.ChildNodes.ElementAt(0), lista_declaraciones, elemetos_heredados);
+            
             //LISTA DE DECLARACION DE FUNCIONES
             elemetos_heredados.Clear();
             lista_funciones =  (new FunctionAST()).FUNCTION_LIST(program_body.ChildNodes.ElementAt(1), lista_funciones, elemetos_heredados);
@@ -78,14 +81,6 @@ namespace CompiPascal.analizer
 
 
         //EMPIEZA LA EJECUCION
-
-
-
-        
-
-
-        
-
         #region EJECUCION
 
 
@@ -160,15 +155,7 @@ namespace CompiPascal.analizer
             }
 
         }
-
-
-
         #endregion
-
-
-
-
-
     }
 
 }

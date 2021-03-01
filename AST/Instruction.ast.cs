@@ -23,8 +23,7 @@ namespace CompiPascal.AST
                 ;*/
             var begind = actual.ChildNodes[0];
 
-            InstructionAST instructionAST = new InstructionAST();
-            LinkedList<Instruction> lista_instruciones = instructionAST.ISTRUCCIONES(actual.ChildNodes[1]);
+            LinkedList<Instruction> lista_instruciones = ISTRUCCIONES(actual.ChildNodes[1]);
 
 
             var end = actual.ChildNodes[2];
@@ -34,7 +33,6 @@ namespace CompiPascal.AST
         //INSTRUCCIONES
         public LinkedList<Instruction> ISTRUCCIONES(ParseTreeNode actual)
         {
-
             LinkedList<Instruction> listaInstrucciones = new LinkedList<Instruction>();
 
             foreach (ParseTreeNode nodo in actual.ChildNodes)

@@ -31,8 +31,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="grammar\instruction\" />
-  </ItemGroup>
-
 </Project>

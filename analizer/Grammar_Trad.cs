@@ -8,11 +8,11 @@ using Irony.Parsing;
 
 namespace CompiPascal.analizer
 {
-    class Grammar: Irony.Parsing.Grammar
+    class Grammar_Trad : Irony.Parsing.Grammar
     {
 
-        public Grammar()
-            :base(caseSensitive: false)
+        public Grammar_Trad()
+            : base(caseSensitive: false)
         {
             #region Lexical structure
 
@@ -222,12 +222,14 @@ namespace CompiPascal.analizer
             #region FUNCIONS NO TERMINALES
             NonTerminal FUNCTION_LIST = new NonTerminal("FUNCTION_LIST", "FUNCTION_LIST");
             NonTerminal FUNCTION = new NonTerminal("FUNCTION", "FUNCTION");
+            NonTerminal PROCEDURE = new NonTerminal("PROCEDURE", "PROCEDURE");
             NonTerminal PARAMETER = new NonTerminal("PARAMETER", "PARAMETER");
             NonTerminal PARAMETER_BODY = new NonTerminal("PARAMETER_BODY", "PARAMETER_BODY");
             NonTerminal PARAMETER_END = new NonTerminal("PARAMETER_END", "PARAMETER_END");
             NonTerminal CALL = new NonTerminal("CALL", "CALL");
             NonTerminal CALL_FUNCTION_PROCEDURE = new NonTerminal("CALL_FUNCTION_PROCEDURE", "CALL_FUNCTION_PROCEDURE");
             NonTerminal CALL_PARAMETERS = new NonTerminal("CALL_PARAMETERS", "CALL_PARAMETERS");
+            NonTerminal FUNCION_HIJA = new NonTerminal("FUNCION_HIJA", "FUNCION_HIJA");
 
             //NonTerminal ARGUMENTS = new NonTerminal("ARGUMENTS", "ARGUMENTS");
             //NonTerminal REFERENCIA_VALOR = new NonTerminal("REFERENCIA_VALOR", "REFERENCIA_VALOR");
@@ -449,13 +451,18 @@ namespace CompiPascal.analizer
             #endregion
 
             #region FUNCIONES Y PROCEDIMIENTOS
+
+
+
             FUNCTION_LIST.Rule
-                = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA 
+                = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA
+                + FUNCION_HIJA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
                 + FUNCTION_LIST
-                
+
                 | RESERV_PROCEDURE + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + PUNTO_COMA
+                + FUNCION_HIJA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
                 + FUNCTION_LIST
@@ -469,8 +476,8 @@ namespace CompiPascal.analizer
                 | IDENTIFIER + PARAMETER_BODY + DOS_PUNTOS + DATA_TYPE + PARAMETER_END
                 | Empty;
 
-            PARAMETER_BODY.Rule 
-                =  COMA + IDENTIFIER + PARAMETER_BODY
+            PARAMETER_BODY.Rule
+                = COMA + IDENTIFIER + PARAMETER_BODY
                 | Empty
                 ;
             PARAMETER_END.Rule = PUNTO_COMA + PARAMETER
@@ -482,11 +489,40 @@ namespace CompiPascal.analizer
 
             CALL_PARAMETERS.Rule
                 = EXPRESION + CALL_PARAMETERS
-                | COMA + EXPRESION + CALL_PARAMETERS 
+                | COMA + EXPRESION + CALL_PARAMETERS
                 | Empty
                 ;
 
             CALL_FUNCTION_PROCEDURE.Rule = IDENTIFIER + PAR_IZQ + CALL_PARAMETERS + PAR_DER;
+
+
+
+            FUNCTION.Rule =
+                RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA
+                + INSTRUCTIONS_BODY
+                + PUNTO_COMA
+                ;
+
+            PROCEDURE.Rule =
+                RESERV_PROCEDURE + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + PUNTO_COMA
+                + INSTRUCTIONS_BODY
+                + PUNTO_COMA
+                ;
+
+            FUNCION_HIJA.Rule 
+                = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA 
+                + FUNCION_HIJA
+                + INSTRUCTIONS_BODY
+                + PUNTO_COMA 
+                + FUNCION_HIJA
+                
+                | RESERV_PROCEDURE + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + PUNTO_COMA
+                + FUNCION_HIJA
+                + INSTRUCTIONS_BODY
+                + PUNTO_COMA
+                + FUNCION_HIJA
+                | Empty
+                ;
             #endregion
 
             #region FUNCIONES NATIVAS
@@ -494,7 +530,7 @@ namespace CompiPascal.analizer
             WRITE.Rule = RESERV_WRITE + PAR_IZQ + WRHITE_PARAMETER + PAR_DER + PUNTO_COMA
                 | RESERV_WRITEN + PAR_IZQ + WRHITE_PARAMETER + PAR_DER + PUNTO_COMA
                 ;
-            
+
             WRHITE_PARAMETER.Rule
                 = EXPRESION + MORE_WRHITE_PARAMETER
                 | Empty
@@ -506,9 +542,9 @@ namespace CompiPascal.analizer
 
             EXIT.Rule = RESERV_EXIT + PAR_IZQ + EXPRESION + PAR_DER + PUNTO_COMA;
 
-           
+
             #endregion
-            
+
             #region Preferencias
             this.Root = init;
             #endregion

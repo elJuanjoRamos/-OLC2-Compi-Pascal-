@@ -65,6 +65,9 @@ namespace CompiPascal
                 consola.Text = consola.Text + ErrorController.Instance.getSemantycError();
                 consola.Text = consola.Text + ConsolaController.Instance.getText()+ "\nFinalizado.";
 
+               
+
+
             } else
             {
                 consola.Text = "Debe escribir texto en el editor";
@@ -72,7 +75,40 @@ namespace CompiPascal
         }
 
 
+        //ESTO ES TRADUCIR
+        private void analizar_Click_1(object sender, EventArgs e)
+        {
+            //LIMPIA LA CONSOLA
+            ConsolaController.Instance.clean();
+            ErrorController.Instance.Clean();
+            if (traduccion.Text != "")
+            {
 
+
+                Syntactic_Trad syntactic_Trad = new Syntactic_Trad();
+
+                syntactic_Trad.analizer(traduccion.Text, Application.StartupPath);
+
+                consolaTraduccion.Text = "";
+                consolaTraduccion.Text = "$fpc -vw main.pas\nCompi-Pascal Compiler version 3.0.2 [" + DateTime.Now + "] for x86_64\n";
+                consolaTraduccion.Text = consola.Text + "Copyright (c) 2021-2100 by Juan Jose Ramos 201801262\nTarget OS: Windows for x86-64\n";
+                consolaTraduccion.Text = consola.Text + "Compiling main.pas\n$main\n\n";
+
+                consolaTraduccion.Text = consolaTraduccion.Text + ErrorController.Instance.getLexicalError();
+                consolaTraduccion.Text = consolaTraduccion.Text + ErrorController.Instance.getSintactycError();
+                consolaTraduccion.Text = consolaTraduccion.Text + ErrorController.Instance.getSemantycError();
+
+
+                consolaTraduccion.Text = consolaTraduccion.Text + syntactic_Trad.get_Traduction();
+
+
+                consolaTraduccion.Text = consolaTraduccion.Text + ConsolaController.Instance.getText() + "\nFinalizado.";
+            }
+            else
+            {
+                consolaTraduccion.Text = "Debe escribir en el editor";
+            }
+        }
 
         public void AddLineNumbers()
         {
@@ -158,7 +194,6 @@ namespace CompiPascal
         {
 
         }
-
-  
+        
     }
 }
