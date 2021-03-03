@@ -34,13 +34,12 @@ namespace CompiPascal.Traduccion
             //SOLO ES UNA EXPRESION
             if (!encontrado)
             {
-                exp = (new ExpressionTraduccion()).getExpresion(actual.ChildNodes[3]) + ";";
+                exp = (new ExpressionTraduccion()).getExpresion(actual.ChildNodes[3]);
             }
             //ES UNA LLAMADA
             else
             {
-                //var llamada_funcion = (new Call_Expression()).CALLFUNCTION(actual.ChildNodes[3].ChildNodes[0]);
-                //return new Assignation(identifier, llamada_funcion);
+                exp = (new Call_Exp_Traduccion()).CALLFUNCTION(actual.ChildNodes[3].ChildNodes[0]);
             }
 
             return identifier + exp +"\n";

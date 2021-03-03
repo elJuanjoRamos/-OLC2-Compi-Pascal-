@@ -65,7 +65,7 @@ namespace CompiPascal.Traduccion
                 var a = actual.ChildNodes[0].Term;
                 if (a.ToString().Equals("CALL_FUNCTION_PROCEDURE"))
                 {
-                    //return (new Call_Expression()).CALLFUNCTION(actual.ChildNodes[0]);
+                    return (new Call_Exp_Traduccion()).CALLFUNCTION(actual.ChildNodes[0]);
                 }
                 else
                 {

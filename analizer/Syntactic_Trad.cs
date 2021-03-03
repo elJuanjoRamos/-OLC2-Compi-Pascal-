@@ -2,6 +2,7 @@
 using CompiPascal.Traduccion;
 using Irony.Parsing;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,6 +13,8 @@ namespace CompiPascal.analizer
         //AST
         InstructionTraduccion instructionAST = new InstructionTraduccion();
         string lista_instrucciones = "";
+        string lista_declaraciones = "";
+        string lista_funciones = "";
         public Syntactic_Trad()
         {
 
@@ -62,25 +65,23 @@ namespace CompiPascal.analizer
             var program_body = root.ChildNodes[0].ChildNodes[3];
 
             //LISTA DE DECLARCION DE VARIABLES
-
-            //lista_declaraciones = (new DeclarationAST()).LIST_DECLARATIONS(program_body.ChildNodes.ElementAt(0), lista_declaraciones, elemetos_heredados);
+            ArrayList elementos_her = new ArrayList();
+            lista_declaraciones = (new DeclarationTraduccion()).LIST_DECLARATIONS(program_body.ChildNodes[0], lista_declaraciones, elementos_her);
 
             //LISTA DE DECLARACION DE FUNCIONES
-            //elemetos_heredados.Clear();
-            //lista_funciones = (new FunctionAST()).FUNCTION_LIST(program_body.ChildNodes.ElementAt(1), lista_funciones, elemetos_heredados);
+            elementos_her.Clear();
+            lista_funciones = (new FuncionTraduccion()).FUNCTION_LIST(program_body.ChildNodes[1], lista_funciones, elementos_her);
 
             //LISTADO DE SENTENCIAS SENTENCIAS 
             lista_instrucciones = instructionAST.INSTRUCTIONS_BODY(program_body.ChildNodes[2], 0);
 
 
-            Console.WriteLine(lista_instrucciones);
             //COMENZAR A EJECUTAR
-            //ejecutar(listaInstrucciones, lista_declaraciones, lista_funciones);
         }
 
         public string get_Traduction()
         {
-            return lista_instrucciones;
+            return lista_declaraciones + "\n\n" + lista_funciones + "\n\n" + lista_instrucciones;
         }
 
     }

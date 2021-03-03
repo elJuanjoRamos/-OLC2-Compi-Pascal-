@@ -230,6 +230,7 @@ namespace CompiPascal.analizer
             NonTerminal CALL_FUNCTION_PROCEDURE = new NonTerminal("CALL_FUNCTION_PROCEDURE", "CALL_FUNCTION_PROCEDURE");
             NonTerminal CALL_PARAMETERS = new NonTerminal("CALL_PARAMETERS", "CALL_PARAMETERS");
             NonTerminal FUNCION_HIJA = new NonTerminal("FUNCION_HIJA", "FUNCION_HIJA");
+            NonTerminal DECLARATION_LIST_HIJA = new NonTerminal("DECLARATION_LIST", "DECLARATION_LIST");
 
             //NonTerminal ARGUMENTS = new NonTerminal("ARGUMENTS", "ARGUMENTS");
             //NonTerminal REFERENCIA_VALOR = new NonTerminal("REFERENCIA_VALOR", "REFERENCIA_VALOR");
@@ -456,12 +457,14 @@ namespace CompiPascal.analizer
 
             FUNCTION_LIST.Rule
                 = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA
+                + DECLARATION_LIST_HIJA
                 + FUNCION_HIJA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
                 + FUNCTION_LIST
 
                 | RESERV_PROCEDURE + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + PUNTO_COMA
+                + DECLARATION_LIST_HIJA
                 + FUNCION_HIJA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
@@ -511,18 +514,26 @@ namespace CompiPascal.analizer
 
             FUNCION_HIJA.Rule 
                 = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA 
+                + DECLARATION_LIST_HIJA
                 + FUNCION_HIJA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA 
                 + FUNCION_HIJA
                 
                 | RESERV_PROCEDURE + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + PUNTO_COMA
+                + DECLARATION_LIST_HIJA
                 + FUNCION_HIJA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
                 + FUNCION_HIJA
                 | Empty
                 ;
+
+            DECLARATION_LIST_HIJA.Rule
+               = RESERV_VAR + IDENTIFIER + DECLARATION_BODY + VAR_DECLARATION + DECLARATION_LIST_HIJA
+               | RESERV_CONST + IDENTIFIER + EQUALS + EXPRESION + PUNTO_COMA + CONST_DECLARATION + DECLARATION_LIST_HIJA
+               | Empty
+               ;
             #endregion
 
             #region FUNCIONES NATIVAS

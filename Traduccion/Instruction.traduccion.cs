@@ -70,7 +70,7 @@ namespace CompiPascal.Traduccion
             {
                 var WRHITE_PARAMETER = actual.ChildNodes[2];
                 var write_instruction = actual.ChildNodes[0].Token.Text + "(";
-                retorno = tabs + write_instruction + (new WriteTraduccion()).WRITES(WRHITE_PARAMETER)  + ");";
+                retorno = tabs + write_instruction + (new WriteTraduccion()).WRITES(WRHITE_PARAMETER)  + ");\n";
             }
             else if (actual.Term.ToString().Equals("IF-THEN"))
             {
@@ -95,13 +95,13 @@ namespace CompiPascal.Traduccion
             }
             else if (actual.Term.ToString().Equals("FOR"))
             {
-                //FOR _for = ((new ForAST())).SENCECIA_FOR(actual);
-                //retorno = tabs + _for;
+                var _for = ((new ForTraduccion())).SENCECIA_FOR(actual, cant_tabs);
+                retorno = tabs + _for;
             }
             else if (actual.Term.ToString().Equals("SENTENCE_CASE"))
             {
-                /*Switch _SW = (new CaseAST()).SENTENCE_CASE(actual);
-                retorno = tabs + _SW;*/
+                var _SW = (new CaseTraduccion()).SENTENCE_CASE(actual, cant_tabs);
+                retorno = tabs + _SW;
             }
             else if (actual.Term.ToString().Equals("CONTINUE"))
             {
@@ -113,11 +113,12 @@ namespace CompiPascal.Traduccion
             }
             else if (actual.Term.ToString().Equals("CALL"))
             {
-                //return (new Call_Instruction()).CALL(actual);
+
+                return (new CallTraduccion()).CALL(actual);
             }
             else if (actual.Term.ToString().Equals("EXIT"))
             {
-                //return new Exit((new ExpressionAST()).getExpresion(actual.ChildNodes[2]));
+                return (new ExitTraduccion().getExit(actual));
             }
 
             return retorno;
