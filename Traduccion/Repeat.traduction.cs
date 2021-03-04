@@ -15,13 +15,22 @@ namespace CompiPascal.Traduccion
         #region REPEAT UTIL
         public string REPEAT_UNTIL(ParseTreeNode actual, int cant_tabs)
         {
+
+
+            var tabs = "";
+            for (int i = 0; i < cant_tabs; i++)
+            {
+                tabs = tabs + "  ";
+            }
+
+
             //REPEAT_UNTIL.Rule = RESERV_REPEAT + INSTRUCTIONS + RESERV_UNTIL + LOGIC_EXPRESION + PUNTO_COMA;
 
             var reserv_repeat = actual.ChildNodes[0].Token.Text + "\n";
 
 
             //SE OBTIENEN LOS VALORES
-            var lista_instrucciones = (new InstructionTraduccion()).ISTRUCCIONES(actual.ChildNodes[1], cant_tabs);
+            var lista_instrucciones = (new InstructionTraduccion()).ISTRUCCIONES(actual.ChildNodes[1], cant_tabs+1);
 
 
             var reserv_util = actual.ChildNodes[2].Token.Text;
@@ -32,9 +41,9 @@ namespace CompiPascal.Traduccion
             //OBTENGO LA LISTA DE INSTRUCCIONES
 
             var repeat_total =
-                reserv_repeat + "\n" +
+                tabs + reserv_repeat + "\n" +
                 lista_instrucciones + "\n"+
-                reserv_util + " " + condicion + ";"
+                tabs + reserv_util + " " + condicion + ";\n"
                 ;
 
 

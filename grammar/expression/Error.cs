@@ -32,7 +32,7 @@ namespace CompiPascal.grammar.expression
         }
 
         public string toString() {
-            return "Se encontro un error: Sintactico"   + " - En la linea " + this.row + ", columna " + this.column + " - Mensaje: " + this.message;
+            return " - En la linea " + this.row + ", columna " + this.column + " - Mensaje: " + this.message;
         }
     }
 }

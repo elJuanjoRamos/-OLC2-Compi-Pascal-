@@ -11,8 +11,15 @@ namespace CompiPascal.Traduccion
 
 
         #region ASIGNACION
-        public string VAR_ASSIGNATE(ParseTreeNode actual)
+        public string VAR_ASSIGNATE(ParseTreeNode actual, int cant_tabs)
         {
+
+            var tabs = "";
+            for (int i = 0; i < cant_tabs; i++)
+            {
+                tabs = tabs + "  ";
+            }
+
             //VAR_ASSIGNATE.Rule = IDENTIFIER + DOS_PUNTOS + EQUALS + LOGIC_EXPRESION + PUNTO_COMA;
             var identifier = actual.ChildNodes[0].Token.Text  + " := ";
 
@@ -42,7 +49,7 @@ namespace CompiPascal.Traduccion
                 exp = (new Call_Exp_Traduccion()).CALLFUNCTION(actual.ChildNodes[3].ChildNodes[0]);
             }
 
-            return identifier + exp +"\n";
+            return tabs + identifier + exp +"\n";
 
         }
 

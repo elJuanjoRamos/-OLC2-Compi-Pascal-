@@ -30,6 +30,15 @@ namespace CompiPascal.Traduccion
                     + ELIF;
              */
 
+            var tabs = "";
+            for (int i = 0; i < cantidad_tabs; i++)
+            {
+                tabs = tabs + "  ";
+            }
+
+
+
+
             var if_sentencia = actual.ChildNodes[0].Token.Text;
 
 
@@ -43,13 +52,13 @@ namespace CompiPascal.Traduccion
 
 
 
-            var IF_Sentences = IF_SENTENCE(actual.ChildNodes[3], cantidad_tabs);
+            var IF_Sentences = IF_SENTENCE(actual.ChildNodes[3], cantidad_tabs+1);
             
             var ELSE = ELIF(actual.ChildNodes[4], cantidad_tabs);
 
 
             var if_total =
-                if_sentencia+ " " + condicion + " " + reserv_then + "\n" +
+                tabs + if_sentencia+ " " + condicion + " " + reserv_then + "\n" +
                 IF_Sentences + "\n" +
                 ELSE;
 
@@ -80,17 +89,24 @@ namespace CompiPascal.Traduccion
             var lista_instrucciones = "";
             if (actual.ChildNodes.Count > 0)
             {
+
+                var tabs = "";
+                for (int i = 0; i < cant_tabs; i++)
+                {
+                    tabs = tabs + "  ";
+                }
+
                 // ELSE 
                 if (actual.ChildNodes[1].Term.ToString().Equals("IF_SENTENCE"))
                 {
-                    lista_instrucciones = " else " + "\n" + instrucciones.INSTRUCTIONS_BODY(actual.ChildNodes[1].ChildNodes[0], cant_tabs);
+                    lista_instrucciones = tabs+ "else " + "\n" + instrucciones.INSTRUCTIONS_BODY(actual.ChildNodes[1].ChildNodes[0], cant_tabs+1);
 
                 }
                 // ELSE IF
                 else
                 {
-                    var ifs = " else " + IFTHEN(actual.ChildNodes[1], cant_tabs);
-                    lista_instrucciones = lista_instrucciones +"\n" + ifs;
+                    var ifs = tabs + "else " + IFTHEN(actual.ChildNodes[1], cant_tabs);
+                    lista_instrucciones = lista_instrucciones +"\n" + ifs + "\n";
                 }
             }
             return lista_instrucciones;

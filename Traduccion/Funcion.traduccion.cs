@@ -58,6 +58,7 @@ namespace CompiPascal.Traduccion
             /*
               FUNCTION_LIST.Rule
                 = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA
+                + DECLARATION_LIST_HIJA
                 + FUNCION_HIJA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
@@ -73,19 +74,20 @@ namespace CompiPascal.Traduccion
             parametros = PARAMETER(actual.ChildNodes[3], parametros, parametros_her);
             var function_type = actual.ChildNodes[6].ChildNodes[0].Token.Text;
 
+            var variables_hijas = declarationAST.LIST_DECLARATIONS(actual.ChildNodes[8], "", new ArrayList());
 
-            var fuciones_hijas = FUNCION_HIJA(actual.ChildNodes[8], identifier);
+            var fuciones_hijas = FUNCION_HIJA(actual.ChildNodes[9], identifier);
 
-            var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[9], 0);
+            var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[10], 0);
 
 
             lista_funciones = lista_funciones + "\n" +
-
                 fuciones_hijas + "\n\n"+
 
-                reserv_fun + " " + identifier + "(" + parametros + "):" + function_type + ";\n" +   
-                
-                
+                reserv_fun + " " + identifier + "(" + parametros + "):" + function_type + ";\n" +
+                variables_hijas + "\n" +
+
+
                 function_instructions +
                 ";";            
             
@@ -94,7 +96,7 @@ namespace CompiPascal.Traduccion
             
 
 
-            lista_funciones = FUNCTION_LIST(actual.ChildNodes[10], lista_funciones, parametros_her);
+            lista_funciones = FUNCTION_LIST(actual.ChildNodes[12], lista_funciones, parametros_her);
 
             return lista_funciones;
         }
@@ -106,6 +108,7 @@ namespace CompiPascal.Traduccion
             /*
              FUNCTION_LIST.Rule
                 =  RESERV_PROCEDURE + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + PUNTO_COMA
+                + DECLARATION_LIST_HIJA
                 + FUNCION_HIJA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
@@ -121,19 +124,26 @@ namespace CompiPascal.Traduccion
 
             parametros = PARAMETER(actual.ChildNodes[3], parametros, parametros_her);
 
+            var variables_hijas = declarationAST.LIST_DECLARATIONS(actual.ChildNodes[6], "", new ArrayList());
 
-            var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[6], 0);
+            var fuciones_hijas = FUNCION_HIJA(actual.ChildNodes[7], identifier);
+
+
+            var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[8], 0);
 
 
             lista_funciones = lista_funciones + "\n" +
+                fuciones_hijas + "\n\n" +
                 "procedure " + identifier + "(" + parametros + ");" + "\n" +
+                variables_hijas + "\n" +
+
                 function_instructions
                 + ";";
 
 
 
             parametros_her.Clear();
-            lista_funciones = FUNCTION_LIST(actual.ChildNodes[8], lista_funciones, parametros_her);
+            lista_funciones = FUNCTION_LIST(actual.ChildNodes[10], lista_funciones, parametros_her);
 
             return lista_funciones;
         }
@@ -268,6 +278,7 @@ namespace CompiPascal.Traduccion
                 {
                     /*
                      RESERV_PROCEDURE + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + PUNTO_COMA
+                    + DECLARATION_LIST_HIJA
                     + FUNCION_HIJA
                     + INSTRUCTIONS_BODY
                     + PUNTO_COMA
@@ -275,9 +286,11 @@ namespace CompiPascal.Traduccion
                     | Empty
                      */
 
-                    var funciones_hijas = FUNCION_HIJA(actual.ChildNodes[6], id);
+                    var variables_hijas = declarationAST.LIST_DECLARATIONS(actual.ChildNodes[6], "", new ArrayList());
 
-                    var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[7], 0);
+                    var funciones_hijas = FUNCION_HIJA(actual.ChildNodes[7], id);
+
+                    var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[8], 0);
 
                     var mas_funciones = FUNCION_HIJA(actual.ChildNodes[10], "");
 
@@ -285,7 +298,8 @@ namespace CompiPascal.Traduccion
                     retorno =
                         funciones_hijas + "\n" +
                         "procedure " + id + "(" + parametros + ");\n" +
-                        function_instructions+ ";" + "\n\n" +
+                        variables_hijas + "\n" +
+                        function_instructions + ";" + "\n\n" +
                         mas_funciones;
 
                 }
@@ -296,6 +310,7 @@ namespace CompiPascal.Traduccion
 
                     /*
                      RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA 
+                        + DECLARATION_LIST_HIJA
                         + FUNCION_HIJA
                         + INSTRUCTIONS_BODY
                         + PUNTO_COMA 
@@ -303,23 +318,26 @@ namespace CompiPascal.Traduccion
                         | Empty
                      */
 
-                   
+
                     //DATATYPE
                     var function_type = actual.ChildNodes[6].ChildNodes[0].Token.Text;
 
-                    var funciones_hijas = FUNCION_HIJA(actual.ChildNodes[8], id);
+                    var variables_hijas = declarationAST.LIST_DECLARATIONS(actual.ChildNodes[8], "", new ArrayList());
+
+                    var funciones_hijas = FUNCION_HIJA(actual.ChildNodes[9], id);
 
 
-                    var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[9], 0);
+                    var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[10], 0);
 
 
-                    var mas_funciones = FUNCION_HIJA(actual.ChildNodes[11], "");
+                    var mas_funciones = FUNCION_HIJA(actual.ChildNodes[12], padres);
 
 
 
                     retorno =
                         funciones_hijas + "\n" +
                         "funcion " + id + "(" + parametros + "):" + function_type + ";\n" +
+                        variables_hijas + "\n" +
                         function_instructions+ ";" + "\n\n"+
                         mas_funciones;
                 }

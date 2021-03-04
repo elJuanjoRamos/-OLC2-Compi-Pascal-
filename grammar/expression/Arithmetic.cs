@@ -165,7 +165,7 @@ namespace CompiPascal.grammar.expression
 
                 else if (varIz.getDataType == DataType.REAL)
                 {
-                    if (valDer.getDataType == DataType.REAL || valDer.getDataType == DataType.REAL)
+                    if (valDer.getDataType == DataType.REAL || valDer.getDataType == DataType.INTEGER)
                     {
                         result = new Returned((double.Parse(varIz.Value.ToString()) - double.Parse(valDer.Value.ToString())), DataType.REAL);
                     }
@@ -250,8 +250,8 @@ namespace CompiPascal.grammar.expression
                 if (varIz.getDataType == DataType.INTEGER)
                 {
                     if (valDer.getDataType == DataType.INTEGER)
-                    {
-                        result = new Returned((int.Parse(varIz.Value.ToString()) / int.Parse(valDer.Value.ToString())), DataType.INTEGER);
+                    { 
+                        result = new Returned((double.Parse(varIz.Value.ToString()) / double.Parse(valDer.Value.ToString())), DataType.REAL);
                     }
                     else if (valDer.getDataType == DataType.REAL)
                     {

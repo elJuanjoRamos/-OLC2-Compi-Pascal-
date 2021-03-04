@@ -30,7 +30,14 @@ namespace CompiPascal.analizer
             LanguageData languageData = new LanguageData(grammar);
             ArrayList elemetos_heredados = new ArrayList();
             
+
+            var i = new LanguageData(grammar);
+            foreach (var item in i.Errors)
+            {
+                System.Diagnostics.Debug.WriteLine(item);
+            }
             
+
             Parser parser = new Parser(new LanguageData(grammar));
             ParseTree tree = parser.Parse(cadena);
             ParseTreeNode root = tree.Root;
@@ -43,12 +50,12 @@ namespace CompiPascal.analizer
                     //Errores lexicos
                     if (err.Message.Contains("Invalid character"))
                     {
-                        ErrorController.Instance.LexicalError(err.Message, err.Location.Line-1, err.Location.Column);
+                        ErrorController.Instance.LexicalError(err.Message, err.Location.Line+1, err.Location.Column);
                     } 
                     //Errores sintacticos
                     else
                     {
-                        ErrorController.Instance.SyntacticError(err.Message, err.Location.Line-1, err.Location.Column);
+                        ErrorController.Instance.SyntacticError(err.Message, err.Location.Line+1, err.Location.Column);
                     }
                 }
                 return;
@@ -142,7 +149,7 @@ namespace CompiPascal.analizer
                         var result = item.Execute(general);
                         if (result == null)
                         {
-                            break;
+                            continue;
                         }
                     }
                     catch (Exception)

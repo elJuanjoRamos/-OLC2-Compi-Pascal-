@@ -30,6 +30,13 @@ namespace CompiPascal.Traduccion
                 ;
              */
 
+
+            var tabs = "";
+            for (int i = 0; i < cant_tabs; i++)
+            {
+                tabs = tabs + " ";
+            }
+
             var reserv_case = actual.ChildNodes[0].Token.Text;
 
 
@@ -48,10 +55,10 @@ namespace CompiPascal.Traduccion
 
 
             var case_total =
-                reserv_case + " " + condicion + " " + reserv_of + "\n" 
+                 tabs + reserv_case + " " + condicion + " " + reserv_of + "\n" 
                 + lista_cases + "\n" 
                 + else_case + "\n"
-                + reserv_end;
+                + tabs +reserv_end;
 
             return case_total;
         }

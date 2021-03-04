@@ -53,22 +53,33 @@ namespace CompiPascal.controller
         }
 
 
-        public string getLexicalError()
+        public string getLexicalError(string path_startup)
         {
-            return getText(lexicalErrors);
+            GraphController.Instance.printLexicalError(lexicalErrors, path_startup);
+            return getText(lexicalErrors, "Lexico");
         }
+        public bool containLexicalError()
+        {
+            if (lexicalErrors.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
         public string getSemantycError()
         {
-            return getText(semantycErrors);
+            return getText(semantycErrors, "Semantico");
         }
 
         public string getSintactycError()
         {
-            return getText(syntacticErrors);
+            return getText(syntacticErrors, "Sintactico");
         }
 
 
-        public string getText(ArrayList ar)
+        public string getText(ArrayList ar, string tipo)
         {
             var text = "";
             if (ar.Count > 0)
@@ -76,10 +87,11 @@ namespace CompiPascal.controller
                 foreach (var item in ar)
                 {
                     var err = (Error)item;
-                    text = text + err.toString() + "\n";
+                    text = text + tipo + ": " +  err.toString() + "\n";
                 }
                 text = "\n" + text;
             }
+            
             return text;
 
         }

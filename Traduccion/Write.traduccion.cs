@@ -15,7 +15,27 @@ namespace CompiPascal.Traduccion
 
         }
 
+
+
+
         #region WRITE
+        public string getWrite(ParseTreeNode actual, int cant_tabs)
+        {
+            var write_instruction = actual.ChildNodes[0].Token.Text;
+
+            var WRHITE_PARAMETER = WRITES(actual.ChildNodes[2]);
+
+            var tabs = "";
+            for (int i = 0; i < cant_tabs; i++)
+            {
+                tabs = tabs + "  ";
+            }
+            
+            return tabs + write_instruction + "(" + WRHITE_PARAMETER + ");\n";
+        }
+
+
+
         public string WRITES(ParseTreeNode actual)
         {
             string list = "";

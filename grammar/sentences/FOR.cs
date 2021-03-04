@@ -49,104 +49,44 @@ namespace CompiPascal.grammar.sentences
                 if (!identifier.IsAssiged)
                 {
 
-                    assignation.Execute(ambit);
-                    
 
 
+                    var simb = "";
 
-                    //INCREMENTAL
-                    if (direccion.Equals("to"))
+                    if (direccion.ToLower().Equals("to"))
                     {
-
-                        Relational cond = new Relational(new Access(initId), actualizacion, "<=", 0,0);
-                        var condicion = cond.Execute(forAmbit);
-
-
-                        if (condicion.getDataType != DataType.BOOLEAN)
-                        {
-                            ConsolaController.Instance.Add("La condicion del for no es boleana");
-
-                            return null;
-                        }
-
-                        
-
-                        //EJECUCION
-                        while ((bool)condicion.Value == true)
-                        {
-
-                           
-                            //VERIFICA QUE LA SENTENCIAS NO ESTEN VACIAS
-                            if (!sentence.IsNull)
-                            {
-                                var element = sentence.Execute(forAmbit);
-                                
-                                if (element != null)
-                                {
-                                    if (element is Instruction)
-                                    {
-                                        Instruction ins = (Instruction)element;
-
-                                        //console.log(element);
-                                        if (ins.Name.Equals("Break"))
-                                        {
-                                            break;
-                                        }
-                                        else if (ins.Name.Equals("Continue"))
-                                        {
-                                            continue;
-                                        }
-                                        //return ins.;
-                                    }
-                                }
-
-                                //SE HACE UPDATE DEL VALOR
-                                var arit = new Arithmetic(new Access(initId), new Literal("1", 1), "+");
-                                var val = arit.Execute(forAmbit);
-
-
-                                cond = new Relational(arit, actualizacion, "<=", 0, 0);
-                                condicion = cond.Execute(forAmbit);
-
-                                
-
-                                if (condicion.getDataType != DataType.BOOLEAN)
-                                {
-                                    ConsolaController.Instance.Add("La condicion no es booleana");
-                                    return null;
-                                }
-
-                                if ((bool)condicion.Value)
-                                {
-                                    forAmbit.setVariable(initId, val.Value, val.getDataType, false);
-                                }
-
-                            }
-
-                            else
-                            {
-                                break;
-                            }
-                        }
+                        simb = "<=";
+                    } else
+                    {
+                        simb = ">=";
                     }
-                    //DECREMENTAL
-                    else
+
+                    Relational cond_temp = new Relational(inicializacion, actualizacion, simb, 0, 0);
+
+                    var condicion = cond_temp.Execute(forAmbit);
+
+
+                    if (condicion.getDataType != DataType.BOOLEAN)
                     {
-                        Relational cond = new Relational(new Access(initId), actualizacion, ">=", 0, 0);
-                        var condicion = cond.Execute(forAmbit);
+                        ConsolaController.Instance.Add("La condicion del for no es boleana");
+
+                        return null;
+                    }
 
 
-                        if (condicion.getDataType != DataType.BOOLEAN)
-                        {
-                            ConsolaController.Instance.Add("La condicion no es boleana");
-                            return null;
-                        }
+                    if ((bool)condicion.Value == true)
+                    {
 
+                        assignation.Execute(ambit);
+
+
+                        Relational cond = new Relational(new Access(initId), actualizacion, simb, 0, 0);
 
 
                         //EJECUCION
                         while ((bool)condicion.Value == true)
                         {
+
 
                             //VERIFICA QUE LA SENTENCIAS NO ESTEN VACIAS
                             if (!sentence.IsNull)
@@ -168,20 +108,23 @@ namespace CompiPascal.grammar.sentences
                                         {
                                             continue;
                                         }
-                                        else if (ins.Name.Equals("Return"))
-                                        {
-
-                                        }
                                         //return ins.;
                                     }
                                 }
 
                                 //SE HACE UPDATE DEL VALOR
-                                var arit = new Arithmetic(new Access(initId), new Literal("1", 1), "-");
+
+                                var s = "+";
+                                if (!direccion.ToLower().Equals("to"))
+                                {
+                                    s = "-";
+                                }
+                                
+                                var arit = new Arithmetic(new Access(initId), new Literal("1", 1), s);
                                 var val = arit.Execute(forAmbit);
 
 
-                                cond = new Relational(arit, actualizacion, ">=", 0, 0);
+                                cond = new Relational(arit, actualizacion, simb, 0, 0);
                                 condicion = cond.Execute(forAmbit);
 
 
@@ -204,8 +147,166 @@ namespace CompiPascal.grammar.sentences
                                 break;
                             }
                         }
+
+
                     }
 
+
+
+
+
+                    /* //INCREMENTAL
+                     if (direccion.Equals("to"))
+                     {
+
+                         Relational cond = new Relational(new Access(initId), actualizacion, "<=", 0,0);
+                         var condicion = cond.Execute(forAmbit);
+
+
+                         if (condicion.getDataType != DataType.BOOLEAN)
+                         {
+                             ConsolaController.Instance.Add("La condicion del for no es boleana");
+
+                             return null;
+                         }
+
+
+
+                         //EJECUCION
+                         while ((bool)condicion.Value == true)
+                         {
+
+
+                             //VERIFICA QUE LA SENTENCIAS NO ESTEN VACIAS
+                             if (!sentence.IsNull)
+                             {
+                                 var element = sentence.Execute(forAmbit);
+
+                                 if (element != null)
+                                 {
+                                     if (element is Instruction)
+                                     {
+                                         Instruction ins = (Instruction)element;
+
+                                         //console.log(element);
+                                         if (ins.Name.Equals("Break"))
+                                         {
+                                             break;
+                                         }
+                                         else if (ins.Name.Equals("Continue"))
+                                         {
+                                             continue;
+                                         }
+                                         //return ins.;
+                                     }
+                                 }
+
+                                 //SE HACE UPDATE DEL VALOR
+                                 var arit = new Arithmetic(new Access(initId), new Literal("1", 1), "+");
+                                 var val = arit.Execute(forAmbit);
+
+
+                                 cond = new Relational(arit, actualizacion, "<=", 0, 0);
+                                 condicion = cond.Execute(forAmbit);
+
+
+
+                                 if (condicion.getDataType != DataType.BOOLEAN)
+                                 {
+                                     ConsolaController.Instance.Add("La condicion no es booleana");
+                                     return null;
+                                 }
+
+                                 if ((bool)condicion.Value)
+                                 {
+                                     forAmbit.setVariable(initId, val.Value, val.getDataType, false);
+                                 }
+
+                             }
+
+                             else
+                             {
+                                 break;
+                             }
+                         }
+                     }
+                     //DECREMENTAL
+                     else
+                     {
+                         Relational cond = new Relational(new Access(initId), actualizacion, ">=", 0, 0);
+                         var condicion = cond.Execute(forAmbit);
+
+
+                         if (condicion.getDataType != DataType.BOOLEAN)
+                         {
+                             ConsolaController.Instance.Add("La condicion no es boleana");
+                             return null;
+                         }
+
+
+
+                         //EJECUCION
+                         while ((bool)condicion.Value == true)
+                         {
+
+                             //VERIFICA QUE LA SENTENCIAS NO ESTEN VACIAS
+                             if (!sentence.IsNull)
+                             {
+                                 var element = sentence.Execute(forAmbit);
+
+                                 if (element != null)
+                                 {
+                                     if (element is Instruction)
+                                     {
+                                         Instruction ins = (Instruction)element;
+
+                                         //console.log(element);
+                                         if (ins.Name.Equals("Break"))
+                                         {
+                                             break;
+                                         }
+                                         else if (ins.Name.Equals("Continue"))
+                                         {
+                                             continue;
+                                         }
+                                         else if (ins.Name.Equals("Return"))
+                                         {
+
+                                         }
+                                         //return ins.;
+                                     }
+                                 }
+
+                                 //SE HACE UPDATE DEL VALOR
+                                 var arit = new Arithmetic(new Access(initId), new Literal("1", 1), "-");
+                                 var val = arit.Execute(forAmbit);
+
+
+                                 cond = new Relational(arit, actualizacion, ">=", 0, 0);
+                                 condicion = cond.Execute(forAmbit);
+
+
+
+                                 if (condicion.getDataType != DataType.BOOLEAN)
+                                 {
+                                     ConsolaController.Instance.Add("La condicion no es booleana");
+                                     return null;
+                                 }
+
+                                 if ((bool)condicion.Value)
+                                 {
+                                     forAmbit.setVariable(initId, val.Value, val.getDataType, false);
+                                 }
+
+                             }
+
+                             else
+                             {
+                                 break;
+                             }
+                         }
+                     }
+                     */
                 } else
                 {
                     ConsolaController.Instance.Add("Variable de contador ilegal: La variable '" + initId + "' no debe estar asignada al momento de su declaracion");

@@ -51,24 +51,37 @@ namespace CompiPascal
             var texto_analizar = textAnalizar.Text;
             if (texto_analizar != "")
             {
-            
-                consola.Text = "$fpc -vw main.pas\nCompi-Pascal Compiler version 3.0.2 ["+ DateTime.Now + "] for x86_64\n";
-                consola.Text = consola.Text + "Copyright (c) 2021-2100 by Juan Jose Ramos 201801262\nTarget OS: Windows for x86-64\n";
-                consola.Text = consola.Text + "Compiling main.pas\n$main\n\n";
+
+                consola.Text = get_text();
 
 
                 Syntactic syntactic = new Syntactic();
                 syntactic.analizer(texto_analizar, Application.StartupPath);
 
-                consola.Text = consola.Text + ErrorController.Instance.getLexicalError();
-                consola.Text = consola.Text + ErrorController.Instance.getSintactycError();
-                consola.Text = consola.Text + ErrorController.Instance.getSemantycError();
-                consola.Text = consola.Text + ConsolaController.Instance.getText()+ "\nFinalizado.";
 
-               
+                if (!ErrorController.Instance.containLexicalError())
+                {
+                    consola.Text = consola.Text + ErrorController.Instance.getSintactycError();
+                    consola.Text = consola.Text + ErrorController.Instance.getSemantycError();
+                    consola.Text = consola.Text + ConsolaController.Instance.getText() + "\nFinalizado.";
+                } else
+                {
+                    consola.Text = consola.Text + ErrorController.Instance.getLexicalError(Application.StartupPath);
+                    pictureBox1.Image = Image.FromFile(Application.StartupPath+"\\"+ "error_lexico.png");
+                }
 
 
-            } else
+                consola.Text = consola.Text+ "\nFinalizado.";
+
+
+
+
+
+
+
+
+            }
+            else
             {
                 consola.Text = "Debe escribir texto en el editor";
             }
@@ -84,17 +97,15 @@ namespace CompiPascal
             if (traduccion.Text != "")
             {
 
+                consolaTraduccion.Text = get_text();
 
                 Syntactic_Trad syntactic_Trad = new Syntactic_Trad();
 
                 syntactic_Trad.analizer(traduccion.Text, Application.StartupPath);
 
-                consolaTraduccion.Text = "";
-                consolaTraduccion.Text = "$fpc -vw main.pas\nCompi-Pascal Compiler version 3.0.2 [" + DateTime.Now + "] for x86_64\n";
-                consolaTraduccion.Text = consola.Text + "Copyright (c) 2021-2100 by Juan Jose Ramos 201801262\nTarget OS: Windows for x86-64\n";
-                consolaTraduccion.Text = consola.Text + "Compiling main.pas\n$main\n\n";
+                
 
-                consolaTraduccion.Text = consolaTraduccion.Text + ErrorController.Instance.getLexicalError();
+                consolaTraduccion.Text = consolaTraduccion.Text + ErrorController.Instance.getLexicalError(Application.StartupPath);
                 consolaTraduccion.Text = consolaTraduccion.Text + ErrorController.Instance.getSintactycError();
                 consolaTraduccion.Text = consolaTraduccion.Text + ErrorController.Instance.getSemantycError();
 
@@ -102,12 +113,23 @@ namespace CompiPascal
                 consolaTraduccion.Text = consolaTraduccion.Text + syntactic_Trad.get_Traduction();
 
 
-                consolaTraduccion.Text = consolaTraduccion.Text + ConsolaController.Instance.getText() + "\nFinalizado.";
+                consolaTraduccion.Text = consolaTraduccion.Text + ConsolaController.Instance.getText() + "\n\nFinalizado.";
             }
             else
             {
-                consolaTraduccion.Text = "Debe escribir en el editor";
+                consolaTraduccion.Text = "Debe escribir en el editor\n\nFinalizado.";
             }
+        }
+
+
+        public string get_text()
+        {
+            var text = "";
+            text = "$fpc -vw main.pas\nCompi-Pascal Compiler version 3.0.2 [" + DateTime.Now + "] for x86_64\n"
+                + "Copyright (c) 2021-2100 by Juan Jose Ramos 201801262\nTarget OS: Windows for x86-64\n"
+                + "Compiling main.pas\n$main\n\n";
+
+            return text;
         }
 
         public void AddLineNumbers()

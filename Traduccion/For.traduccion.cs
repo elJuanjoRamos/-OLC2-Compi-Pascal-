@@ -32,6 +32,15 @@ namespace CompiPascal.Traduccion
                 ;
              */
 
+
+            var tabs = "";
+            for (int i = 0; i < cant_tabs; i++)
+            {
+                tabs = tabs + "  ";
+            }
+
+
+
             var reserv_for = actual.ChildNodes[0].Token.Text;
 
             var ident = actual.ChildNodes[1].Token.Text;
@@ -39,21 +48,15 @@ namespace CompiPascal.Traduccion
             var inicio = expressionAST.getExpresion(actual.ChildNodes[4]);
             var direccion = actual.ChildNodes[5].ChildNodes[0].Token.Text;
             var fin = expressionAST.getExpresion(actual.ChildNodes[6]);
-            var lista_instrucciones = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[8], cant_tabs + 1);
+            var lista_instrucciones = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[8], cant_tabs );
 
             var reserv_do = actual.ChildNodes[7].Token.Text;
 
-            //cantidad tabs
-            var tabs = "";
-            for (int i = 0; i < cant_tabs; i++)
-            {
-                tabs = tabs + " ";
-            }
-
+           
 
             var for_total =
                 tabs + reserv_for + " " + ident + " := " + inicio + " " + direccion + " " + fin + " " + " " + reserv_do + "\n"
-                + lista_instrucciones;
+                + lista_instrucciones + "\n";
 
             return for_total;
 

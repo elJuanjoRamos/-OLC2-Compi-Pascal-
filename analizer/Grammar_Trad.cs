@@ -135,6 +135,7 @@ namespace CompiPascal.analizer
             RegisterOperators(4, Associativity.Left, HIGHER_EQUAL, LESS_EQUAL, LESS, HIGHER);
             RegisterOperators(5, Associativity.Left, EQUALS, DISCTINCT);
             RegisterOperators(6, Associativity.Left, AND, OR, NOT);
+            RegisterOperators(7, Associativity.Left, PAR_IZQ, PAR_DER);
 
             #endregion
 

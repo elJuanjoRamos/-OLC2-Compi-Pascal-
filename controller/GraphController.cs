@@ -1,5 +1,7 @@
-﻿using Irony.Parsing;
+﻿using CompiPascal.grammar.expression;
+using Irony.Parsing;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -30,8 +32,6 @@ namespace CompiPascal.controller
         public void getGraph(ParseTreeNode root, string path_startup)
         {
             string dot = getDot(root);
-
-            Console.WriteLine(dot);
 
             try
             {
@@ -128,6 +128,50 @@ namespace CompiPascal.controller
             cadena = cadena.Replace("\\", "\\\\");
             cadena = cadena.Replace("\"", "\\\"");
             return cadena;
+        }
+
+        public void printLexicalError(ArrayList errors, string path_startup)
+        {
+            var graphi = "digraph G{\n";
+
+            graphi += "graph [pad=\"" + 0.5 + "\", nodesep=\"" + 0.5 + "\", ranksep=\"" + 2 + "\"]\nnode[shape = plain]\nrankdir = LR;\nBaz [label=<";
+
+
+            graphi += "\n<table border=\"" + 0 + "\" cellborder=\"" + 1 + "\" cellspacing=\"" + 0 + "\">";
+
+            graphi += "<tr>\n<td width='100'><i>Tipo</i></td>\n<td width='100'><i>Mensaje</i></td>\n<td width='100'><i>Linea</i></td>\n<td><i width='100'>Columna</i></td> </tr>\n";
+
+
+            for (int i = 0; i < errors.Count; i++)
+            {
+                var err = (Error)errors[i];
+
+                graphi += "<tr>\n<td height='25'>" + "Lexico"+ "</td>\n<td height='25'>" + err.Message + "</td>\n<td height='25'>" + err.Row + "</td>\n<td height='25'>" + err.Column + "</td>\n</tr>";
+
+            }
+            graphi += "\n</table>>];}";
+
+
+            print_image(path_startup, "error_lexico", graphi);
+        }
+
+        public void print_image(string path_startup, string name, string dot)
+        {
+            try
+            {
+                System.IO.File.WriteAllText(path_startup + "\\" + name+".dot", dot);
+                var command = "dot -Tpng \"" + path_startup + "\\" + name+".dot\"  -o \"" + path_startup + "\\" + name+".png\"   ";
+                var procStarInfo = new ProcessStartInfo("cmd", "/C" + command);
+                var proc = new System.Diagnostics.Process();
+                proc.StartInfo = procStarInfo;
+                proc.Start();
+                proc.WaitForExit();
+            }
+            catch (Exception)
+            {
+
+                System.Diagnostics.Debug.WriteLine("ERROR AL GENERAR EL DOT");
+            }
         }
     }
 }

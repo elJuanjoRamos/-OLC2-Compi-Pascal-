@@ -51,10 +51,20 @@
             this.analizar = new System.Windows.Forms.Button();
             this.traduccion = new System.Windows.Forms.RichTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.errores = new System.Windows.Forms.TabControl();
+            this.lexicos = new System.Windows.Forms.TabPage();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
             this.contextMenuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.errores.SuspendLayout();
+            this.lexicos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
@@ -284,12 +294,75 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.errores);
             this.tabPage3.Location = new System.Drawing.Point(4, 29);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(1402, 851);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Reportes";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // errores
+            // 
+            this.errores.Controls.Add(this.lexicos);
+            this.errores.Controls.Add(this.tabPage5);
+            this.errores.Location = new System.Drawing.Point(18, 38);
+            this.errores.Name = "errores";
+            this.errores.SelectedIndex = 0;
+            this.errores.Size = new System.Drawing.Size(1360, 775);
+            this.errores.TabIndex = 0;
+            // 
+            // lexicos
+            // 
+            this.lexicos.Controls.Add(this.label10);
+            this.lexicos.Controls.Add(this.label9);
+            this.lexicos.Controls.Add(this.pictureBox1);
+            this.lexicos.Location = new System.Drawing.Point(4, 29);
+            this.lexicos.Name = "lexicos";
+            this.lexicos.Padding = new System.Windows.Forms.Padding(3);
+            this.lexicos.Size = new System.Drawing.Size(1352, 742);
+            this.lexicos.TabIndex = 0;
+            this.lexicos.Text = "Lexicos";
+            this.lexicos.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Century Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label10.Location = new System.Drawing.Point(32, 74);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(599, 27);
+            this.label10.TabIndex = 18;
+            this.label10.Text = "Listado de errores lexicos encontrados en ejecucion";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Century Gothic", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label9.Location = new System.Drawing.Point(32, 34);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(245, 40);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "Errores Lexicos";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(32, 115);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(1289, 593);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Location = new System.Drawing.Point(4, 29);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage5.Size = new System.Drawing.Size(1352, 742);
+            this.tabPage5.TabIndex = 1;
+            this.tabPage5.Text = "tabPage5";
+            this.tabPage5.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -306,6 +379,11 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.errores.ResumeLayout(false);
+            this.lexicos.ResumeLayout(false);
+            this.lexicos.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -332,6 +410,12 @@
         private System.Windows.Forms.Button analizar;
         private System.Windows.Forms.RichTextBox traduccion;
         private System.Windows.Forms.RichTextBox consolaTraduccion;
+        private System.Windows.Forms.TabControl errores;
+        private System.Windows.Forms.TabPage lexicos;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
     }
 }
 

@@ -16,6 +16,14 @@ namespace CompiPascal.Traduccion
         public string WHILE(ParseTreeNode actual, int cantidad_tab)
         {
 
+
+
+            var tabs = "";
+            for (int i = 0; i < cantidad_tab; i++)
+            {
+                tabs = tabs + "  ";
+            }
+
             //WHILE.Rule = RESERV_WHILE + LOGIC_EXPRESION + RESERV_DO + INSTRUCTIONS_BODY;
 
             var reserv_while = actual.ChildNodes[0].Token.Text;
@@ -26,11 +34,11 @@ namespace CompiPascal.Traduccion
 
 
             
-            var lista_instrucciones = (new InstructionTraduccion()).INSTRUCTIONS_BODY(actual.ChildNodes[3], cantidad_tab+1);
+            var lista_instrucciones = (new InstructionTraduccion()).INSTRUCTIONS_BODY(actual.ChildNodes[3], cantidad_tab);
 
             var while_total =
-                reserv_while + " " + condition + " " + reserv_do + "\n" +
-                lista_instrucciones +";";
+                tabs + reserv_while + " " + condition + " " + reserv_do + "\n" +
+                lista_instrucciones +";\n";
 
 
             return while_total;

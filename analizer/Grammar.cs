@@ -8,11 +8,11 @@ using Irony.Parsing;
 
 namespace CompiPascal.analizer
 {
-    class Grammar: Irony.Parsing.Grammar
+    class Grammar : Irony.Parsing.Grammar
     {
 
         public Grammar()
-            :base(caseSensitive: false)
+            : base(caseSensitive: false)
         {
             #region Lexical structure
 
@@ -51,6 +51,7 @@ namespace CompiPascal.analizer
             //Aritmethic    
             var PLUS = ToTerm("+", "TK_PLUS");
             var MIN = ToTerm("-", "TK_MIN");
+            var MIN2 = ToTerm("-", "TK_MIN2");
             var POR = ToTerm("*", "TK_POR");
             var DIVI = ToTerm("/", "TK_DIVI");
             var MODULE = ToTerm("%", "TK_MODULE");
@@ -135,6 +136,7 @@ namespace CompiPascal.analizer
             RegisterOperators(4, Associativity.Left, HIGHER_EQUAL, LESS_EQUAL, LESS, HIGHER);
             RegisterOperators(5, Associativity.Left, EQUALS, DISCTINCT);
             RegisterOperators(6, Associativity.Left, AND, OR, NOT);
+            RegisterOperators(7, Associativity.Left, PAR_IZQ, PAR_DER);
 
             #endregion
 
@@ -183,6 +185,7 @@ namespace CompiPascal.analizer
             NonTerminal IFTHEN = new NonTerminal("IF-THEN", "IF-THEN");
             NonTerminal IF_SENTENCE = new NonTerminal("IF_SENTENCE", "IF_SENTENCE");
             NonTerminal ELIF = new NonTerminal("ELIF", "ELIF");
+
             #endregion
 
             #region CASE NO TERMINALES
@@ -341,7 +344,8 @@ namespace CompiPascal.analizer
             #region EXPRESSION
 
             EXPRESION.Rule
-                = EXPRESION + PLUS + EXPRESION
+                = MIN2 + EXPRESION
+                | EXPRESION + PLUS + EXPRESION
                 | EXPRESION + MIN + EXPRESION
                 | EXPRESION + POR + EXPRESION
                 | EXPRESION + DIVI + EXPRESION
@@ -354,7 +358,6 @@ namespace CompiPascal.analizer
                 | EXPRESION + DISCTINCT + EXPRESION
                 | EXPRESION + AND + EXPRESION
                 | EXPRESION + OR + EXPRESION
-                //| MIN + EXPRESION
                 | NOT + EXPRESION
                 | CALL_FUNCTION_PROCEDURE
                 | IDENTIFIER
@@ -450,11 +453,11 @@ namespace CompiPascal.analizer
 
             #region FUNCIONES Y PROCEDIMIENTOS
             FUNCTION_LIST.Rule
-                = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA 
+                = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
                 + FUNCTION_LIST
-                
+
                 | RESERV_PROCEDURE + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + PUNTO_COMA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
@@ -469,8 +472,8 @@ namespace CompiPascal.analizer
                 | IDENTIFIER + PARAMETER_BODY + DOS_PUNTOS + DATA_TYPE + PARAMETER_END
                 | Empty;
 
-            PARAMETER_BODY.Rule 
-                =  COMA + IDENTIFIER + PARAMETER_BODY
+            PARAMETER_BODY.Rule
+                = COMA + IDENTIFIER + PARAMETER_BODY
                 | Empty
                 ;
             PARAMETER_END.Rule = PUNTO_COMA + PARAMETER
@@ -482,7 +485,7 @@ namespace CompiPascal.analizer
 
             CALL_PARAMETERS.Rule
                 = EXPRESION + CALL_PARAMETERS
-                | COMA + EXPRESION + CALL_PARAMETERS 
+                | COMA + EXPRESION + CALL_PARAMETERS
                 | Empty
                 ;
 
@@ -494,7 +497,7 @@ namespace CompiPascal.analizer
             WRITE.Rule = RESERV_WRITE + PAR_IZQ + WRHITE_PARAMETER + PAR_DER + PUNTO_COMA
                 | RESERV_WRITEN + PAR_IZQ + WRHITE_PARAMETER + PAR_DER + PUNTO_COMA
                 ;
-            
+
             WRHITE_PARAMETER.Rule
                 = EXPRESION + MORE_WRHITE_PARAMETER
                 | Empty
@@ -506,9 +509,9 @@ namespace CompiPascal.analizer
 
             EXIT.Rule = RESERV_EXIT + PAR_IZQ + EXPRESION + PAR_DER + PUNTO_COMA;
 
-           
+
             #endregion
-            
+
             #region Preferencias
             this.Root = init;
             #endregion
