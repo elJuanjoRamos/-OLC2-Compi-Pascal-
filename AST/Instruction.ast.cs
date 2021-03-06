@@ -109,7 +109,7 @@ namespace CompiPascal.AST
             }
             else if (actual.Term.ToString().Equals("EXIT"))
             {
-                return new Exit( (new ExpressionAST()).getExpresion(actual.ChildNodes[2]));
+                return (new ExitAst()).getExit(actual.ChildNodes[2]);
             }
 
             return null;

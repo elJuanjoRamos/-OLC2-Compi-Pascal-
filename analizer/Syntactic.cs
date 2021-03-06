@@ -36,11 +36,12 @@ namespace CompiPascal.analizer
             {
                 System.Diagnostics.Debug.WriteLine(item);
             }
-            
+
 
             Parser parser = new Parser(new LanguageData(grammar));
             ParseTree tree = parser.Parse(cadena);
             ParseTreeNode root = tree.Root;
+
             
 
             if (tree.ParserMessages.Count > 0)
@@ -82,8 +83,8 @@ namespace CompiPascal.analizer
             LinkedList<Instruction> listaInstrucciones = instructionAST.INSTRUCTIONS_BODY(program_body.ChildNodes.ElementAt(2));
             
             //COMENZAR A EJECUTAR
-            ejecutar(listaInstrucciones, lista_declaraciones, lista_funciones);
-            
+            ejecutar(listaInstrucciones, lista_declaraciones, lista_funciones, paths);
+
         }
 
 
@@ -91,7 +92,9 @@ namespace CompiPascal.analizer
         #region EJECUCION
 
 
-        public void ejecutar(LinkedList<Instruction> actual, LinkedList<Instruction> lista_declaraciones, LinkedList<Instruction> lista_funciones)
+        public void ejecutar(LinkedList<Instruction> actual, 
+            LinkedList<Instruction> lista_declaraciones, LinkedList<Instruction> lista_funciones,
+            string path)
         {
             //GUARDAR VARIABLES
 
@@ -142,6 +145,11 @@ namespace CompiPascal.analizer
 
             if (!error_variable && !error_funcion)
             {
+                //GRAFICAR TS
+                GraphController.Instance.setPath(path);
+                GraphController.Instance.graficarTS(general.getGeneral());
+
+
                 foreach (var item in actual)
                 {
                     try

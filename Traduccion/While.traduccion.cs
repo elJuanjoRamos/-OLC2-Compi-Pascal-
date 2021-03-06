@@ -1,4 +1,6 @@
-﻿using Irony.Parsing;
+﻿using CompiPascal.Traduccion.grammar.abstracts;
+using CompiPascal.Traduccion.grammar.sentences;
+using Irony.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,39 +15,20 @@ namespace CompiPascal.Traduccion
         }
 
         #region WHILE
-        public string WHILE(ParseTreeNode actual, int cantidad_tab)
+        public While_Trad WHILE(ParseTreeNode actual, int cant_tabs)
         {
-
-
-
-            var tabs = "";
-            for (int i = 0; i < cantidad_tab; i++)
-            {
-                tabs = tabs + "  ";
-            }
-
             //WHILE.Rule = RESERV_WHILE + LOGIC_EXPRESION + RESERV_DO + INSTRUCTIONS_BODY;
-
-            var reserv_while = actual.ChildNodes[0].Token.Text;
 
             var condition = (new ExpressionTraduccion()).getExpresion(actual.ChildNodes[1]);
 
-            var reserv_do = actual.ChildNodes[2].Token.Text;
+            InstructionTraduccion instructionAST = new InstructionTraduccion();
 
+            LinkedList<Instruction_Trad> lista_instrucciones = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[3], cant_tabs+1);
 
-            
-            var lista_instrucciones = (new InstructionTraduccion()).INSTRUCTIONS_BODY(actual.ChildNodes[3], cantidad_tab);
-
-            var while_total =
-                tabs + reserv_while + " " + condition + " " + reserv_do + "\n" +
-                lista_instrucciones +";\n";
-
-
-            return while_total;
+            return new While_Trad(condition, new Sentence_Trad(lista_instrucciones), cant_tabs);
 
         }
 
         #endregion
-
     }
 }

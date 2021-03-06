@@ -21,6 +21,8 @@ namespace CompiPascal
             linenumber.Font = textAnalizar.Font;
             textAnalizar.Select();
             AddLineNumbers();
+
+            //pictureBox1.Image 
         }
 
         private void contextMenuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -61,30 +63,48 @@ namespace CompiPascal
 
                 if (!ErrorController.Instance.containLexicalError())
                 {
-                    consola.Text = consola.Text + ErrorController.Instance.getSintactycError();
-                    consola.Text = consola.Text + ErrorController.Instance.getSemantycError();
-                    consola.Text = consola.Text + ConsolaController.Instance.getText() + "\nFinalizado.";
+
+                    if (!ErrorController.Instance.containSyntacticError())
+                    {
+
+                        if (!ErrorController.Instance.containSemantycError())
+                        {
+                            setPicture_text(consola, pictureBox4, ConsolaController.Instance.getText(), "ast.png");
+                            setPicture_text(consola, pictureBox5, "", "tabla_simbolos.png");
+
+                        }
+                        else
+                        {
+                            setPicture_text(consola, pictureBox3, ErrorController.Instance.getSemantycError(Application.StartupPath), "error_semantico.png");
+                        }
+
+                    } else
+                    {
+                        setPicture_text(consola, pictureBox2, ErrorController.Instance.getSintactycError(Application.StartupPath), "error_sintactico.png");
+
+                    }                    
                 } else
                 {
-                    consola.Text = consola.Text + ErrorController.Instance.getLexicalError(Application.StartupPath);
-                    pictureBox1.Image = Image.FromFile(Application.StartupPath+"\\"+ "error_lexico.png");
+                    setPicture_text(consola, pictureBox1, ErrorController.Instance.getLexicalError(Application.StartupPath), "error_lexico.png");
                 }
 
 
                 consola.Text = consola.Text+ "\nFinalizado.";
-
-
-
-
-
-
-
 
             }
             else
             {
                 consola.Text = "Debe escribir texto en el editor";
             }
+        }
+
+        public void setPicture_text(RichTextBox consola, PictureBox picture, string texto, string nombre)
+        {
+
+            consola.Text = consola.Text + texto;
+            picture.Image = null;
+            picture.Image = Image.FromFile(Application.StartupPath + "\\" + nombre);
+            picture.Refresh();
         }
 
 
@@ -97,18 +117,12 @@ namespace CompiPascal
             if (traduccion.Text != "")
             {
 
+
                 consolaTraduccion.Text = get_text();
 
                 Syntactic_Trad syntactic_Trad = new Syntactic_Trad();
 
                 syntactic_Trad.analizer(traduccion.Text, Application.StartupPath);
-
-                
-
-                consolaTraduccion.Text = consolaTraduccion.Text + ErrorController.Instance.getLexicalError(Application.StartupPath);
-                consolaTraduccion.Text = consolaTraduccion.Text + ErrorController.Instance.getSintactycError();
-                consolaTraduccion.Text = consolaTraduccion.Text + ErrorController.Instance.getSemantycError();
-
 
                 consolaTraduccion.Text = consolaTraduccion.Text + syntactic_Trad.get_Traduction();
 

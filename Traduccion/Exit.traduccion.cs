@@ -1,4 +1,5 @@
-﻿using Irony.Parsing;
+﻿using CompiPascal.Traduccion.grammar.sentences;
+using Irony.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,12 +13,16 @@ namespace CompiPascal.Traduccion
 
         }
 
-        public string getExit(ParseTreeNode actual)
+        public Exit_Trad getExit(ParseTreeNode actual, int cant_Tabs)
         {
-            var retorno = (new ExpressionTraduccion()).getExpresion(actual.ChildNodes[2]);
+            if (actual.ChildNodes.Count != 0)
+            {
+                var exp = (new ExpressionTraduccion()).getExpresion(actual);
 
-            return retorno;
+                return new Exit_Trad(exp, cant_Tabs);
+            }
 
+            return new Exit_Trad(cant_Tabs);
         }
     }
 }

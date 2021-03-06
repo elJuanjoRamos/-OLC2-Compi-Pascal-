@@ -1,0 +1,21 @@
+digraph G{
+graph [pad="0.5", nodesep="0.5", ranksep="2"]
+node[shape = plain]
+rankdir = LR;
+Baz [label=<
+<table border="0" cellborder="1" cellspacing="0"><tr>
+<td width='100'><i>Nombre</i></td>
+<td width='100'><i>Tipo</i></td>
+<td width='100'><i>Ambito</i></td>
+<td><i width='100'>Valor</i></td>
+<td><i width='100'>Funcion</i></td>
+<td><i width='100'>Procedure</i></td> </tr>
+<tr>
+<td height='25'>a</td>
+<td height='25'>INTEGER</td>
+<td height='25'>General</td>
+<td height='25'>0</td>
+<td height='25'>false</td>
+<td height='25'>false</td>
+</tr>
+</table>>];}

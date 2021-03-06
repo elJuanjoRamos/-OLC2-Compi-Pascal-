@@ -1,4 +1,9 @@
 ﻿using CompiPascal.grammar.expression;
+using CompiPascal.grammar.identifier;
+using CompiPascal.grammar.sentences;
+using CompiPascal.Traduccion.grammar;
+using CompiPascal.Traduccion.grammar.identifier;
+using CompiPascal.Traduccion.grammar.sentences;
 using Irony.Parsing;
 using System;
 using System.Collections;
@@ -13,7 +18,7 @@ namespace CompiPascal.controller
     {
         private static int cont;
         private static string graph;
-
+        private string path = "";
 
         private readonly static GraphController _instance = new GraphController();
 
@@ -28,7 +33,10 @@ namespace CompiPascal.controller
                 return _instance;
             }
         }
-
+        public void setPath(string path)
+        {
+            this.path = path;
+        }
         public void getGraph(ParseTreeNode root, string path_startup)
         {
             string dot = getDot(root);
@@ -48,18 +56,6 @@ namespace CompiPascal.controller
 
                 System.Diagnostics.Debug.WriteLine("ERROR AL GENERAR EL DOT");
             }
-            /*try
-            {
-                using (FileStream fs = File.Create(path))
-                {
-                    byte[] info = new UTF8Encoding(true).GetBytes(dot);
-                    fs.Write(info, 0, info.Length);
-                }
-            }
-            catch (Exception)
-            {
-                System.Diagnostics.Debug.WriteLine("ERROR AL GENERAR EL DOT");
-            }*/
         }
 
 
@@ -130,8 +126,9 @@ namespace CompiPascal.controller
             return cadena;
         }
 
-        public void printLexicalError(ArrayList errors, string path_startup)
+        public void printError(ArrayList errors, string path_startup, string tipo, string nombre)
         {
+
             var graphi = "digraph G{\n";
 
             graphi += "graph [pad=\"" + 0.5 + "\", nodesep=\"" + 0.5 + "\", ranksep=\"" + 2 + "\"]\nnode[shape = plain]\nrankdir = LR;\nBaz [label=<";
@@ -146,13 +143,132 @@ namespace CompiPascal.controller
             {
                 var err = (Error)errors[i];
 
-                graphi += "<tr>\n<td height='25'>" + "Lexico"+ "</td>\n<td height='25'>" + err.Message + "</td>\n<td height='25'>" + err.Row + "</td>\n<td height='25'>" + err.Column + "</td>\n</tr>";
+                graphi += "<tr>\n<td height='25'>" + tipo+ "</td>\n<td height='25'>" + err.Message + "</td>\n<td height='25'>" + err.Row + "</td>\n<td height='25'>" + err.Column + "</td>\n</tr>";
 
             }
             graphi += "\n</table>>];}";
 
 
-            print_image(path_startup, "error_lexico", graphi);
+            print_image(path_startup, nombre, graphi);
+        }
+
+
+        public void graficarTS(Ambit ambit)
+        {
+            var graphi = "digraph G{\n";
+
+            graphi += "graph [pad=\"" + 0.5 + "\", nodesep=\"" + 0.5 + "\", ranksep=\"" + 2 + "\"]\nnode[shape = plain]\nrankdir = LR;\nBaz [label=<";
+
+
+            graphi += "\n<table border=\"" + 0 + "\" cellborder=\"" + 1 + "\" cellspacing=\"" + 0 + "\">";
+
+
+            graphi += "<tr>\n<td width='100'><i>Nombre</i></td>\n<td width='100'><i>Tipo</i></td>\n<td width='100'><i>Ambito</i></td>\n<td><i width='100'>Valor</i></td>\n<td><i width='100'>Funcion</i></td>\n<td><i width='100'>Procedure</i></td> </tr>\n";
+
+
+            while (ambit != null)
+            {
+                if (ambit.Variables.Count > 0)
+                {
+
+                    foreach (var item in ambit.Variables)
+                    {
+                        Identifier id = (Identifier)item.Value;
+                        graphi += "<tr>\n<td height='25'>" + id.Id + "</td>\n<td height='25'>" + id.DataType + "</td>\n<td height='25'>" + ambit.Ambit_name + "</td>\n<td height='25'>" + id.Value.ToString() + "</td>\n<td height='25'>false</td>\n<td height='25'>false</td>\n</tr>";
+                    }
+
+                }
+                if (ambit.Functions.Count > 0)
+                {
+                    var type = "void";
+                    var isfunc = "true";
+                    var isproc = "true";
+
+                    foreach (var item in ambit.Functions)
+                    {
+                        type = "void";
+                        isfunc = "false";
+                        isproc = "true";
+
+                        Function func = (Function)item.Value;
+                        if (!func.IsProcedure)
+                        {
+                            isfunc = "true";
+                            isproc = "false"; 
+                            type = func.Tipe.ToString();
+                        }
+                        graphi += "<tr>\n<td height='25'>" + func.Id + "</td>\n<td height='25'>" + type + "</td>\n<td height='25'>" + ambit.Ambit_name + "</td>\n<td height='25'>" + func.Retorno.ToString() + "</td>\n<td height='25'>"+isfunc+"</td>\n<td height='25'>"+isproc+"</td>\n</tr>";
+                    }
+                }
+                var temp = ambit.anterior;
+                ambit = temp;
+            }
+
+            graphi += "\n</table>>];}";
+
+            print_image(this.path, "tabla_simbolos", graphi);
+
+
+
+        }
+
+        public void graficarTS2(Ambit_Trad ambit)
+        {
+            var graphi = "digraph G{\n";
+
+            graphi += "graph [pad=\"" + 0.5 + "\", nodesep=\"" + 0.5 + "\", ranksep=\"" + 2 + "\"]\nnode[shape = plain]\nrankdir = LR;\nBaz [label=<";
+
+
+            graphi += "\n<table border=\"" + 0 + "\" cellborder=\"" + 1 + "\" cellspacing=\"" + 0 + "\">";
+
+
+            graphi += "<tr>\n<td width='100'><i>Nombre</i></td>\n<td width='100'><i>Tipo</i></td>\n<td width='100'><i>Ambito</i></td>\n<td><i width='100'>Valor</i></td>\n<td><i width='100'>Funcion</i></td>\n<td><i width='100'>Procedure</i></td> </tr>\n";
+
+
+            while (ambit != null)
+            {
+                if (ambit.Variables.Count > 0)
+                {
+
+                    foreach (var item in ambit.Variables)
+                    {
+                        Identifier_Trad id = (Identifier_Trad)item.Value;
+                        graphi += "<tr>\n<td height='25'>" + id.Id + "</td>\n<td height='25'>" + id.DataType + "</td>\n<td height='25'>" + ambit.Ambit_name + "</td>\n<td height='25'>" + id.Value.ToString() + "</td>\n<td height='25'>false</td>\n<td height='25'>false</td>\n</tr>";
+                    }
+
+                }
+                if (ambit.Functions.Count > 0)
+                {
+                    var type = "void";
+                    var isfunc = "true";
+                    var isproc = "true";
+
+                    foreach (var item in ambit.Functions)
+                    {
+                        type = "void";
+                        isfunc = "false";
+                        isproc = "true";
+
+                        Function_Trad func = (Function_Trad)item.Value;
+                        if (!func.IsProcedure)
+                        {
+                            isfunc = "true";
+                            isproc = "false";
+                            type = func.Tipe.ToString();
+                        }
+                        graphi += "<tr>\n<td height='25'>" + func.Id + "</td>\n<td height='25'>" + type + "</td>\n<td height='25'>" + ambit.Ambit_name + "</td>\n<td height='25'>" + func.Retorno.ToString() + "</td>\n<td height='25'>" + isfunc + "</td>\n<td height='25'>" + isproc + "</td>\n</tr>";
+                    }
+                }
+                var temp = ambit.Anterior;
+                ambit = temp;
+            }
+
+            graphi += "\n</table>>];}";
+
+            print_image(this.path, "tabla_simbolos", graphi);
+
+
+
         }
 
         public void print_image(string path_startup, string name, string dot)
@@ -173,5 +289,7 @@ namespace CompiPascal.controller
                 System.Diagnostics.Debug.WriteLine("ERROR AL GENERAR EL DOT");
             }
         }
+    
+    
     }
 }

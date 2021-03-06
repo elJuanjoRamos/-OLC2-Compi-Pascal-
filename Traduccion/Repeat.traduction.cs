@@ -1,4 +1,6 @@
-﻿using Irony.Parsing;
+﻿using CompiPascal.Traduccion.grammar.abstracts;
+using CompiPascal.Traduccion.grammar.sentences;
+using Irony.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -13,45 +15,23 @@ namespace CompiPascal.Traduccion
         }
 
         #region REPEAT UTIL
-        public string REPEAT_UNTIL(ParseTreeNode actual, int cant_tabs)
+        public Repeat_Trad REPEAT_UNTIL(ParseTreeNode actual, int cant_tabs)
         {
-
-
-            var tabs = "";
-            for (int i = 0; i < cant_tabs; i++)
-            {
-                tabs = tabs + "  ";
-            }
-
-
             //REPEAT_UNTIL.Rule = RESERV_REPEAT + INSTRUCTIONS + RESERV_UNTIL + LOGIC_EXPRESION + PUNTO_COMA;
 
-            var reserv_repeat = actual.ChildNodes[0].Token.Text + "\n";
-
-
             //SE OBTIENEN LOS VALORES
-            var lista_instrucciones = (new InstructionTraduccion()).ISTRUCCIONES(actual.ChildNodes[1], cant_tabs+1);
-
-
-            var reserv_util = actual.ChildNodes[2].Token.Text;
-            
+            var instrucciones = actual.ChildNodes[1];
             var condicion = (new ExpressionTraduccion()).getExpresion(actual.ChildNodes[3]);
 
+            InstructionTraduccion instructionAST = new InstructionTraduccion();
 
             //OBTENGO LA LISTA DE INSTRUCCIONES
+            LinkedList<Instruction_Trad> lista_instrucciones = instructionAST.ISTRUCCIONES(instrucciones, cant_tabs+1);
 
-            var repeat_total =
-                tabs + reserv_repeat + "\n" +
-                lista_instrucciones + "\n"+
-                tabs + reserv_util + " " + condicion + ";\n"
-                ;
-
-
-
-            return repeat_total;
+            //RETORNO EL NUEVO REPEAT-UTIL
+            return new Repeat_Trad(condicion, new Sentence_Trad(lista_instrucciones), cant_tabs);
 
         }
         #endregion
-
     }
 }

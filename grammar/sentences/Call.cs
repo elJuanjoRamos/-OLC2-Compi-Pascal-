@@ -24,17 +24,26 @@ namespace CompiPascal.grammar.sentences
 
         public override object Execute(Ambit ambit)
         {
+
+            if (id.Equals("graficar_ts"))
             {
+                //PRINT A LA TABLA SIMBOLOS
+                GraphController.Instance.graficarTS(ambit);
+
+            }
+            else
+            {
+
                 var funcion_llamada = ambit.getFuncion(this.id);
                 if (funcion_llamada == null)
                 {
-                    ConsolaController.Instance.Add("La funcion o procediminento '" + this.id + "' no esta definido");
+                    ErrorController.Instance.SemantycErrors("La funcion o procediminento '" + this.id + "' no esta definido", 0, 0);
                     return null;
                 }
 
                 if (funcion_llamada.Parametos.Count != parametros.Count)
                 {
-                    ConsolaController.Instance.Add("La funcion '" + this.id + "' no recibe la misma cantidad de parametros");
+                    ErrorController.Instance.SemantycErrors("La funcion '" + this.id + "' no recibe la misma cantidad de parametros", 0, 0);
                     return null;
 
                 }
@@ -46,11 +55,11 @@ namespace CompiPascal.grammar.sentences
 
                 if (funcion_llamada.IsProcedure)
                 {
-                    function_ambit = new Ambit(ambit, ambit.Ambit_name + "_Procedure", "Procedure", false);
+                    function_ambit = new Ambit(ambit, ambit.Ambit_name + "_Procedure_" + funcion_llamada.Id, "Procedure", false);
                 }
                 else
                 {
-                    function_ambit = new Ambit(ambit, ambit.Ambit_name + "_Function", "Function", false);
+                    function_ambit = new Ambit(ambit, ambit.Ambit_name + "_Function_" + funcion_llamada.Id, "Function", false);
                 }
 
                 //FOREACH PARA GUARDAR LOS PARAMETROS EN EL AMBITO,
@@ -60,6 +69,7 @@ namespace CompiPascal.grammar.sentences
                 {
                     param.Execute(function_ambit);
                 }
+
                 //SE ASIGNAN LOS VALORES RECIBIDOS A LOS PARAMETROS DE LA FUNCION
                 for (int i = 0; i < parametros.Count; i++)
                 {
@@ -73,16 +83,30 @@ namespace CompiPascal.grammar.sentences
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("El tipo " + result.getDataType + " no es asignable con " + variable.getDataType);
                         ErrorController.Instance.SyntacticError("El tipo " + result.getDataType + " no es asignable con " + variable.getDataType, 0, 0);
                         return null;
                     }
                 }
 
 
+                //GUARDA LAS VARIABLES QUE ESTEN DECLARADAS EN LA FUNCION
+
+                if (funcion_llamada.Declaraciones.Count > 0)
+                {
+
+                    foreach (var declaracion in funcion_llamada.Declaraciones)
+                    {
+                        declaracion.Execute(function_ambit);
+                    }
+                }
+
+
                 //EJECUCION DEL CODIGO
 
+
                 var funcion_Elementos = funcion_llamada.Sentences.Execute(function_ambit);
+
+
 
                 if (funcion_Elementos == null)
                 {
@@ -98,22 +122,44 @@ namespace CompiPascal.grammar.sentences
                         {
                             if (!funcion_llamada.IsProcedure)
                             {
-                                var result = ((Exit)funcion_Elementos).Value.Execute(function_ambit);
+                                var response = ((Exit)funcion_Elementos);
 
-                                return new Returned(result.Value, result.getDataType);
+                                if (response.Return_func_return)
+                                {
+
+                                    return new Returned(funcion_llamada.Retorno, funcion_llamada.Tipe);
+
+                                }
+                                else
+                                {
+                                    var result = response.Value.Execute(function_ambit);
+
+                                    //UPDATE FUNCION A LA TABLA SIMBOLOS
+                                    funcion_llamada.Retorno = result.Value.ToString();
+                                    ambit.setFunction(funcion_llamada.Id, funcion_llamada);
+                                    //PRINT A LA TABLA SIMBOLOS
+                                    GraphController.Instance.graficarTS(function_ambit);
+
+                                    return new Returned(result.Value, result.getDataType);
+                                }
+
+
                             }
                             else
                             {
-                                ErrorController.Instance.SemantycErrors("Procedures can't return a value", 0, 0);
+                                ErrorController.Instance.SemantycErrors("Los procediminentos no retornan ningun valor", 0, 0);
                                 return null;
                             }
                         }
                     }
                 }
 
-
-                return 0;
             }
+
+
+            
+            return 0;
+            
         }
     }
 

@@ -1,5 +1,7 @@
 ﻿using CompiPascal.controller;
 using CompiPascal.Traduccion;
+using CompiPascal.Traduccion.grammar;
+using CompiPascal.Traduccion.grammar.abstracts;
 using Irony.Parsing;
 using System;
 using System.Collections;
@@ -10,11 +12,13 @@ namespace CompiPascal.analizer
 {
     class Syntactic_Trad
     {
+        string texto_traduccion = "";
         //AST
+        public Ambit_Trad general = new Ambit_Trad();
         InstructionTraduccion instructionAST = new InstructionTraduccion();
-        string lista_instrucciones = "";
-        string lista_declaraciones = "";
-        string lista_funciones = "";
+        LinkedList<Instruction_Trad> lista_instrucciones = new LinkedList<Instruction_Trad>();
+        LinkedList<Instruction_Trad> lista_declaraciones = new LinkedList<Instruction_Trad>();
+        LinkedList<Instruction_Trad> lista_funciones = new LinkedList<Instruction_Trad>();
         public Syntactic_Trad()
         {
 
@@ -66,22 +70,90 @@ namespace CompiPascal.analizer
 
             //LISTA DE DECLARCION DE VARIABLES
             ArrayList elementos_her = new ArrayList();
-            lista_declaraciones = (new DeclarationTraduccion()).LIST_DECLARATIONS(program_body.ChildNodes[0], lista_declaraciones, elementos_her);
+            lista_declaraciones = (new DeclarationTraduccion()).LIST_DECLARATIONS(program_body.ChildNodes[0], lista_declaraciones, elementos_her, 0);
 
             //LISTA DE DECLARACION DE FUNCIONES
             elementos_her.Clear();
-            lista_funciones = (new FuncionTraduccion()).FUNCTION_LIST(program_body.ChildNodes[1], lista_funciones, elementos_her);
+            lista_funciones = (new FuncionTraduccion()).FUNCTION_LIST(program_body.ChildNodes[1], lista_funciones, elementos_her, 0);
 
             //LISTADO DE SENTENCIAS SENTENCIAS 
             lista_instrucciones = instructionAST.INSTRUCTIONS_BODY(program_body.ChildNodes[2], 0);
 
 
             //COMENZAR A EJECUTAR
+            ejecutar(lista_instrucciones, lista_declaraciones, lista_funciones, paths);
         }
+
+
+        //EMPIEZA LA EJECUCION
+        #region EJECUCION
+
+
+        public void ejecutar(LinkedList<Instruction_Trad> actual,
+            LinkedList<Instruction_Trad> lista_declaraciones, LinkedList<Instruction_Trad> lista_funciones,
+            string path)
+        {
+            //GUARDAR VARIABLES
+
+
+            foreach (var item in lista_declaraciones)
+            {
+                try
+                {
+                    texto_traduccion += item.Execute(general);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            //FUNCIONES
+            foreach (var item in lista_funciones)
+            {
+                try
+                {
+                    texto_traduccion += "\n" + item.Execute(general);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+
+
+            //INSTRUCCIONES
+            texto_traduccion += "\n\nbegin";
+
+            //GRAFICAR TS
+            //GraphController.Instance.setPath(path);
+            //GraphController.Instance.graficarTS2(general.getGeneral());
+
+
+            foreach (var item in actual)
+            {
+                try
+                {
+                    texto_traduccion +=  "\n" + item.Execute(general);
+                    
+                }
+                catch (Exception)
+                {
+
+                    break;
+                }
+
+            }
+
+            texto_traduccion += "\n\nend.";
+
+        }
+        #endregion
 
         public string get_Traduction()
         {
-            return lista_declaraciones + "\n\n" + lista_funciones + "\n\n" + lista_instrucciones;
+            return texto_traduccion;
         }
 
     }

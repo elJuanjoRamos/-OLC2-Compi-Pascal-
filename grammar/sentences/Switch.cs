@@ -13,8 +13,6 @@ namespace CompiPascal.grammar.sentences
         private Expression condicion;
         private ArrayList cases;
         private Case else_case;
-        private int row;
-        private int column;
 
         public Switch(Expression condicion, ArrayList cases, Case else_case):
             base(0,0, "Case")

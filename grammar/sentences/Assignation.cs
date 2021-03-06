@@ -35,6 +35,7 @@ namespace CompiPascal.grammar.sentences
                 }
 
                 Identifier variable = ambit.getVariable(id);
+
                 /**
                 * VALIDAR EXISTENCIA
                 */
@@ -56,7 +57,7 @@ namespace CompiPascal.grammar.sentences
                         if (variable.DataType == val.getDataType)
                         {
                             ambit.setVariable(id, val.Value, val.getDataType, false);
-                            return ambit.getVariable(id);
+                            return 0;
                         } else
                         {
                             ConsolaController.Instance.Add("El tipo " + val.getDataType + " no es asignable con " + variable.DataType);
@@ -65,12 +66,36 @@ namespace CompiPascal.grammar.sentences
                         }
                     }
 
-                } else
+                } 
+                else
                 {
-                    ConsolaController.Instance.Add("La variable '" + id + "' no esta declara");
-                    ErrorController.Instance.SyntacticError("La variable '" + id + "' no esta declara", 0, 0);
-                    return null;
+                    Function function = ambit.getFuncion(id);
 
+                    if (!function.IsNull)
+                    {
+                        /**
+                       * VALIDAR VALOR: VERIFICA SI EL TIPO DE LA VARIABLE ES IGUAL AL DEL VALOR A ASIGNAR
+                       */
+                        if (function.Tipe == val.getDataType)
+                        {
+                            function.Retorno = val.Value.ToString();
+                            ambit.setFunction(Id, function);
+                            return 0;
+                        }
+                        else
+                        {
+                            ConsolaController.Instance.Add("El tipo " + val.getDataType + " no es asignable con " + variable.DataType);
+                            ErrorController.Instance.SyntacticError("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, 0, 0);
+                            return null;
+                        }
+
+                    } else
+                    {
+                        ConsolaController.Instance.Add("La variable '" + id + "' no esta declara");
+                        ErrorController.Instance.SyntacticError("La variable '" + id + "' no esta declara", 0, 0);
+                        return null;
+
+                    }
                 }
 
 

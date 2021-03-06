@@ -164,11 +164,7 @@ namespace CompiPascal.grammar.expression
         }
         public OpRelational GetType(string simb)
         {
-            if (simb.Equals(">"))
-            {
-                return OpRelational.HIGHER;
-            }
-            else if (simb.Equals("<"))
+            if (simb.Equals("<"))
             {
                 return OpRelational.LESS;
             }
@@ -176,7 +172,7 @@ namespace CompiPascal.grammar.expression
             {
                 return OpRelational.HIGHER_EQUALS;
             }
-            else if (simb.Equals("<"))
+            else if (simb.Equals(">"))
             {
                 return OpRelational.HIGHER;
             }

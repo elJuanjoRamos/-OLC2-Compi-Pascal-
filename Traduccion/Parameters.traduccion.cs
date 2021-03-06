@@ -1,5 +1,6 @@
 ﻿using Irony.Parsing;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -13,7 +14,8 @@ namespace CompiPascal.Traduccion
         {
 
         }
-        public string CALL_PARAMETERS(ParseTreeNode actual, string expresiones)
+
+        public ArrayList CALL_PARAMETERS(ParseTreeNode actual, ArrayList expresiones)
         {
             /*
              CALL_PARAMETERS.Rule
@@ -26,9 +28,8 @@ namespace CompiPascal.Traduccion
             {
                 if (actual.ChildNodes.Count == 2)
                 {
-
                     var expr = (expressionTraduccion.getExpresion(actual.ChildNodes[0]));
-                    expresiones = expresiones + expr;
+                    expresiones.Add(expr);
                     expresiones = CALL_PARAMETERS(actual.ChildNodes[1], expresiones);
                 }
 
@@ -36,7 +37,7 @@ namespace CompiPascal.Traduccion
                 {
                     var expr = expressionTraduccion.getExpresion(actual.ChildNodes[1]);
 
-                    expresiones = expresiones + "," + expr;
+                    expresiones.Add(expr);
 
                     expresiones = CALL_PARAMETERS(actual.ChildNodes[2], expresiones);
                 }
@@ -45,5 +46,6 @@ namespace CompiPascal.Traduccion
             }
             return expresiones;
         }
+
     }
 }

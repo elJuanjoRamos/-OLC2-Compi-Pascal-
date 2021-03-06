@@ -1,4 +1,6 @@
-﻿using Irony.Parsing;
+﻿using CompiPascal.Traduccion.grammar.abstracts;
+using CompiPascal.Traduccion.grammar.sentences;
+using Irony.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,48 +20,45 @@ namespace CompiPascal.Traduccion
 
 
 
-        #region WRITE
-        public string getWrite(ParseTreeNode actual, int cant_tabs)
+        public Write_Trad getWrite(ParseTreeNode actual, int cant_tabs)
         {
-            var write_instruction = actual.ChildNodes[0].Token.Text;
-
-            var WRHITE_PARAMETER = WRITES(actual.ChildNodes[2]);
-
-            var tabs = "";
-            for (int i = 0; i < cant_tabs; i++)
-            {
-                tabs = tabs + "  ";
-            }
             
-            return tabs + write_instruction + "(" + WRHITE_PARAMETER + ");\n";
+            var WRHITE_PARAMETER = WRITES(actual.ChildNodes[2]);
+            var isln = false;
+            if (actual.ChildNodes[0].Term.ToString().Equals("RESERV_WRITEN"))
+            {
+                isln = true;
+            }
+
+            return new Write_Trad(WRHITE_PARAMETER, isln, cant_tabs);
         }
 
 
-
-        public string WRITES(ParseTreeNode actual)
+        #region WRITE
+        public LinkedList<Expresion_Trad> WRITES(ParseTreeNode actual)
         {
-            string list = "";
+            LinkedList<Expresion_Trad> list = new LinkedList<Expresion_Trad>();
             if (actual.ChildNodes.Count > 0)
             {
                 var exp = expressionAST.getExpresion(actual.ChildNodes[0]);
-                list = list + exp;
+                list.AddLast(exp);
                 list = WRHITE_PARAMETER(actual.ChildNodes[1], list);
 
             }
             return list;
         }
-        public string WRHITE_PARAMETER(ParseTreeNode actual, string list)
+        public LinkedList<Expresion_Trad> WRHITE_PARAMETER(ParseTreeNode actual, LinkedList<Expresion_Trad> list)
         {
             if (actual.ChildNodes.Count > 0)
             {
                 var exp = expressionAST.getExpresion(actual.ChildNodes[1]);
-                list = list + exp;
+                list.AddLast(exp);
                 list = WRHITE_PARAMETER(actual.ChildNodes[2], list);
 
             }
             return list;
         }
-
         #endregion
+
     }
 }

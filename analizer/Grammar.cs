@@ -185,6 +185,7 @@ namespace CompiPascal.analizer
             NonTerminal IFTHEN = new NonTerminal("IF-THEN", "IF-THEN");
             NonTerminal IF_SENTENCE = new NonTerminal("IF_SENTENCE", "IF_SENTENCE");
             NonTerminal ELIF = new NonTerminal("ELIF", "ELIF");
+            NonTerminal ELIF_SENT = new NonTerminal("ELIF_SENT", "ELIF_SENT");
 
             #endregion
 
@@ -219,7 +220,7 @@ namespace CompiPascal.analizer
             NonTerminal WRHITE_PARAMETER = new NonTerminal("WRHITE_PARAMETER", "WRHITE_PARAMETER");
             NonTerminal MORE_WRHITE_PARAMETER = new NonTerminal("WRHITE_PARAMETER", "WRHITE_PARAMETER");
             NonTerminal EXIT = new NonTerminal("EXIT", "EXIT");
-
+            NonTerminal EXIT_EXP = new NonTerminal("EXIT_EXP", "EXIT_EXP");
             #endregion
 
             #region FUNCIONS NO TERMINALES
@@ -231,6 +232,7 @@ namespace CompiPascal.analizer
             NonTerminal CALL = new NonTerminal("CALL", "CALL");
             NonTerminal CALL_FUNCTION_PROCEDURE = new NonTerminal("CALL_FUNCTION_PROCEDURE", "CALL_FUNCTION_PROCEDURE");
             NonTerminal CALL_PARAMETERS = new NonTerminal("CALL_PARAMETERS", "CALL_PARAMETERS");
+            NonTerminal DECLARATION_LIST_HIJA = new NonTerminal("DECLARATION_LIST", "DECLARATION_LIST");
 
             //NonTerminal ARGUMENTS = new NonTerminal("ARGUMENTS", "ARGUMENTS");
             //NonTerminal REFERENCIA_VALOR = new NonTerminal("REFERENCIA_VALOR", "REFERENCIA_VALOR");
@@ -344,8 +346,8 @@ namespace CompiPascal.analizer
             #region EXPRESSION
 
             EXPRESION.Rule
-                = MIN2 + EXPRESION
-                | EXPRESION + PLUS + EXPRESION
+                = //MIN2 + EXPRESION
+                 EXPRESION + PLUS + EXPRESION
                 | EXPRESION + MIN + EXPRESION
                 | EXPRESION + POR + EXPRESION
                 | EXPRESION + DIVI + EXPRESION
@@ -389,12 +391,12 @@ namespace CompiPascal.analizer
                         + IF_SENTENCE
                     + ELIF;
 
-            IF_SENTENCE.Rule = INSTRUCTIONS_BODY
+            IF_SENTENCE.Rule = INSTRUCTIONS_BODY 
                 | Empty
                 ;
 
             ELIF.Rule
-                = RESERV_ELSE + IF_SENTENCE //+ PUNTO_COMA
+                = RESERV_ELSE + IF_SENTENCE  + PUNTO_COMA
                 | RESERV_ELSE + IFTHEN
                 | Empty
                 ;
@@ -454,11 +456,13 @@ namespace CompiPascal.analizer
             #region FUNCIONES Y PROCEDIMIENTOS
             FUNCTION_LIST.Rule
                 = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA
+                + DECLARATION_LIST_HIJA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
                 + FUNCTION_LIST
 
                 | RESERV_PROCEDURE + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + PUNTO_COMA
+                + DECLARATION_LIST_HIJA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
                 + FUNCTION_LIST
@@ -490,6 +494,12 @@ namespace CompiPascal.analizer
                 ;
 
             CALL_FUNCTION_PROCEDURE.Rule = IDENTIFIER + PAR_IZQ + CALL_PARAMETERS + PAR_DER;
+
+            DECLARATION_LIST_HIJA.Rule
+              = RESERV_VAR + IDENTIFIER + DECLARATION_BODY + VAR_DECLARATION + DECLARATION_LIST_HIJA
+              | RESERV_CONST + IDENTIFIER + EQUALS + EXPRESION + PUNTO_COMA + CONST_DECLARATION + DECLARATION_LIST_HIJA
+              | Empty
+              ;
             #endregion
 
             #region FUNCIONES NATIVAS
@@ -507,8 +517,11 @@ namespace CompiPascal.analizer
                 | Empty
                 ;
 
-            EXIT.Rule = RESERV_EXIT + PAR_IZQ + EXPRESION + PAR_DER + PUNTO_COMA;
+            EXIT.Rule = RESERV_EXIT + PAR_IZQ + EXIT_EXP + PAR_DER + PUNTO_COMA;
 
+            EXIT_EXP.Rule = EXPRESION
+                | Empty
+                ;
 
             #endregion
 

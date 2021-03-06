@@ -1,4 +1,7 @@
-﻿using Irony.Parsing;
+﻿using CompiPascal.Traduccion.grammar.abstracts;
+using CompiPascal.Traduccion.grammar.expresion;
+using CompiPascal.Traduccion.grammar.sentences;
+using Irony.Parsing;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,11 +21,11 @@ namespace CompiPascal.Traduccion
         //VARIABLES 
         ExpressionTraduccion expressionAST = new ExpressionTraduccion();
 
-
         #region DECLARACION
 
 
-        public string LIST_DECLARATIONS(ParseTreeNode actual, string lista_actual, ArrayList elementos_her)
+        public LinkedList<Instruction_Trad> LIST_DECLARATIONS(ParseTreeNode actual, 
+            LinkedList<Instruction_Trad> lista_actual, ArrayList elementos_her, int cant_tabs)
         {
 
             /*
@@ -42,28 +45,20 @@ namespace CompiPascal.Traduccion
                 //ES CONST
                 if (tipo.Term.ToString().Equals("RESERV_CONST"))
                 {
-                    var reserv_const = actual.ChildNodes[0].Token.Text;
-                    
                     var identifier = actual.ChildNodes[1].Token.Text;
-
-                    lista_actual = lista_actual + "\n" + reserv_const + " " + identifier + "= " + expressionAST.getExpresion(actual.ChildNodes[3]) + ";";
-
-                    lista_actual = CONST_DECLARATION(actual.ChildNodes[5], lista_actual, elementos_her);
-                    lista_actual = LIST_DECLARATIONS(actual.ChildNodes[6], lista_actual, elementos_her);
+                    lista_actual.AddLast(new Declaration_Trad(identifier, "any" ,  expressionAST.getExpresion(actual.ChildNodes[3]), true, cant_tabs));
+                    lista_actual = CONST_DECLARATION(actual.ChildNodes[5], lista_actual, elementos_her, cant_tabs);
+                    lista_actual = LIST_DECLARATIONS(actual.ChildNodes[6], lista_actual, elementos_her, cant_tabs);
                 }
                 //ES VAR
                 else
                 {
-                    var reserv_var = actual.ChildNodes[0].Token.Text;
-
                     var identifier = actual.ChildNodes[1].Token.Text;
-                    
-                    elementos_her.Add(reserv_var + " " +identifier);
+                    elementos_her.Add(identifier);
 
-
-                    lista_actual = DECLARATION_BODY(actual.ChildNodes[2], lista_actual, elementos_her);
-                    lista_actual = VAR_DECLARATION(actual.ChildNodes[3], lista_actual, elementos_her);
-                    lista_actual = LIST_DECLARATIONS(actual.ChildNodes[4], lista_actual, elementos_her);
+                    lista_actual = DECLARATION_BODY(actual.ChildNodes[2], lista_actual, elementos_her, cant_tabs);
+                    lista_actual = VAR_DECLARATION(actual.ChildNodes[3], lista_actual, elementos_her, cant_tabs);
+                    lista_actual = LIST_DECLARATIONS(actual.ChildNodes[4], lista_actual, elementos_her, cant_tabs);
 
                 }
 
@@ -76,7 +71,7 @@ namespace CompiPascal.Traduccion
             return lista_actual;
         }
 
-        public string DECLARATION_BODY(ParseTreeNode actual, string lista_actual, ArrayList elementos_her)
+        public LinkedList<Instruction_Trad> DECLARATION_BODY(ParseTreeNode actual, LinkedList<Instruction_Trad> lista_actual, ArrayList elementos_her, int cant_Tabs)
         {
             /*
              
@@ -91,21 +86,16 @@ namespace CompiPascal.Traduccion
             {
                 //OBTENGO EL IDENTIFICADOR
                 var identifier = actual.ChildNodes[1].Token.Text;
-                elementos_her.Add( "," + identifier);
+                elementos_her.Add(identifier);
                 //OBTENGO LOS DEMAS IDENTIFICADORES
                 elementos_her = MORE_ID_DECLARATION(actual.ChildNodes[2], elementos_her);
                 //OBTENGO EL TIPO
                 var datatype = actual.ChildNodes[4].ChildNodes[0].Token.Text;
 
-
-                var variables = "";
                 foreach (var item in elementos_her)
                 {
-
-                    variables = variables + item;
+                    lista_actual.AddLast(GetDeclarationValue(item.ToString(), datatype, false, cant_Tabs));
                 }
-                lista_actual = lista_actual + "\n" + variables + ":" + datatype + ";";
-
                 elementos_her.Clear();
 
             }
@@ -114,11 +104,12 @@ namespace CompiPascal.Traduccion
             {
                 var datatype = actual.ChildNodes[1].ChildNodes[0].Token.Text;
                 elementos_her.Add(datatype);
-                lista_actual = ASSIGNATION_VARIABLE(actual.ChildNodes[2], lista_actual, elementos_her);
+                lista_actual = ASSIGNATION_VARIABLE(actual.ChildNodes[2], lista_actual, elementos_her, cant_Tabs);
             }
             return lista_actual;
         }
-        public string VAR_DECLARATION(ParseTreeNode actual, string lista_actual, ArrayList elementos_her)
+        public LinkedList<Instruction_Trad> VAR_DECLARATION(ParseTreeNode actual, 
+            LinkedList<Instruction_Trad> lista_actual, ArrayList elementos_her, int cant_tabs)
         {
             /*
                = RESERV_VAR + IDENTIFIER + DECLARATION_BODY + VAR_DECLARATION + DECLARATION_LIST
@@ -129,14 +120,15 @@ namespace CompiPascal.Traduccion
             {
                 var identifier = actual.ChildNodes[0].Token.Text;
                 elementos_her.Add(identifier);
-                lista_actual = DECLARATION_BODY(actual.ChildNodes[1], lista_actual, elementos_her);
-                lista_actual = VAR_DECLARATION(actual.ChildNodes[2], lista_actual, elementos_her);
+                lista_actual = DECLARATION_BODY(actual.ChildNodes[1], lista_actual, elementos_her, cant_tabs);
+                lista_actual = VAR_DECLARATION(actual.ChildNodes[2], lista_actual, elementos_her, cant_tabs);
 
             }
 
             return lista_actual;
         }
-        public string CONST_DECLARATION(ParseTreeNode actual, string lista_actual, ArrayList elementos_her)
+        public LinkedList<Instruction_Trad> CONST_DECLARATION(ParseTreeNode actual, 
+            LinkedList<Instruction_Trad> lista_actual, ArrayList elementos_her, int cant_Tabs)
         {
             /*
              *  CONST_DECLARATION.Rule = IDENTIFIER + EQUALS + LOGIC_EXPRESION + PUNTO_COMA + CONST_DECLARATION
@@ -146,33 +138,26 @@ namespace CompiPascal.Traduccion
             if (actual.ChildNodes.Count > 0)
             {
                 var identifier = actual.ChildNodes[0].Token.Text;
-
-                lista_actual =
-                    lista_actual + "\n" +
-                    identifier + "=" + expressionAST.getExpresion(actual.ChildNodes[2]) + ";";
-
-                lista_actual = CONST_DECLARATION(actual.ChildNodes[4], lista_actual, elementos_her);
+                lista_actual.AddLast(new Declaration_Trad(identifier, "any",expressionAST.getExpresion(actual.ChildNodes[2]),true, cant_Tabs));
+                lista_actual = CONST_DECLARATION(actual.ChildNodes[4], lista_actual, elementos_her, cant_Tabs);
             }
             return lista_actual;
         }
 
-        public string ASSIGNATION_VARIABLE(ParseTreeNode actual, string lista_actual, ArrayList elementos_her)
+        public LinkedList<Instruction_Trad> ASSIGNATION_VARIABLE(ParseTreeNode actual, 
+            LinkedList<Instruction_Trad> lista_actual, ArrayList elementos_her, int cant_tabs)
         {
             //VAR A: TIPO = EXP;
             if (actual.ChildNodes.Count > 0)
             {
                 var exp = expressionAST.getExpresion(actual.ChildNodes[1]);
-
-
-                lista_actual = lista_actual
-                    + "\n" + elementos_her[0].ToString() + ":" + elementos_her[1].ToString() + "=" + exp + ";";
+                lista_actual.AddLast(new Declaration_Trad(elementos_her[0].ToString(), elementos_her[1].ToString(), exp, false, cant_tabs));
                 elementos_her.Clear();
             }
             // VAR A:TIPO;
             else
             {
-                lista_actual = lista_actual
-                    + "\n" + elementos_her[0].ToString() + ":" +elementos_her[1].ToString() + ";";
+                lista_actual.AddLast(GetDeclarationValue(elementos_her[0].ToString(), elementos_her[1].ToString(), false, cant_tabs));
                 elementos_her.Clear();
             }
             return lista_actual;
@@ -180,19 +165,34 @@ namespace CompiPascal.Traduccion
 
         public ArrayList MORE_ID_DECLARATION(ParseTreeNode actual, ArrayList elementos_her)
         {
-            /*
-             MORE_ID.Rule = COMA + IDENTIFIER + MORE_ID
-                | Empty
-                ;
 
-             */
             if (actual.ChildNodes.Count > 0)
             {
                 var identifier = actual.ChildNodes[1].Token.Text;
-                elementos_her.Add( "," + identifier);
+                elementos_her.Add(identifier);
                 elementos_her = MORE_ID_DECLARATION(actual.ChildNodes[2], elementos_her);
             }
             return elementos_her;
+        }
+        public Declaration_Trad GetDeclarationValue(string identifier, string datatype, bool perteneceFuncion, int cant_tabs)
+        {
+            if (datatype.Equals("integer"))
+            {
+                return new Declaration_Trad(identifier.ToString(), datatype, new Literal_Trad("0", 1), false, cant_tabs);
+            }
+            else if (datatype.Equals("real"))
+            {
+                return new Declaration_Trad(identifier.ToString(), datatype, new Literal_Trad("0", 4), false, cant_tabs);
+            }
+            else if (datatype.Equals("string"))
+            {
+                return new Declaration_Trad(identifier.ToString(), datatype, new Literal_Trad("", 2), false, cant_tabs);
+            }
+            else if (datatype.Equals("boolean"))
+            {
+                return new Declaration_Trad(identifier.ToString(), datatype, new Literal_Trad("false", 3), false, cant_tabs);
+            }
+            return null;
         }
 
         #endregion

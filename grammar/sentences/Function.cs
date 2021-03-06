@@ -10,16 +10,20 @@ namespace CompiPascal.grammar.sentences
     {
         private string id;
         private LinkedList<Instruction> parametos;
+        private LinkedList<Instruction> declaraciones;
         private DataType tipe;
         private Instruction sentences;
         private int row;
         private int column;
         private bool isProcedure;
-        public Function(string id, LinkedList<Instruction> parametos, string tipe, Instruction sentences, bool isProcedure)
+        private string retorno;
+        public Function(string id, LinkedList<Instruction> parametos, LinkedList<Instruction> declas, string tipe, Instruction sentences, bool isProcedure)
         : base(0,0,"Function")
         {
+            this.retorno = "-";
             this.id = id;
             this.parametos = parametos;
+            this.declaraciones = declas;
             this.tipe = GetDataType(tipe);
             this.sentences = sentences;
             this.isProcedure = isProcedure;
@@ -36,20 +40,24 @@ namespace CompiPascal.grammar.sentences
         {
             if (d.Equals("integer"))
             {
+                this.retorno = "0";
                 return DataType.INTEGER;
             }
             else if (d.Equals("boolean"))
             {
+                this.retorno = "false";
                 return DataType.BOOLEAN;
             }
             else if (d.Equals("real"))
             {
+                this.retorno = "0";
                 return DataType.REAL;
             }
             else if (d.Equals("any"))
             {
                 return DataType.ANY;
             }
+            this.retorno = "-";
             return DataType.STRING;
 
         }
@@ -72,5 +80,8 @@ namespace CompiPascal.grammar.sentences
         public Instruction Sentences { get => sentences; set => sentences = value; }
         public bool IsProcedure { get => isProcedure; set => isProcedure = value; }
         public DataType Tipe { get => tipe; set => tipe = value; }
+        public string Retorno { get => retorno; set => retorno = value; }
+        public string Id { get => id; set => id = value; }
+        public LinkedList<Instruction> Declaraciones { get => declaraciones; set => declaraciones = value; }
     }
 }

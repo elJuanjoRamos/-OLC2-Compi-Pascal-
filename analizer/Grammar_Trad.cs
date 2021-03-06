@@ -395,7 +395,7 @@ namespace CompiPascal.analizer
                 ;
 
             ELIF.Rule
-                = RESERV_ELSE + IF_SENTENCE //+ PUNTO_COMA
+                = RESERV_ELSE + IF_SENTENCE + PUNTO_COMA
                 | RESERV_ELSE + IFTHEN
                 | Empty
                 ;

@@ -55,7 +55,7 @@ namespace CompiPascal.controller
 
         public string getLexicalError(string path_startup)
         {
-            GraphController.Instance.printLexicalError(lexicalErrors, path_startup);
+            GraphController.Instance.printError(lexicalErrors, path_startup, "Lexico", "error_lexico");
             return getText(lexicalErrors, "Lexico");
         }
         public bool containLexicalError()
@@ -67,17 +67,40 @@ namespace CompiPascal.controller
             return false;
         }
 
-
-        public string getSemantycError()
+        public string getSintactycError(string startup_path)
         {
-            return getText(semantycErrors, "Semantico");
-        }
-
-        public string getSintactycError()
-        {
+            GraphController.Instance.printError(syntacticErrors, startup_path, "Sintactico", "error_sintactico");
             return getText(syntacticErrors, "Sintactico");
         }
 
+        public bool containSyntacticError()
+        {
+            if (syntacticErrors.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+
+        public string getSemantycError(string startup_path)
+        {
+            GraphController.Instance.printError(semantycErrors, startup_path, "Semantico", "error_semantico");
+            return getText(semantycErrors, "Semantico");
+        }
+        public bool containSemantycError()
+        {
+            if (semantycErrors.Count > 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+
+       
 
         public string getText(ArrayList ar, string tipo)
         {

@@ -83,7 +83,16 @@ namespace CompiPascal.grammar.expression
                     }
                 }
 
+                //GUARDA LAS VARIABLES QUE ESTEN DECLARADAS EN LA FUNCION
 
+                if (funcion_llamada.Declaraciones.Count > 0)
+                {
+
+                    foreach (var declaracion in funcion_llamada.Declaraciones)
+                    {
+                        declaracion.Execute(function_ambit);
+                    }
+                }
                 //EJECUCION DEL CODIGO
 
                 var funcion_Elementos = funcion_llamada.Sentences.Execute(function_ambit);
@@ -103,30 +112,46 @@ namespace CompiPascal.grammar.expression
                         {
                             if (!funcion_llamada.IsProcedure)
                             {
-                                var result = ((Exit)funcion_Elementos).Value.Execute(function_ambit);
 
+                                var response = ((Exit)funcion_Elementos);
 
-                                //HAY ERROR
-                                if (result.getDataType == DataType.ERROR || result == null)
+                                if (response.Return_func_return)
                                 {
-                                    return new Returned();
-                                }
 
+                                    return new Returned(funcion_llamada.Retorno, funcion_llamada.Tipe);
 
-                                //VERIFICA QUE EL TIPO DE RETORNO SEA VALIDO
-                                if (result.getDataType == funcion_llamada.Tipe)
-                                {
-                                    return new Returned(result.Value, result.getDataType);
                                 } else
                                 {
-                                    ErrorController.Instance.SemantycErrors("Tipos incompatibles, la funcion '" + funcion_llamada.Name +"' retorna " + funcion_llamada.Tipe + " en lugar de" + result.getDataType, 0, 0);
-                                    return new Returned();
+                                    var result = ((Exit)funcion_Elementos).Value.Execute(function_ambit);
+                                    //HAY ERROR
+                                    if (result.getDataType == DataType.ERROR || result == null)
+                                    {
+                                        return new Returned();
+                                    }
+
+
+                                    //VERIFICA QUE EL TIPO DE RETORNO SEA VALIDO
+                                    if (result.getDataType == funcion_llamada.Tipe)
+                                    {
+                                        return new Returned(result.Value, result.getDataType);
+                                    }
+                                    else
+                                    {
+                                        ErrorController.Instance.SemantycErrors("Tipos incompatibles, la funcion '" + funcion_llamada.Id + "' retorna " + funcion_llamada.Tipe + " en lugar de" + result.getDataType, 0, 0);
+                                        return new Returned();
+                                    }
                                 }
+
+
+                              
+
+
+                              
 
                             }
                             else
                             {
-                                ErrorController.Instance.SemantycErrors("Procedures can't return a value", 0, 0);
+                                ErrorController.Instance.SemantycErrors("Los procediminetos no pueden retornar ningun valor", 0, 0);
                                 return new Returned();
                             }
                         }

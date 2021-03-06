@@ -1,4 +1,6 @@
-﻿using Irony.Parsing;
+﻿using CompiPascal.Traduccion.grammar.abstracts;
+using CompiPascal.Traduccion.grammar.sentences;
+using Irony.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,12 +17,11 @@ namespace CompiPascal.Traduccion
         }
 
 
-
         #region IF
 
 
 
-        public string IFTHEN(ParseTreeNode actual, int cantidad_tabs)
+        public If_Trad IFTHEN(ParseTreeNode actual, int cant_tabs)
         {
             /*
               IFTHEN.Rule
@@ -29,43 +30,18 @@ namespace CompiPascal.Traduccion
                         + IF_SENTENCE
                     + ELIF;
              */
-
-            var tabs = "";
-            for (int i = 0; i < cantidad_tabs; i++)
-            {
-                tabs = tabs + "  ";
-            }
-
-
-
-
-            var if_sentencia = actual.ChildNodes[0].Token.Text;
-
-
-
+            If_Trad ifs = new If_Trad();
             ExpressionTraduccion expressionAST = new ExpressionTraduccion();
 
-            var condicion = expressionAST.getExpresion(actual.ChildNodes[1]);
+            var LOGIC_EXPRESION = expressionAST.getExpresion(actual.ChildNodes[1]);
+            var SENTENCES = IF_SENTENCE(actual.ChildNodes[3], cant_tabs+1);
+            var ELSE = ELIF(actual.ChildNodes[4], cant_tabs+1);
 
 
-            var reserv_then = actual.ChildNodes[2].Token.Text;
-
-
-
-            var IF_Sentences = IF_SENTENCE(actual.ChildNodes[3], cantidad_tabs+1);
-            
-            var ELSE = ELIF(actual.ChildNodes[4], cantidad_tabs);
-
-
-            var if_total =
-                tabs + if_sentencia+ " " + condicion + " " + reserv_then + "\n" +
-                IF_Sentences + "\n" +
-                ELSE;
-
-            return  if_total;
+            return new If_Trad(LOGIC_EXPRESION, SENTENCES, ELSE, cant_tabs);
         }
 
-        public string IF_SENTENCE(ParseTreeNode actual, int cant_tabs)
+        public Sentence_Trad IF_SENTENCE(ParseTreeNode actual, int cant_tabs)
         {
             /*
                IF_SENTENCE.Rule = INSTRUCTIONS_BODY
@@ -73,43 +49,41 @@ namespace CompiPascal.Traduccion
                 ;
 
              */
-            var lista_instrucciones = "";
+            Sentence_Trad sentence = new Sentence_Trad();
             if (actual.ChildNodes.Count > 0)
             {
 
 
-                lista_instrucciones = (instrucciones).INSTRUCTIONS_BODY(actual.ChildNodes[0], cant_tabs);
-                
+                var lista_instrucciones = instrucciones.INSTRUCTIONS_BODY(actual.ChildNodes[0], cant_tabs+1);
+                sentence = new Sentence_Trad(lista_instrucciones);
             }
 
-            return lista_instrucciones;
+            return sentence;
         }
-        public string ELIF(ParseTreeNode actual, int cant_tabs)
+        public Sentence_Trad ELIF(ParseTreeNode actual, int cant_tabs)
         {
-            var lista_instrucciones = "";
+            Sentence_Trad sentence = new Sentence_Trad();
+
             if (actual.ChildNodes.Count > 0)
             {
-
-                var tabs = "";
-                for (int i = 0; i < cant_tabs; i++)
-                {
-                    tabs = tabs + "  ";
-                }
-
+                LinkedList<Instruction_Trad> lista_instrucciones = new LinkedList<Instruction_Trad>();
                 // ELSE 
                 if (actual.ChildNodes[1].Term.ToString().Equals("IF_SENTENCE"))
                 {
-                    lista_instrucciones = tabs+ "else " + "\n" + instrucciones.INSTRUCTIONS_BODY(actual.ChildNodes[1].ChildNodes[0], cant_tabs+1);
+                    lista_instrucciones = instrucciones.INSTRUCTIONS_BODY(actual.ChildNodes[1].ChildNodes[0], cant_tabs+1);
 
                 }
                 // ELSE IF
                 else
                 {
-                    var ifs = tabs + "else " + IFTHEN(actual.ChildNodes[1], cant_tabs);
-                    lista_instrucciones = lista_instrucciones +"\n" + ifs + "\n";
+                    var ifs = IFTHEN(actual.ChildNodes[1], cant_tabs);
+                    lista_instrucciones.AddLast(ifs);
                 }
+
+                sentence = new Sentence_Trad(lista_instrucciones);
+
             }
-            return lista_instrucciones;
+            return sentence;
         }
         #endregion
 

@@ -1,4 +1,5 @@
-﻿using Irony.Parsing;
+﻿using CompiPascal.Traduccion.grammar.sentences;
+using Irony.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +18,7 @@ namespace CompiPascal.Traduccion
         }
 
         #region FOR
-        public string SENCECIA_FOR(ParseTreeNode actual, int cant_tabs)
+        public For_Trad SENCECIA_FOR(ParseTreeNode actual, int cant_tabs)
         {
             /*
              FOR.Rule
@@ -31,34 +32,14 @@ namespace CompiPascal.Traduccion
                 | RESERV_DOWN + RESERV_TO
                 ;
              */
-
-
-            var tabs = "";
-            for (int i = 0; i < cant_tabs; i++)
-            {
-                tabs = tabs + "  ";
-            }
-
-
-
-            var reserv_for = actual.ChildNodes[0].Token.Text;
-
             var ident = actual.ChildNodes[1].Token.Text;
-            
             var inicio = expressionAST.getExpresion(actual.ChildNodes[4]);
             var direccion = actual.ChildNodes[5].ChildNodes[0].Token.Text;
             var fin = expressionAST.getExpresion(actual.ChildNodes[6]);
-            var lista_instrucciones = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[8], cant_tabs );
+            var lista_instrucciones = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[8], cant_tabs+1);
+            return new For_Trad(ident, inicio, fin, new Sentence_Trad(lista_instrucciones), direccion, cant_tabs);
 
-            var reserv_do = actual.ChildNodes[7].Token.Text;
 
-           
-
-            var for_total =
-                tabs + reserv_for + " " + ident + " := " + inicio + " " + direccion + " " + fin + " " + " " + reserv_do + "\n"
-                + lista_instrucciones + "\n";
-
-            return for_total;
 
         }
         #endregion

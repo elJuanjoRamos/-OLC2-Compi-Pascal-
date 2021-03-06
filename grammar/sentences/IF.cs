@@ -26,6 +26,7 @@ namespace CompiPascal.grammar.sentences
             this.sentences = sentences;
             this.elif = elif;
             this.IsNull = false;
+            
         }
 
         public IF()
@@ -50,7 +51,7 @@ namespace CompiPascal.grammar.sentences
             //VERIFICA QUE LLA CONDICION SEA BOOLEANA
             if (condition.getDataType != DataType.BOOLEAN)
             {
-                ConsolaController.Instance.Add("Semantico - La condicion del If no es booleana");
+                ErrorController.Instance.SemantycErrors("Semantico - La condicion del If no es booleana", 0, 0);
                 return null;
             }
 

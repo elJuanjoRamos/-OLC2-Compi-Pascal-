@@ -12,9 +12,7 @@ namespace CompiPascal.grammar.sentences
     {
         private Expression condition;
         private Sentence sentences;
-        private int row;
-        private int column;
-
+        
         public While(Expression condition, Sentence sentences)
             : base(0,0, "While")
         {
@@ -32,7 +30,7 @@ namespace CompiPascal.grammar.sentences
 
             var whileAmbit = new Ambit(ambit, ambitName, "While", false);
 
-
+            //CONDICION
             var cond = condition.Execute(whileAmbit);
 
             if (cond.getDataType != DataType.BOOLEAN)

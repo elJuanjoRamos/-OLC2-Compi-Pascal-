@@ -60,6 +60,7 @@ namespace CompiPascal.AST
             /*
               FUNCTION_LIST.Rule
                 = RESERV_FUNCTION + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + DOS_PUNTOS + DATA_TYPE + PUNTO_COMA 
+                + DECLARATION_LIST_HIJA
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
                 + FUNCTION_LIST
@@ -68,19 +69,25 @@ namespace CompiPascal.AST
              */
 
             LinkedList<Instruction> parametros = new LinkedList<Instruction>();
+            LinkedList<Instruction> declaraciones = new LinkedList<Instruction>();
 
             var identifier = actual.ChildNodes[1].Token.Text;
 
             parametros = PARAMETER(actual.ChildNodes[3], parametros, elementos_her);
 
+
+            
             var function_type = actual.ChildNodes[6].ChildNodes[0].Token.Text;
 
-            var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[8]);
+            declaraciones = declarationAST.LIST_DECLARATIONS(actual.ChildNodes[8], declaraciones, new ArrayList());
 
-            lista_funciones.AddLast(new Function(identifier, parametros, function_type, new Sentence(function_instructions), false));
+
+            var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[9]);
+
+            lista_funciones.AddLast(new Function(identifier, parametros, declaraciones,  function_type, new Sentence(function_instructions), false));
 
             elementos_her.Clear();
-            lista_funciones = FUNCTION_LIST(actual.ChildNodes[10], lista_funciones, elementos_her);
+            lista_funciones = FUNCTION_LIST(actual.ChildNodes[11], lista_funciones, elementos_her);
 
             return lista_funciones;
         }
@@ -92,6 +99,7 @@ namespace CompiPascal.AST
             /*
              FUNCTION_LIST.Rule
                 =  RESERV_PROCEDURE + IDENTIFIER + PAR_IZQ + PARAMETER + PAR_DER + PUNTO_COMA
+                + DECLARATION_LIST_HIJA 
                 + INSTRUCTIONS_BODY
                 + PUNTO_COMA
                 + FUNCTION_LIST
@@ -101,18 +109,22 @@ namespace CompiPascal.AST
 
 
             LinkedList<Instruction> parametros = new LinkedList<Instruction>();
+            LinkedList<Instruction> declaracion = new LinkedList<Instruction>();
 
             var identifier = actual.ChildNodes[1].Token.Text;
 
             parametros = PARAMETER(actual.ChildNodes[3], parametros, elementos_her);
 
 
-            var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[6]);
+            declaracion = declarationAST.LIST_DECLARATIONS(actual.ChildNodes[6], declaracion, new ArrayList());
 
-            lista_funciones.AddLast(new Function(identifier, parametros, "any", new Sentence(function_instructions), true));
+            var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[7]);
+
+
+            lista_funciones.AddLast(new Function(identifier, parametros, declaracion, "any", new Sentence(function_instructions), true));
 
             elementos_her.Clear();
-            lista_funciones = FUNCTION_LIST(actual.ChildNodes[8], lista_funciones, elementos_her);
+            lista_funciones = FUNCTION_LIST(actual.ChildNodes[9], lista_funciones, elementos_her);
 
             return lista_funciones;
         }
