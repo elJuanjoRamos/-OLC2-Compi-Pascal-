@@ -137,7 +137,7 @@ namespace CompiPascal.grammar.sentences
 
                                 if ((bool)condicion.Value)
                                 {
-                                    forAmbit.setVariable(initId, val.Value, val.getDataType, false);
+                                    forAmbit.setVariable(initId, val.Value, val.getDataType, false, "Variable");
                                 }
 
                             }

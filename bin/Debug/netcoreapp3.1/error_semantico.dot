@@ -8,5 +8,10 @@ Baz [label=<
 <td width='100'><i>Mensaje</i></td>
 <td width='100'><i>Linea</i></td>
 <td><i width='100'>Columna</i></td> </tr>
-
+<tr>
+<td height='25'>Semantico</td>
+<td height='25'>El tipo INTEGER no es asignable con REAL</td>
+<td height='25'>0</td>
+<td height='25'>0</td>
+</tr>
 </table>>];}

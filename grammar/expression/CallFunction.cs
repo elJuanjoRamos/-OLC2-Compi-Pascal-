@@ -29,13 +29,13 @@ namespace CompiPascal.grammar.expression
                 var funcion_llamada = ambit.getFuncion(this.id);
                 if (funcion_llamada == null)
                 {
-                    ConsolaController.Instance.Add("La funcion o procediminento '" + this.id + "' no esta definido");
+                    ErrorController.Instance.SyntacticError("La funcion '" + this.id + "' no esta definido",0,0);
                     return new Returned();
                 }
 
                 if (funcion_llamada.Parametos.Count != parametros.Count)
                 {
-                    ConsolaController.Instance.Add("La funcion o procedimiento '" + this.id + "' no recibe la misma cantidad de parametros");
+                    ErrorController.Instance.SyntacticError("La funcion '" + this.id + "' no recibe la misma cantidad de parametros",0,0);
                     return new Returned();
 
                 }
@@ -46,7 +46,9 @@ namespace CompiPascal.grammar.expression
 
                 if (funcion_llamada.IsProcedure)
                 {
-                    function_ambit = new Ambit(ambit, ambit.Ambit_name + "_Procedure", "Procedure", false);
+                    ErrorController.Instance.SyntacticError("El procedimiento'" + this.id + "' no puede asignarse como valor de retorno",0,0);
+                    return new Returned();
+
                 }
                 else
                 {
@@ -73,11 +75,10 @@ namespace CompiPascal.grammar.expression
 
                     if (variable.getDataType == result.getDataType)
                     {
-                        function_ambit.setVariableFuncion(variable.Id, result.Value, result.getDataType, false);
+                        function_ambit.setVariableFuncion(variable.Id, result.Value, result.getDataType, false, "Parametro");
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("El tipo " + result.getDataType + " no es asignable con " + variable.getDataType);
                         ErrorController.Instance.SyntacticError("El tipo " + result.getDataType + " no es asignable con " + variable.getDataType, 0, 0);
                         return new Returned();
                     }
@@ -93,6 +94,9 @@ namespace CompiPascal.grammar.expression
                         declaracion.Execute(function_ambit);
                     }
                 }
+
+
+
                 //EJECUCION DEL CODIGO
 
                 var funcion_Elementos = funcion_llamada.Sentences.Execute(function_ambit);

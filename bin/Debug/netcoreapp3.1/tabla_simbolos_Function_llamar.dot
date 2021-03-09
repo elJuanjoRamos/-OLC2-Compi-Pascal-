@@ -1,5 +1,5 @@
 digraph G{
-label = "Ambito Graficado: Procedure_procedimiento"
+label = "Ambito Graficado: Function_llamar"
 graph [pad="0.5", nodesep="0.5", ranksep="2"]
 node[shape = plain]
 rankdir = LR;
@@ -22,7 +22,7 @@ Baz [label=<
 <td height='25'>llamar</td>
 <td height='25'>STRING</td>
 <td height='25'>General</td>
-<td height='25'>hola</td>
+<td height='25'>-</td>
 <td height='25'>Function</td>
 </tr>
 <tr>
@@ -54,18 +54,46 @@ Baz [label=<
 	<td height='25'>Variable</td>
 </tr>
 <tr>
-	<td height='25'>var_proc2</td>
+	<td height='25'>var_dent</td>
 	<td height='25'>STRING</td>
-	<td height='25'>Procedure_procedimiento</td>
-	<td height='25'>hola mundo</td>
+	<td height='25'>Function_llamar</td>
+	<td height='25'>adentro</td>
 	<td height='25'>Variable</td>
 </tr>
 <tr>
-	<td height='25'>var_proc1</td>
-	<td height='25'>INTEGER</td>
-	<td height='25'>Procedure_procedimiento</td>
-	<td height='25'>0</td>
+	<td height='25'>variable_dentro</td>
+	<td height='25'>STRING</td>
+	<td height='25'>Function_llamar</td>
+	<td height='25'>adentro</td>
 	<td height='25'>Variable</td>
+</tr>
+<tr>
+	<td height='25'>d</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>Function_llamar</td>
+	<td height='25'>0</td>
+	<td height='25'>Parametro</td>
+</tr>
+<tr>
+	<td height='25'>c</td>
+	<td height='25'>STRING</td>
+	<td height='25'>Function_llamar</td>
+	<td height='25'></td>
+	<td height='25'>Parametro</td>
+</tr>
+<tr>
+	<td height='25'>b</td>
+	<td height='25'>STRING</td>
+	<td height='25'>Function_llamar</td>
+	<td height='25'></td>
+	<td height='25'>Parametro</td>
+</tr>
+<tr>
+	<td height='25'>a</td>
+	<td height='25'>STRING</td>
+	<td height='25'>Function_llamar</td>
+	<td height='25'></td>
+	<td height='25'>Parametro</td>
 </tr>
 </table>>];
 }

@@ -46,7 +46,6 @@ namespace CompiPascal.grammar.sentences
                     */
                     if (variable.Esconstante)
                     {
-                        ConsolaController.Instance.Add("No se puede cambiar el valo a una constante");
                         ErrorController.Instance.SyntacticError("No se puede cambiar el valor a una constante",0,0);
                         return null;
                     } else
@@ -56,11 +55,10 @@ namespace CompiPascal.grammar.sentences
                         */
                         if (variable.DataType == val.getDataType)
                         {
-                            ambit.setVariable(id, val.Value, val.getDataType, false);
+                            ambit.setVariable(id, val.Value, val.getDataType, false, "Variable");
                             return 0;
                         } else
                         {
-                            ConsolaController.Instance.Add("El tipo " + val.getDataType + " no es asignable con " + variable.DataType);
                             ErrorController.Instance.SyntacticError("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, 0, 0);
                             return null;
                         }
@@ -84,14 +82,12 @@ namespace CompiPascal.grammar.sentences
                         }
                         else
                         {
-                            ConsolaController.Instance.Add("El tipo " + val.getDataType + " no es asignable con " + variable.DataType);
                             ErrorController.Instance.SyntacticError("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, 0, 0);
                             return null;
                         }
 
                     } else
                     {
-                        ConsolaController.Instance.Add("La variable '" + id + "' no esta declara");
                         ErrorController.Instance.SyntacticError("La variable '" + id + "' no esta declara", 0, 0);
                         return null;
 

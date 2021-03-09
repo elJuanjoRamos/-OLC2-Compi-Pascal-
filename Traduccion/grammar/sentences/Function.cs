@@ -75,25 +75,38 @@ namespace CompiPascal.Traduccion.grammar.sentences
 
 
 
-            var parametros_fun = "";  
+            var parametros_fun = "";
             foreach (var param in parametos)
             {
                 Declaration_Trad dec = (Declaration_Trad)param;
-                parametros_fun  += dec.Id + ":" + dec.Type  +",";
+                parametros_fun += dec.Id + ":" + dec.Type + ";";
                 ambit_Trad.saveVarFunction(dec.Id, "0", dec.Type);
 
             }
 
+
             //VERIFICA SI ES PADRE O HIJO
             if (esHija)
             {
+                int cont = 1;
+
                 Function_Trad funcion_padre = ambit.getFuncion(padre_inmediato);
                 foreach (var param in funcion_padre.Declaraciones)
                 {
                     Declaration_Trad dec = (Declaration_Trad)param;
-                    parametros_fun += "var "+ dec.Id + ":" + dec.Type + ",";
+                    if (cont < funcion_padre.Declaraciones.Count)
+                    {
+                        parametros_fun += "var " + funcion_padre.UniqId + "_" + dec.Id + ":" + dec.Type + ";";
+                    } else
+                    {
+                        parametros_fun += "var " + funcion_padre.UniqId + "_" + dec.Id + ":" + dec.Type;
+                    }
+                    cont++;
                 }
             }
+
+
+            
 
 
             var cadena = "";

@@ -29,7 +29,7 @@ namespace CompiPascal.grammar.sentences
             {
                 //PRINT A LA TABLA SIMBOLOS
                 GraphController.Instance.graficarTS(ambit);
-
+                return 0;
             }
             else
             {
@@ -79,7 +79,7 @@ namespace CompiPascal.grammar.sentences
 
                     if (variable.getDataType == result.getDataType)
                     {
-                        function_ambit.setVariableFuncion(variable.Id, result.Value, result.getDataType, false);
+                        function_ambit.setVariableFuncion(variable.Id, result.Value, result.getDataType, false, "Parametro");
                     }
                     else
                     {
@@ -137,9 +137,6 @@ namespace CompiPascal.grammar.sentences
                                     //UPDATE FUNCION A LA TABLA SIMBOLOS
                                     funcion_llamada.Retorno = result.Value.ToString();
                                     ambit.setFunction(funcion_llamada.Id, funcion_llamada);
-                                    //PRINT A LA TABLA SIMBOLOS
-                                    GraphController.Instance.graficarTS(function_ambit);
-
                                     return new Returned(result.Value, result.getDataType);
                                 }
 

@@ -189,3 +189,114 @@ F => ( EXPLOGICA )
             NonTerminal TERM = new NonTerminal("TERM");
             NonTerminal TERM_P = new NonTerminal("TERM_P");
             NonTerminal FACTOR = new NonTerminal("FACTOR");*/s
+
+
+
+
+
+
+
+
+
+
+
+            NonTerminal EXPRESION = new NonTerminal("EXPRESION", "EXPRESION");
+            NonTerminal EXPRESION_PRIMA = new NonTerminal("EXPRESION_PRIMA", "EXPRESION_PRIMA");
+            NonTerminal EXPLOGICA = new NonTerminal("EXPLOGICA", "EXPLOGICA");
+            NonTerminal EXPLOGICA_PRIMA = new NonTerminal("EXPLOGICA_PRIMA", "EXPLOGICA_PRIMA");
+            NonTerminal EXPRELACIONAL = new NonTerminal("EXPRELACIONAL", "EXPRELACIONAL");
+            NonTerminal EXPRELACIONAL_PRIMA = new NonTerminal("EXPRELACIONAL_PRIMA", "EXPRELACIONAL_PRIMA");
+            NonTerminal TERMINO = new NonTerminal("TERMINO", "TERMINO");
+            NonTerminal TERMINO_PRIMA = new NonTerminal("TERMINO_PRIMA ", "TERMINO_PRIMA");
+            NonTerminal FACTOR = new NonTerminal("FACTOR", "FACTOR");
+
+
+
+
+
+            
+            #region EXPRESION
+            
+            EXPLOGICA.Rule = EXPRELACIONAL + EXPLOGICA_PRIMA;
+
+            EXPLOGICA_PRIMA.Rule
+                = AND + EXPRELACIONAL + EXPLOGICA_PRIMA
+                | OR + EXPRELACIONAL + EXPLOGICA_PRIMA
+                | NOT + EXPRELACIONAL + EXPLOGICA_PRIMA
+                | Empty
+                ;
+
+
+            
+            EXPRELACIONAL.Rule = EXPRESION + EXPRELACIONAL_PRIMA;
+
+            EXPRELACIONAL_PRIMA.Rule
+                = LESS + EXPRESION + EXPRELACIONAL_PRIMA
+                | HIGHER + EXPRESION + EXPRELACIONAL_PRIMA
+                | LESS_EQUAL + EXPRESION + EXPRELACIONAL_PRIMA
+                | HIGHER_EQUAL + EXPRESION + EXPRELACIONAL_PRIMA
+                | EQUALS + EXPRESION + EXPRELACIONAL_PRIMA
+                | DISCTINCT + EXPRESION + EXPRELACIONAL_PRIMA
+                | Empty
+                ;
+
+            
+
+            EXPRESION.Rule = TERMINO + EXPRESION_PRIMA;
+
+            EXPRESION_PRIMA.Rule
+                = PLUS + TERMINO + EXPRESION_PRIMA
+                | MIN + TERMINO + EXPRESION_PRIMA
+                ;
+
+
+            TERMINO.Rule = FACTOR + TERMINO_PRIMA;
+
+            TERMINO_PRIMA.Rule
+                = POR + FACTOR + TERMINO_PRIMA
+                | DIVI + FACTOR + TERMINO_PRIMA
+                | MODULE + FACTOR + TERMINO_PRIMA
+                | Empty
+                ;
+
+            FACTOR.Rule
+                = PAR_IZQ + EXPLOGICA + PAR_DER
+                | REAL
+                | CADENA
+                | NUMERO
+                | IDENTIFIER
+                | RESERV_TRUE
+                | RESERV_FALSE
+                //| CALL_FUNCTION_PROCEDURE
+                | MIN + REAL
+                | MIN + NUMERO
+                | MIN + IDENTIFIER
+                | MIN + PAR_IZQ + EXPLOGICA + PAR_DER
+                ;
+
+     /*EXPRESION.Rule
+         = EXPRESION + PLUS + EXPRESION
+         | EXPRESION + MIN + EXPRESION
+         | EXPRESION + POR + EXPRESION
+         | EXPRESION + DIVI + EXPRESION
+         | EXPRESION + MODULE + EXPRESION
+         | EXPRESION + LESS + EXPRESION
+         | EXPRESION + HIGHER + EXPRESION
+         | EXPRESION + LESS_EQUAL + EXPRESION
+         | EXPRESION + HIGHER_EQUAL + EXPRESION
+         | EXPRESION + EQUALS + EXPRESION
+         | EXPRESION + DISCTINCT + EXPRESION
+         | EXPRESION + AND + EXPRESION
+         | EXPRESION + OR + EXPRESION
+         | NOT + EXPRESION
+         | CALL_FUNCTION_PROCEDURE
+         | IDENTIFIER
+         | NUMERO
+         | CADENA
+         | REAL
+         | RESERV_TRUE
+         | RESERV_FALSE
+         | PAR_IZQ + EXPRESION + PAR_DER
+         ;*/
+            #endregion
+

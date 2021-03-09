@@ -10,28 +10,8 @@ Baz [label=<
 <td><i width='100'>Columna</i></td> </tr>
 <tr>
 <td height='25'>Sintactico</td>
-<td height='25'>Syntax error, expected: TK_DOS_PUNTOS, TK_COMA</td>
-<td height='25'>8</td>
-<td height='25'>12</td>
-</tr><tr>
-<td height='25'>Sintactico</td>
 <td height='25'>Syntax error, expected: TK_PUNTO</td>
-<td height='25'>11</td>
-<td height='25'>5</td>
-</tr><tr>
-<td height='25'>Sintactico</td>
-<td height='25'>Syntax error, expected: RESERV_BEGIN</td>
-<td height='25'>16</td>
-<td height='25'>2</td>
-</tr><tr>
-<td height='25'>Sintactico</td>
-<td height='25'>Syntax error, expected: RESERV_BEGIN</td>
-<td height='25'>20</td>
-<td height='25'>2</td>
-</tr><tr>
-<td height='25'>Sintactico</td>
-<td height='25'>Syntax error, expected: RESERV_BEGIN</td>
-<td height='25'>21</td>
-<td height='25'>0</td>
+<td height='25'>10</td>
+<td height='25'>3</td>
 </tr>
 </table>>];}

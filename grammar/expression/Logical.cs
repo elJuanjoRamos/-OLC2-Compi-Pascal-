@@ -39,7 +39,7 @@ namespace CompiPascal.grammar.expression
                 var valDer = right.Execute(ambit);
                 if (varIz.Value is bool && valDer.Value is bool)
                 {
-                    var izq = (bool)(valDer.Value);
+                    var izq = (bool)(varIz.Value);
 
                     switch (operacion)
                     {

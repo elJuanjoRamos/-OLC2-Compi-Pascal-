@@ -10,6 +10,7 @@ namespace CompiPascal.grammar.identifier
     {
         Dictionary<string, Identifier> variables;
         Dictionary<string, Function> functions;
+        Dictionary<string, Arrays> arrays;
         private string ambit_name = "";
         private string ambit_name_inmediato = "";
         public Ambit anterior;
@@ -19,6 +20,7 @@ namespace CompiPascal.grammar.identifier
         {
             this.variables = new Dictionary<string, Identifier>();
             this.functions = new Dictionary<string, Function>();
+            this.arrays = new Dictionary<string, Arrays>();
             this.ambit_name = n;
             this.ambit_name_inmediato = ni;
             this.anterior = a;
@@ -30,6 +32,7 @@ namespace CompiPascal.grammar.identifier
 
             this.variables = new Dictionary<string, Identifier>();
             this.functions = new Dictionary<string, Function>();
+            this.arrays = new Dictionary<string, Arrays>();
             this.ambit_null = true;
             this.ambit_name = "General";
             this.ambit_name_inmediato = "General";
@@ -37,7 +40,7 @@ namespace CompiPascal.grammar.identifier
 
 
 
-        public void save(string id, object valor, DataType type, bool esconstante, bool isAssigned)
+        public void save(string id, object valor, DataType type, bool esconstante, bool isAssigned, string tipo_dato)
         {
             Ambit amb = this;
 
@@ -45,7 +48,7 @@ namespace CompiPascal.grammar.identifier
             {
                 if (!amb.variables.ContainsKey(id))
                 {
-                    amb.variables[id] = (new Identifier(valor, id, type, esconstante, isAssigned, false));
+                    amb.variables[id] = (new Identifier(valor, id, type, esconstante, isAssigned, false, tipo_dato));
                 }
             }
             else
@@ -69,13 +72,17 @@ namespace CompiPascal.grammar.identifier
             variables.Add(id, new Identifier(valor, id, type, esconstante, isAssigned));*/
         }
 
+
+
+
+
         public void saveVarFunction(string id, object valor, DataType type, bool esconstante, bool isAssigned)
         {
             Ambit amb = this;
 
             if (!amb.variables.ContainsKey(id))
             {
-                amb.variables[id] = (new Identifier(valor, id, type, esconstante, isAssigned, true));
+                amb.variables[id] = (new Identifier(valor, id, type, esconstante, isAssigned, true, "Variable"));
             }
             
         }
@@ -137,7 +144,7 @@ namespace CompiPascal.grammar.identifier
             return null;
         }
         
-        public void setVariable(string id, object valor, DataType type, bool isAssigned)
+        public void setVariable(string id, object valor, DataType type, bool isAssigned, string tipo_dato)
         {
             Ambit env = this;
             
@@ -145,20 +152,20 @@ namespace CompiPascal.grammar.identifier
             {
                 if (env.Variables.ContainsKey(id))
                 {
-                    env.Variables[id] = new Identifier(valor, id, type, false, isAssigned, false);
+                    env.Variables[id] = new Identifier(valor, id, type, false, isAssigned, false, tipo_dato);
                     return;
                 }
                 env = env.anterior;
             }
         }
 
-        public void setVariableFuncion(string id, object valor, DataType type, bool isAssigned)
+        public void setVariableFuncion(string id, object valor, DataType type, bool isAssigned, string tipo_dato)
         {
             Ambit env = this;
 
             if (env.Variables.ContainsKey(id))
             {
-                env.Variables[id] = new Identifier(valor, id, type, false, isAssigned, true);
+                env.Variables[id] = new Identifier(valor, id, type, false, isAssigned, true, tipo_dato);
             }
         }
 
@@ -213,10 +220,28 @@ namespace CompiPascal.grammar.identifier
             return amb;
         }
 
+
+        #region ARREGLOS
+
+        public void saveArray(string id, Arrays arrays)
+        {
+            Ambit amb = this;
+
+            if (!amb.Arrays.ContainsKey(id))
+            {
+                amb.Arrays[id] = arrays;
+            }
+        }
+
+
+        #endregion
+
+
         public string Ambit_name { get => ambit_name; set => ambit_name = value; }
         public bool IsNull { get => ambit_null; set => ambit_null = value; }
         internal Dictionary<string, Identifier> Variables { get => variables; set => variables = value; }
         public string Ambit_name_inmediato { get => ambit_name_inmediato; set => ambit_name_inmediato = value; }
         internal Dictionary<string, Function> Functions { get => functions; set => functions = value; }
+        internal Dictionary<string, Arrays> Arrays { get => arrays; set => arrays = value; }
     }
 }

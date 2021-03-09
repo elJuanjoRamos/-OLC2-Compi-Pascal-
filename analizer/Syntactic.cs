@@ -18,6 +18,7 @@ namespace CompiPascal.analizer
     {
         //VARIABLES GLOBALES
         public Ambit general = new Ambit();
+        public LinkedList<Instruction> lista_types = new LinkedList<Instruction>();
         public LinkedList<Instruction> lista_declaraciones = new LinkedList<Instruction>();
         public LinkedList<Instruction> lista_funciones = new LinkedList<Instruction>();
 
@@ -66,21 +67,25 @@ namespace CompiPascal.analizer
                 return;
             }
             //SE MANDA A GRAFICAR
-            GraphController.Instance.getGraph(root, paths);
+            //GraphController.Instance.getGraph(root, paths);
 
             //PROGRAM BODY -> GRAMATICA
             var program_body = root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(3);
 
+            //LISTA DE DECLARACION DE TYPES Y ARRAYS
+            lista_types = (new TypeAST()).TYPE_LIST(program_body.ChildNodes.ElementAt(0), lista_types);
+
+
             //LISTA DE DECLARCION DE VARIABLES
             
-            lista_declaraciones = (new DeclarationAST()).LIST_DECLARATIONS(program_body.ChildNodes.ElementAt(0), lista_declaraciones, elemetos_heredados);
+            lista_declaraciones = (new DeclarationAST()).LIST_DECLARATIONS(program_body.ChildNodes.ElementAt(1), lista_declaraciones, elemetos_heredados);
             
             //LISTA DE DECLARACION DE FUNCIONES
             elemetos_heredados.Clear();
-            lista_funciones =  (new FunctionAST()).FUNCTION_LIST(program_body.ChildNodes.ElementAt(1), lista_funciones, elemetos_heredados);
+            lista_funciones =  (new FunctionAST()).FUNCTION_LIST(program_body.ChildNodes.ElementAt(2), lista_funciones, elemetos_heredados);
 
             //LISTADO DE SENTENCIAS SENTENCIAS 
-            LinkedList<Instruction> listaInstrucciones = instructionAST.INSTRUCTIONS_BODY(program_body.ChildNodes.ElementAt(2));
+            LinkedList<Instruction> listaInstrucciones = instructionAST.INSTRUCTIONS_BODY(program_body.ChildNodes.ElementAt(3));
             
             //COMENZAR A EJECUTAR
             ejecutar(listaInstrucciones, lista_declaraciones, lista_funciones, paths);
@@ -147,7 +152,7 @@ namespace CompiPascal.analizer
             {
                 //GRAFICAR TS
                 GraphController.Instance.setPath(path);
-                GraphController.Instance.graficarTS(general.getGeneral());
+                //GraphController.Instance.graficarTS(general.getGeneral());
 
 
                 foreach (var item in actual)

@@ -36,8 +36,11 @@ namespace CompiPascal.analizer
             var NUMERO = new NumberLiteral("NUMERO");
             //var IDENTIFIER = new IdentifierTerminal("IDENTIFIER", "[_a-zA-Z][_a-zA-Z0-9]");
             var IDENTIFIER = TerminalFactory.CreateCSharpIdentifier("IDENTIFIER");
+            var IDENTIFIER_ARRAY_TYPE = TerminalFactory.CreateCSharpIdentifier("IDENTIFIER2");
             var CADENA = new StringLiteral("CADENA", "\'");
             #endregion
+
+
 
             #region Terminales
             var PUNTO_COMA = ToTerm(";", "TK_PUNTO_COMA");
@@ -73,7 +76,6 @@ namespace CompiPascal.analizer
             var RESERV_REAL = ToTerm("real", "RESERV_REAL");
             var RESERV_BOL = ToTerm("boolean", "RESERV_BOL");
             var RESERV_VOID = ToTerm("void", "RESERV_VOID");
-            var RESERV_TYPE = ToTerm("type", "RESERV_TYPE");
             var RESERV_OBJ = ToTerm("object", "RESERV_OBJ");
             var RESERV_PROGRAM = ToTerm("program", "RESERV_PROGRAM");
             var RESERV_VAR = ToTerm("var", "RESERV_VAR");
@@ -82,8 +84,18 @@ namespace CompiPascal.analizer
             var RESERV_CONST = ToTerm("const", "RESERV_CONST");
             var RESERV_TRUE = ToTerm("true", "RESERV_TRUE");
             var RESERV_FALSE = ToTerm("false", "RESERV_FALSE");
+
+            #region ARRAYS Y TYPES TERMINALES
+            var RESERV_TYPE = ToTerm("type", "RESERV_TYPE");
             var RESERV_ARRAY = ToTerm("array", "RESERV_ARRAY");
+            var GUION = ToTerm("-", "GION");
             var RESERV_OF = ToTerm("of", "RESERV_OF");
+
+
+
+            #endregion
+
+
 
             #region IF TERMINALES
             var RESERV_IF = ToTerm("if", "RESERV_IF");
@@ -130,6 +142,7 @@ namespace CompiPascal.analizer
             #endregion
 
 
+
             RegisterOperators(1, Associativity.Left, PLUS, MIN);
             RegisterOperators(2, Associativity.Left, POR, DIVI);
             RegisterOperators(3, Associativity.Left, MODULE);
@@ -146,12 +159,21 @@ namespace CompiPascal.analizer
             NonTerminal INSTRUCTIONS = new NonTerminal("INSTRUCTIONS");
             NonTerminal INSTRUCTIONS_BODY = new NonTerminal("INSTRUCTIONS_BODY");
             NonTerminal PROGRAM_BODY = new NonTerminal("PROGRAM_BODY", "PROGRAM_BODY");
-
             NonTerminal start = new NonTerminal("start");
 
-            #region EXPRESION
+            #region EXPLOGICA
             NonTerminal EXPRESION = new NonTerminal("EXPRESION", "EXPRESION");
+            NonTerminal EXPRESION_PRIMA = new NonTerminal("EXPRESION_PRIMA", "EXPRESION_PRIMA");
+            NonTerminal EXPLOGICA = new NonTerminal("EXPLOGICA", "EXPLOGICA");
+            NonTerminal EXPLOGICA_PRIMA = new NonTerminal("EXPLOGICA_PRIMA", "EXPLOGICA_PRIMA");
+            NonTerminal EXPRELACIONAL = new NonTerminal("EXPRELACIONAL", "EXPRELACIONAL");
+            NonTerminal EXPRELACIONAL_PRIMA = new NonTerminal("EXPRELACIONAL_PRIMA", "EXPRELACIONAL_PRIMA");
+            NonTerminal TERMINO = new NonTerminal("TERMINO", "TERMINO");
+            NonTerminal TERMINO_PRIMA = new NonTerminal("TERMINO_PRIMA ", "TERMINO_PRIMA");
+            NonTerminal FACTOR = new NonTerminal("FACTOR", "FACTOR");
             NonTerminal DATA_TYPE = new NonTerminal("DATA_TYPE", "DATA_TYPE");
+
+
             #endregion
 
 
@@ -170,13 +192,13 @@ namespace CompiPascal.analizer
 
             #endregion
 
-            //NO ESTAN TERMINADOS
-            #region ARRAY Y TYPES NO TERMINADO
+            #region ARRAY Y TYPES NO TERMINALES
+            NonTerminal TYPE_LIST = new NonTerminal("TYPE_LIST", "TYPE_LIST");
             NonTerminal TYPE = new NonTerminal("TYPE", "TYPE");
             NonTerminal TYPE_P = new NonTerminal("TYPE_P", "TYPE_P");
             NonTerminal ARRAY = new NonTerminal("ARRAY", "ARRAY");
             NonTerminal OBJECT = new NonTerminal("OBJECT", "OBJECT");
-
+            NonTerminal MORE_ARRAY = new NonTerminal("MORE_ARRAY", "MORE_ARRAY");
 
 
             #endregion
@@ -246,7 +268,8 @@ namespace CompiPascal.analizer
             start.Rule = RESERV_PROGRAM + IDENTIFIER + PUNTO_COMA + PROGRAM_BODY;
 
             PROGRAM_BODY.Rule
-                = DECLARATION_LIST
+                = TYPE_LIST
+                + DECLARATION_LIST
                 + FUNCTION_LIST
                 + INSTRUCTIONS_BODY + PUNTO;
 
@@ -269,6 +292,7 @@ namespace CompiPascal.analizer
                 | WRITE
                 | CALL
                 | EXIT
+                | TYPE
                 ;
 
             INSTRUCTION.ErrorRule
@@ -281,7 +305,7 @@ namespace CompiPascal.analizer
 
             DECLARATION_LIST.Rule
                = RESERV_VAR + IDENTIFIER + DECLARATION_BODY + VAR_DECLARATION + DECLARATION_LIST
-               | RESERV_CONST + IDENTIFIER + EQUALS + EXPRESION + PUNTO_COMA + CONST_DECLARATION + DECLARATION_LIST
+               | RESERV_CONST + IDENTIFIER + EQUALS + EXPLOGICA + PUNTO_COMA + CONST_DECLARATION + DECLARATION_LIST
                | Empty
                ;
 
@@ -293,7 +317,7 @@ namespace CompiPascal.analizer
                 | Empty
                 ;
 
-            CONST_DECLARATION.Rule = IDENTIFIER + EQUALS + EXPRESION + PUNTO_COMA + CONST_DECLARATION
+            CONST_DECLARATION.Rule = IDENTIFIER + EQUALS + EXPLOGICA + PUNTO_COMA + CONST_DECLARATION
                 | Empty
                 ;
 
@@ -303,7 +327,7 @@ namespace CompiPascal.analizer
                 ;
 
             ASSIGNATION.Rule
-                = EQUALS + EXPRESION
+                = EQUALS + EXPLOGICA
                 | Empty;
             ;
 
@@ -313,7 +337,7 @@ namespace CompiPascal.analizer
 
 
 
-            VAR_ASSIGNATE.Rule = IDENTIFIER + DOS_PUNTOS + EQUALS + EXPRESION + PUNTO_COMA;
+            VAR_ASSIGNATE.Rule = IDENTIFIER + DOS_PUNTOS + EQUALS + EXPLOGICA + PUNTO_COMA;
 
 
             DATA_TYPE.Rule = RESERV_REAL
@@ -332,22 +356,91 @@ namespace CompiPascal.analizer
 
 
             #region TYPES Y ARRAY
-            TYPE.Rule = RESERV_TYPE + IDENTIFIER + EQUALS + TYPE_P;
+            TYPE_LIST.Rule
+                = TYPE + TYPE_LIST
+                | Empty
+                ;
+
+            TYPE.Rule = RESERV_TYPE + TYPE_P;
 
             TYPE_P.Rule = OBJECT
                 | ARRAY
                 ;
 
-            OBJECT.Rule = RESERV_OBJ + DECLARATION + RESERV_END;
 
-            ARRAY.Rule = RESERV_ARRAY + COR_IZQ + EXPRESION + COR_DER + PUNTO + PUNTO + EXPRESION + PAR_DER + RESERV_OF + DATA_TYPE;
+            ARRAY.Rule = RESERV_ARRAY + GUION + IDENTIFIER_ARRAY_TYPE + EQUALS + RESERV_ARRAY
+                + COR_IZQ + EXPLOGICA + PUNTO + PUNTO + EXPLOGICA + COR_DER + RESERV_OF + MORE_ARRAY + PUNTO_COMA;
+            ;
+
+            MORE_ARRAY.Rule
+                = DATA_TYPE
+                | RESERV_ARRAY + COR_IZQ + EXPLOGICA + PUNTO + PUNTO + EXPLOGICA + COR_DER + RESERV_OF + MORE_ARRAY + PUNTO_COMA;
+                ;
+
+            OBJECT.Rule = Empty;
+
             #endregion
 
-            #region EXPRESSION
+            #region EXPRESION
 
-            EXPRESION.Rule
-                = //MIN2 + EXPRESION
-                 EXPRESION + PLUS + EXPRESION
+            EXPLOGICA.Rule 
+                = EXPRELACIONAL + EXPLOGICA_PRIMA
+                | NOT + EXPRELACIONAL + EXPLOGICA_PRIMA;
+                            
+            EXPLOGICA_PRIMA.Rule
+                = AND + EXPRELACIONAL + EXPLOGICA_PRIMA
+                | OR + EXPRELACIONAL + EXPLOGICA_PRIMA
+                | Empty
+                ;
+
+
+
+            EXPRELACIONAL.Rule = EXPRESION + EXPRELACIONAL_PRIMA;
+
+            EXPRELACIONAL_PRIMA.Rule
+                = LESS + EXPRESION + EXPRELACIONAL_PRIMA
+                | HIGHER + EXPRESION + EXPRELACIONAL_PRIMA
+                | LESS_EQUAL + EXPRESION + EXPRELACIONAL_PRIMA
+                | HIGHER_EQUAL + EXPRESION + EXPRELACIONAL_PRIMA
+                | EQUALS + EXPRESION + EXPRELACIONAL_PRIMA
+                | DISCTINCT + EXPRESION + EXPRELACIONAL_PRIMA
+                | Empty
+                ;
+
+
+
+            EXPRESION.Rule = TERMINO + EXPRESION_PRIMA;
+
+            EXPRESION_PRIMA.Rule
+                = PLUS + TERMINO + EXPRESION_PRIMA
+                | MIN + TERMINO + EXPRESION_PRIMA
+                | Empty
+                ;
+
+
+            TERMINO.Rule = FACTOR + TERMINO_PRIMA;
+
+            TERMINO_PRIMA.Rule
+                = POR + FACTOR + TERMINO_PRIMA
+                | DIVI + FACTOR + TERMINO_PRIMA
+                | MODULE + FACTOR + TERMINO_PRIMA
+                | Empty
+                ;
+
+            FACTOR.Rule
+                = PAR_IZQ + EXPLOGICA + PAR_DER
+                | REAL
+                | CADENA
+                | NUMERO
+                | IDENTIFIER
+                | RESERV_TRUE
+                | RESERV_FALSE
+                | CALL_FUNCTION_PROCEDURE
+                | MIN + FACTOR
+                ;
+
+            /*EXPRESION.Rule
+                = EXPRESION + PLUS + EXPRESION
                 | EXPRESION + MIN + EXPRESION
                 | EXPRESION + POR + EXPRESION
                 | EXPRESION + DIVI + EXPRESION
@@ -369,9 +462,7 @@ namespace CompiPascal.analizer
                 | RESERV_TRUE
                 | RESERV_FALSE
                 | PAR_IZQ + EXPRESION + PAR_DER
-                ;
-
-
+                ;*/
             #endregion
 
 
@@ -386,7 +477,7 @@ namespace CompiPascal.analizer
 
             #region IF-THEN
             IFTHEN.Rule
-                = RESERV_IF + EXPRESION
+                = RESERV_IF + EXPLOGICA
                     + RESERV_THEN
                         + IF_SENTENCE
                     + ELIF;
@@ -405,12 +496,13 @@ namespace CompiPascal.analizer
             #endregion
 
             #region CASE
-            SENTENCE_CASE.Rule = RESERV_CASE + EXPRESION + RESERV_OF + CASES + CASE_ELSE + RESERV_END + PUNTO_COMA;
+            SENTENCE_CASE.Rule = RESERV_CASE + EXPLOGICA + RESERV_OF + CASES + CASE_ELSE + RESERV_END + PUNTO_COMA;
 
-            CASES.Rule = MakePlusRule(CASES, CASE)
-                | CASE
+            CASES.Rule 
+                = CASE + CASES
+                | Empty                
                 ;
-            CASE.Rule = EXPRESION + DOS_PUNTOS + INSTRUCTIONS;
+            CASE.Rule = EXPLOGICA + DOS_PUNTOS + INSTRUCTIONS;
 
 
             CASE_ELSE.Rule = RESERV_ELSE + INSTRUCTIONS
@@ -419,16 +511,16 @@ namespace CompiPascal.analizer
             #endregion
 
             #region WHILE DO
-            WHILE.Rule = RESERV_WHILE + EXPRESION + RESERV_DO + INSTRUCTIONS_BODY + PUNTO_COMA;
+            WHILE.Rule = RESERV_WHILE + EXPLOGICA + RESERV_DO + INSTRUCTIONS_BODY + PUNTO_COMA;
             #endregion
 
             #region REPEAT UNTIL
-            REPEAT_UNTIL.Rule = RESERV_REPEAT + INSTRUCTIONS + RESERV_UNTIL + EXPRESION + PUNTO_COMA;
+            REPEAT_UNTIL.Rule = RESERV_REPEAT + INSTRUCTIONS + RESERV_UNTIL + EXPLOGICA + PUNTO_COMA;
             #endregion
 
             #region FOR
             FOR.Rule
-                = RESERV_FOR + IDENTIFIER + DOS_PUNTOS + EQUALS + EXPRESION + TODOWN + EXPRESION
+                = RESERV_FOR + IDENTIFIER + DOS_PUNTOS + EQUALS + EXPLOGICA + TODOWN + EXPLOGICA
                     + RESERV_DO
                         + INSTRUCTIONS_BODY + PUNTO_COMA
                 ;
@@ -488,8 +580,8 @@ namespace CompiPascal.analizer
             CALL.Rule = IDENTIFIER + PAR_IZQ + CALL_PARAMETERS + PAR_DER + PUNTO_COMA;
 
             CALL_PARAMETERS.Rule
-                = EXPRESION + CALL_PARAMETERS
-                | COMA + EXPRESION + CALL_PARAMETERS
+                = EXPLOGICA + CALL_PARAMETERS
+                | COMA + EXPLOGICA + CALL_PARAMETERS
                 | Empty
                 ;
 
@@ -497,7 +589,7 @@ namespace CompiPascal.analizer
 
             DECLARATION_LIST_HIJA.Rule
               = RESERV_VAR + IDENTIFIER + DECLARATION_BODY + VAR_DECLARATION + DECLARATION_LIST_HIJA
-              | RESERV_CONST + IDENTIFIER + EQUALS + EXPRESION + PUNTO_COMA + CONST_DECLARATION + DECLARATION_LIST_HIJA
+              | RESERV_CONST + IDENTIFIER + EQUALS + EXPLOGICA + PUNTO_COMA + CONST_DECLARATION + DECLARATION_LIST_HIJA
               | Empty
               ;
             #endregion
@@ -509,17 +601,17 @@ namespace CompiPascal.analizer
                 ;
 
             WRHITE_PARAMETER.Rule
-                = EXPRESION + MORE_WRHITE_PARAMETER
+                = EXPLOGICA + MORE_WRHITE_PARAMETER
                 | Empty
                 ;
             MORE_WRHITE_PARAMETER.Rule
-                = COMA + EXPRESION + MORE_WRHITE_PARAMETER
+                = COMA + EXPLOGICA + MORE_WRHITE_PARAMETER
                 | Empty
                 ;
 
             EXIT.Rule = RESERV_EXIT + PAR_IZQ + EXIT_EXP + PAR_DER + PUNTO_COMA;
 
-            EXIT_EXP.Rule = EXPRESION
+            EXIT_EXP.Rule = EXPLOGICA
                 | Empty
                 ;
 

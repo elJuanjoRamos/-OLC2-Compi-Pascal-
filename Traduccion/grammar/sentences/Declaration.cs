@@ -40,10 +40,10 @@ namespace CompiPascal.Traduccion.grammar.sentences
 
             if (this.isConst)
             {
-                return tabs+ "const " + this.id + ":= " + val + ";\n";
+                return tabs+ "const " + this.id + "= " + val + ";\n";
             } else
             {
-                return tabs+ "var " + this.id + ":" + this.type + ":= " + val + ";\n";
+                return tabs+ "var " + this.id + ":" + this.type + "= " + val + ";\n";
             }
 
         }

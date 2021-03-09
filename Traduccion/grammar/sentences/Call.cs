@@ -40,18 +40,18 @@ namespace CompiPascal.Traduccion.grammar.sentences
                 if (item is Expresion_Trad)
                 {
                     res = ((Expresion_Trad)item).Execute(ambit);
-                 }
+                }
                 else
                 {
                     res = item.ToString();
                 }
 
-                if (cont != parametros.Count)
+                if (cont == parametros.Count)
                 {
-                    parametros_llam = res + ",";
+                    parametros_llam += res;
                 } else
                 {
-                    parametros_llam = res;
+                    parametros_llam += res + ",";
                 }
             }
 
@@ -64,14 +64,21 @@ namespace CompiPascal.Traduccion.grammar.sentences
             } else
             {
                 var parametros_padre = "";
-
+                cont = 0;
                 if (func.EsHija)
                 {
                     Function_Trad funcpadres = ambit.getFuncion(func.Padre_inmediato);
                     foreach (var item in funcpadres.Declaraciones)
                     {
+                        cont++;
                         Declaration_Trad dec = ((Declaration_Trad)item);
-                        parametros_padre += "," + dec.Id ;
+                        if (cont == funcpadres.Declaraciones.Count)
+                        {
+                            parametros_padre += dec.Id;
+                        } else
+                        {
+                            parametros_padre += dec.Id + ",";
+                        }
                     }
                 }
                 

@@ -149,13 +149,18 @@ namespace CompiPascal.controller
             graphi += "\n</table>>];}";
 
 
-            print_image(path_startup, nombre, graphi);
+            print_image(path_startup, nombre, nombre,graphi);
         }
 
 
         public void graficarTS(Ambit ambit)
         {
+            var res_graphi = "";
+            var ambito_name = "";
+            var ambito_name2 = ambit.Ambit_name.Replace("General_", "");
             var graphi = "digraph G{\n";
+
+            graphi += "label = \"" + "Ambito Graficado: " + ambito_name2 + "\"\n";
 
             graphi += "graph [pad=\"" + 0.5 + "\", nodesep=\"" + 0.5 + "\", ranksep=\"" + 2 + "\"]\nnode[shape = plain]\nrankdir = LR;\nBaz [label=<";
 
@@ -163,7 +168,8 @@ namespace CompiPascal.controller
             graphi += "\n<table border=\"" + 0 + "\" cellborder=\"" + 1 + "\" cellspacing=\"" + 0 + "\">";
 
 
-            graphi += "<tr>\n<td width='100'><i>Nombre</i></td>\n<td width='100'><i>Tipo</i></td>\n<td width='100'><i>Ambito</i></td>\n<td><i width='100'>Valor</i></td>\n<td><i width='100'>Funcion</i></td>\n<td><i width='100'>Procedure</i></td> </tr>\n";
+            graphi += "\n<tr>\n\t<td width='100'><i>Nombre</i></td>\n\t<td width='100'><i>Tipo</i></td>\n\t<td width='100'><i>Ambito</i></td>\n\t<td><i width='100'>Valor</i></td>\n\t<td><i width='100'>Tipo Objeto</i></td>\n</tr>\n";
+
 
 
             while (ambit != null)
@@ -174,109 +180,51 @@ namespace CompiPascal.controller
                     foreach (var item in ambit.Variables)
                     {
                         Identifier id = (Identifier)item.Value;
-                        graphi += "<tr>\n<td height='25'>" + id.Id + "</td>\n<td height='25'>" + id.DataType + "</td>\n<td height='25'>" + ambit.Ambit_name + "</td>\n<td height='25'>" + id.Value.ToString() + "</td>\n<td height='25'>false</td>\n<td height='25'>false</td>\n</tr>";
+                        ambito_name = ambit.Ambit_name.Replace("General_", "");
+                        res_graphi = "\n<tr>\n\t<td height='25'>" + id.Id + "</td>\n\t<td height='25'>" + id.DataType + "</td>\n\t<td height='25'>" + ambito_name + "</td>\n\t<td height='25'>" + id.Value.ToString() + "</td>\n\t<td height='25'>" + id.Tipo_dato+"</td>\n</tr>" + res_graphi;
                     }
 
                 }
+
                 if (ambit.Functions.Count > 0)
                 {
                     var type = "void";
-                    var isfunc = "true";
-                    var isproc = "true";
-
+                    var isfunc = "Procedure";
+                    
                     foreach (var item in ambit.Functions)
                     {
                         type = "void";
-                        isfunc = "false";
-                        isproc = "true";
+                        isfunc = "Procedure";
 
                         Function func = (Function)item.Value;
                         if (!func.IsProcedure)
                         {
-                            isfunc = "true";
-                            isproc = "false"; 
+                            isfunc = "Function";
                             type = func.Tipe.ToString();
                         }
-                        graphi += "<tr>\n<td height='25'>" + func.Id + "</td>\n<td height='25'>" + type + "</td>\n<td height='25'>" + ambit.Ambit_name + "</td>\n<td height='25'>" + func.Retorno.ToString() + "</td>\n<td height='25'>"+isfunc+"</td>\n<td height='25'>"+isproc+"</td>\n</tr>";
+                        res_graphi = "<tr>\n<td height='25'>" + func.Id + "</td>\n<td height='25'>" + type + "</td>\n<td height='25'>" + ambit.Ambit_name + "</td>\n<td height='25'>" + func.Retorno.ToString() + "</td>\n<td height='25'>"+isfunc+"</td>\n</tr>" + res_graphi;
                     }
                 }
                 var temp = ambit.anterior;
                 ambit = temp;
             }
 
-            graphi += "\n</table>>];}";
-
-            print_image(this.path, "tabla_simbolos", graphi);
+            graphi += res_graphi + "\n</table>>];\n" +"}";
 
 
-
-        }
-
-        public void graficarTS2(Ambit_Trad ambit)
-        {
-            var graphi = "digraph G{\n";
-
-            graphi += "graph [pad=\"" + 0.5 + "\", nodesep=\"" + 0.5 + "\", ranksep=\"" + 2 + "\"]\nnode[shape = plain]\nrankdir = LR;\nBaz [label=<";
-
-
-            graphi += "\n<table border=\"" + 0 + "\" cellborder=\"" + 1 + "\" cellspacing=\"" + 0 + "\">";
-
-
-            graphi += "<tr>\n<td width='100'><i>Nombre</i></td>\n<td width='100'><i>Tipo</i></td>\n<td width='100'><i>Ambito</i></td>\n<td><i width='100'>Valor</i></td>\n<td><i width='100'>Funcion</i></td>\n<td><i width='100'>Procedure</i></td> </tr>\n";
-
-
-            while (ambit != null)
-            {
-                if (ambit.Variables.Count > 0)
-                {
-
-                    foreach (var item in ambit.Variables)
-                    {
-                        Identifier_Trad id = (Identifier_Trad)item.Value;
-                        graphi += "<tr>\n<td height='25'>" + id.Id + "</td>\n<td height='25'>" + id.DataType + "</td>\n<td height='25'>" + ambit.Ambit_name + "</td>\n<td height='25'>" + id.Value.ToString() + "</td>\n<td height='25'>false</td>\n<td height='25'>false</td>\n</tr>";
-                    }
-
-                }
-                if (ambit.Functions.Count > 0)
-                {
-                    var type = "void";
-                    var isfunc = "true";
-                    var isproc = "true";
-
-                    foreach (var item in ambit.Functions)
-                    {
-                        type = "void";
-                        isfunc = "false";
-                        isproc = "true";
-
-                        Function_Trad func = (Function_Trad)item.Value;
-                        if (!func.IsProcedure)
-                        {
-                            isfunc = "true";
-                            isproc = "false";
-                            type = func.Tipe.ToString();
-                        }
-                        graphi += "<tr>\n<td height='25'>" + func.Id + "</td>\n<td height='25'>" + type + "</td>\n<td height='25'>" + ambit.Ambit_name + "</td>\n<td height='25'>" + func.Retorno.ToString() + "</td>\n<td height='25'>" + isfunc + "</td>\n<td height='25'>" + isproc + "</td>\n</tr>";
-                    }
-                }
-                var temp = ambit.Anterior;
-                ambit = temp;
-            }
-
-            graphi += "\n</table>>];}";
-
-            print_image(this.path, "tabla_simbolos", graphi);
+            print_image(this.path, "tabla_simbolos", ambito_name2, graphi);
 
 
 
         }
 
-        public void print_image(string path_startup, string name, string dot)
+   
+        public void print_image(string path_startup, string namedot, string namepng , string dot)
         {
             try
             {
-                System.IO.File.WriteAllText(path_startup + "\\" + name+".dot", dot);
-                var command = "dot -Tpng \"" + path_startup + "\\" + name+".dot\"  -o \"" + path_startup + "\\" + name+".png\"   ";
+                System.IO.File.WriteAllText(path_startup + "\\" + namedot+".dot", dot);
+                var command = "dot -Tpng \"" + path_startup + "\\" + namedot+".dot\"  -o \"" + path_startup + "\\" + namepng+ ".png\"   ";
                 var procStarInfo = new ProcessStartInfo("cmd", "/C" + command);
                 var proc = new System.Diagnostics.Process();
                 proc.StartInfo = procStarInfo;

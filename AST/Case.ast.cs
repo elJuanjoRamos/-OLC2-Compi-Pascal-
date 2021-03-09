@@ -32,27 +32,28 @@ namespace CompiPascal.AST
              */
 
             var condicion = expressionAST.getExpresion(actual.ChildNodes[1]);
-
-            var lista_cases = CASES(actual.ChildNodes[3]);
+            ArrayList lista_cases = new ArrayList();
+            lista_cases = CASES(actual.ChildNodes[3], lista_cases);
 
             var else_case = CASE_ELSE(actual.ChildNodes[4]);
             return new Switch(condicion, lista_cases, else_case);
         }
 
-        public ArrayList CASES(ParseTreeNode actual)
+        public ArrayList CASES(ParseTreeNode actual, ArrayList lista_cases)
         {
+
+
             /*
-               CASES.Rule = MakePlusRule(CASES, CASE)
-                | CASE
+               CASES.Rule 
+                = CASE + CASES
+                | Empty                
                 ;
              */
-            ArrayList lista_cases = new ArrayList();
             if (actual.ChildNodes.Count > 0)
             {
-                foreach (var item in actual.ChildNodes)
-                {
-                    lista_cases.Add(CaseSing(item));
-                }
+                lista_cases.Add(CaseSing(actual.ChildNodes[0]));
+
+                lista_cases = CASES(actual.ChildNodes[1], lista_cases);
             }
 
             return lista_cases;

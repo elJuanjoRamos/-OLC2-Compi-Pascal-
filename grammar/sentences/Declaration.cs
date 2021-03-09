@@ -48,7 +48,7 @@ namespace CompiPascal.grammar.sentences
         {
             Identifier buscar = new Identifier();
             //BUSCA LA VARIABLE SI NO HA SIDO DECLARADA
-            if (!ambit.Ambit_name_inmediato.Equals("Function"))
+            if (!ambit.Ambit_name_inmediato.Equals("Function") && !ambit.Ambit_name_inmediato.Equals("Procedure"))
             {
                 buscar = ambit.getVariable(id);
             } 
@@ -57,8 +57,6 @@ namespace CompiPascal.grammar.sentences
             {
                 buscar = ambit.getVariableFunctionInAmbit(id);
             }
-
-
 
             if (buscar.IsNull)
             {
@@ -75,8 +73,7 @@ namespace CompiPascal.grammar.sentences
 
                     if (this.type == DataType.CONST)
                     {
-                        ambit.save(this.id.ToLower(), val.Value, val.getDataType, true, true);
-                        SimbolTableController.Instance.add(this.id, this.type, ambit.Ambit_name, new Literal(val.Value, 2), true, false);
+                        ambit.save(this.id.ToLower(), val.Value, val.getDataType, true, true, "Constante");
                         return val.Value;
 
                     }
@@ -84,15 +81,12 @@ namespace CompiPascal.grammar.sentences
                     {
                         if (val.getDataType == this.type)
                         {
-                            ambit.save(this.id.ToLower(), val.Value, val.getDataType, false, isAssigned);
-                            SimbolTableController.Instance.add(this.id, this.type, ambit.Ambit_name, new Literal(val.Value, 2), true, false);
+                            ambit.save(this.id.ToLower(), val.Value, val.getDataType, false, isAssigned, "Variable");
                             return val.Value;
                         }
                         else
                         {
-                            ConsolaController.Instance.Add("El tipo " + val.Value.ToString() + " no es asignable con " + this.type.ToString());
-                            ErrorController.Instance.SemantycErrors("El tipo " + val.Value.ToString() + " no es asignable con " + this.type.ToString(), 0, 0);
-
+                            ErrorController.Instance.SemantycErrors("El tipo " + val.getDataType + " no es asignable con " + this.type.ToString(), 0, 0);
                             return null;
                         }
                     }
@@ -106,7 +100,7 @@ namespace CompiPascal.grammar.sentences
             }
             else
             {
-                ConsolaController.Instance.Add("La variable '" + id + "' ya fue declarada");
+                ErrorController.Instance.SemantycErrors("La variable '" + id + "' ya fue declarada", 0, 0);
                 return null;
             }
             return 0;
