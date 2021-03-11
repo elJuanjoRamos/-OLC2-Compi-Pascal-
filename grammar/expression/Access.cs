@@ -11,15 +11,19 @@ namespace CompiPascal.grammar.expression
     public class Access : Expression
     {
         private string id;
-        public int row;
-        public int column;
+        private int row;
+        private int column;
 
         public string Id { get => id; set => id = value; }
+        public int Row { get => row; set => row = value; }
+        public int Column { get => column; set => column = value; }
 
-        public Access(string id)
-            : base("Access")
+        public Access(string id, int r, int c)
+            : base(r, c,"Access")
         {
             this.Id = id;
+            this.row = r;
+            this.column = c;
         }
 
         public override Returned Execute(Ambit ambit)

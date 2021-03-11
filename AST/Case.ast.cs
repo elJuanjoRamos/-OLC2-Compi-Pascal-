@@ -36,7 +36,11 @@ namespace CompiPascal.AST
             lista_cases = CASES(actual.ChildNodes[3], lista_cases);
 
             var else_case = CASE_ELSE(actual.ChildNodes[4]);
-            return new Switch(condicion, lista_cases, else_case);
+
+            var row = actual.ChildNodes[0].Token.Location.Line;
+            var column = actual.ChildNodes[0].Token.Location.Column;
+            
+            return new Switch(condicion, lista_cases, else_case, row, column);
         }
 
         public ArrayList CASES(ParseTreeNode actual, ArrayList lista_cases)
@@ -65,8 +69,10 @@ namespace CompiPascal.AST
             var condicion = expressionAST.getExpresion(actual.ChildNodes[0]);
 
             var lista_instrucciones = instructionAST.ISTRUCCIONES(actual.ChildNodes[2]);
+            var row = actual.ChildNodes[1].Token.Location.Line;
+            var col = actual.ChildNodes[1].Token.Location.Column;
 
-            return new Case(condicion, new Sentence(lista_instrucciones));
+            return new Case(condicion, new Sentence(lista_instrucciones), row, col);
 
         }
 
@@ -77,11 +83,15 @@ namespace CompiPascal.AST
                 | Empty
                 ;
              */
-            Case _case = new Case();
+
+            Case _case = new Case(0,0);
             if (actual.ChildNodes.Count > 0)
             {
+                var row = actual.ChildNodes[0].Token.Location.Line;
+                var col = actual.ChildNodes[0].Token.Location.Column;
+
                 var lista_declaraciones = instructionAST.ISTRUCCIONES(actual.ChildNodes[1]);
-                _case = new Case(new Sentence(lista_declaraciones));
+                _case = new Case(new Sentence(lista_declaraciones), row, col);
             }
 
             return _case;

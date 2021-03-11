@@ -22,7 +22,10 @@ namespace CompiPascal.AST
             if (actual.ChildNodes.Count != 0)
             {
                 var exp = (new ExpressionAST()).getExpresion(actual.ChildNodes[0]);
-                return new Exit(exp);
+                var row = actual.ChildNodes[0].Token.Location.Line;
+                var col = actual.ChildNodes[0].Token.Location.Column;
+
+                return new Exit(exp, row, col);
             }
 
             return new Exit();

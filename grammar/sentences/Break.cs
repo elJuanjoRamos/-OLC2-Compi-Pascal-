@@ -12,8 +12,11 @@ namespace CompiPascal.grammar.sentences
         private int row;
         private int column;
 
+        public int Row { get => row; set => row = value; }
+        public int Column { get => column; set => column = value; }
+
         public Break(int row, int column):
-            base(0,0, "Break")
+            base(row,column, "Break")
         {
             this.row = row;
             this.column = column;
@@ -25,12 +28,9 @@ namespace CompiPascal.grammar.sentences
 
         public override object Execute(Ambit ambit)
         {
-            if (getValidAmbit(ambit.Ambit_name_inmediato.ToLower(), ambit.Ambit_name.ToLower()))
-            {
-                return new Break();
-            }
-            ErrorController.Instance.SyntacticError("La sentencia Break solo puede aparece en ciclos o en la sentencia CASE", 0,0);
-            return null;
+            //ErrorController.Instance.SyntacticError("La sentencia Break solo puede aparece en ciclos o en la sentencia CASE", row,col);
+
+            return this;
         }
 
         public bool getValidAmbit(string ambit_name, string ambit_padre)

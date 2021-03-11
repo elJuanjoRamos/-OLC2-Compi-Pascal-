@@ -13,14 +13,21 @@ namespace CompiPascal.grammar.expression
         private Expression left;
         private Expression right;
         private String type;
+        private int row;
+        private int column;
 
-        public Arithmetic(Expression l, Expression ri, String t)
-        : base("Arithmetic")
+        public Arithmetic(Expression l, Expression ri, String t, int r, int c)
+        : base(r, c, "Arithmetic")
         {
             this.right = ri;
             this.left = l;
             this.type = t;
+            this.row = r;
+            this.column = c;
         }
+
+        public int Row { get => row; set => row = value; }
+        public int Column { get => column; set => column = value; }
 
         public override Returned Execute(Ambit ambit)
         {

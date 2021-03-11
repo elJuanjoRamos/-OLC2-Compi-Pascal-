@@ -1,4 +1,5 @@
-﻿using CompiPascal.Traduccion.grammar.abstracts;
+﻿using CompiPascal.controller;
+using CompiPascal.Traduccion.grammar.abstracts;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -70,7 +71,7 @@ namespace CompiPascal.Traduccion.grammar.sentences
                 ambit.setFunction(Id, this);
             }
 
-            Ambit_Trad ambit_Trad = new Ambit_Trad(ambit, this.uniqId, ambit.Ambit_name + "_Function", false);
+            Ambit_Trad ambit_Trad = new Ambit_Trad(ambit, this.uniqId, ambit.Ambit_name + "_" + this.uniqId, false);
 
 
 
@@ -147,8 +148,23 @@ namespace CompiPascal.Traduccion.grammar.sentences
 
 
 
-
+            GraphController.Instance.getAmbitoGraficar_Trad(ambit_Trad, false);
             return res_hijas +  cadena + declacion + begin + instrucciones + end;
+        }
+
+        public Instruction_Trad getParameterAt(int i)
+        {
+            var cont = 0;
+            foreach (var item in parametos)
+            {
+                if (cont == i)
+                {
+                    return item;
+                }
+                cont = cont + 1;
+
+            }
+            return null;
         }
     }
 }

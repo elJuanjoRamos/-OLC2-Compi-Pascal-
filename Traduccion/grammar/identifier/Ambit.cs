@@ -43,7 +43,7 @@ namespace CompiPascal.Traduccion.grammar
         }
 
 
-        public void save(string id, string valor, string type)
+        public void save(string id, string valor, string type, string tipo_dato)
         {
             Ambit_Trad amb = this;
 
@@ -51,7 +51,7 @@ namespace CompiPascal.Traduccion.grammar
             {
                 if (!amb.variables.ContainsKey(id))
                 {
-                    amb.variables[id] = (new Identifier_Trad(valor, id, type));
+                    amb.variables[id] = (new Identifier_Trad(valor, id, type, tipo_dato));
                 }
             }
             else
@@ -68,7 +68,7 @@ namespace CompiPascal.Traduccion.grammar
 
             if (!amb.variables.ContainsKey(id))
             {
-                amb.variables[id] = (new Identifier_Trad(valor, id, type));
+                amb.variables[id] = (new Identifier_Trad(valor, id, type, "Variable"));
             }
 
         }
@@ -145,7 +145,7 @@ namespace CompiPascal.Traduccion.grammar
         }
 
 
-        public void setVariable(string id, string valor, string type)
+        public void setVariable(string id, string valor, string type, string tipo_dato)
         {
             Ambit_Trad env = this;
 
@@ -153,20 +153,20 @@ namespace CompiPascal.Traduccion.grammar
             {
                 if (env.Variables.ContainsKey(id))
                 {
-                    env.Variables[id] = new Identifier_Trad(valor, id, type);
+                    env.Variables[id] = new Identifier_Trad(valor, id, type, tipo_dato);
                     return;
                 }
                 env = env.anterior;
             }
         }
 
-        public void setVariableFuncion(string id, string valor, string type)
+        public void setVariableFuncion(string id, string valor, string type, string tipo_dato)
         {
             Ambit_Trad env = this;
 
             if (env.Variables.ContainsKey(id))
             {
-                env.Variables[id] = new Identifier_Trad(valor, id, type);
+                env.Variables[id] = new Identifier_Trad(valor, id, type, tipo_dato);
             }
         }
 

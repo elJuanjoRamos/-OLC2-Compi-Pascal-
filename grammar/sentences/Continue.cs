@@ -12,8 +12,11 @@ namespace CompiPascal.grammar.sentences
         private int row;
         private int column;
 
+        public int Row { get => row; set => row = value; }
+        public int Column { get => column; set => column = value; }
+
         public Continue(int row, int column) :
-            base(0, 0, "Continue")
+            base(row, column, "Continue")
         {
             this.row = row;
             this.column = column;
@@ -26,12 +29,7 @@ namespace CompiPascal.grammar.sentences
 
         public override object Execute(Ambit ambit)
         {
-            if (getValidAmbit(ambit.Ambit_name_inmediato.ToLower(), ambit.Ambit_name.ToLower()))
-            {
-                return new Continue();
-            }
-            ErrorController.Instance.SyntacticError("La sentencia Continue solo puede aparece en ciclos", 0, 0);
-            return null;
+            return this;
         }
 
         public bool getValidAmbit(string ambit_name, string ambit_padre)

@@ -97,11 +97,17 @@ namespace CompiPascal.AST
             }
             else if (actual.Term.ToString().Equals("CONTINUE"))
             {
-                return new Continue(0, 0);
+                var row = actual.ChildNodes[0].Token.Location.Line;
+                var col = actual.ChildNodes[0].Token.Location.Column;
+
+                return new Continue(row, col);
             }
             else if (actual.Term.ToString().Equals("BREAK"))
             {
-                return new Break(0, 0);
+                var row = actual.ChildNodes[0].Token.Location.Line;
+                var col = actual.ChildNodes[0].Token.Location.Column;
+
+                return new Break(row, col);
             }
             else if (actual.Term.ToString().Equals("CALL"))
             {

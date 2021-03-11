@@ -15,27 +15,33 @@ namespace CompiPascal.grammar.sentences
         public bool isNull;
         public bool isElse;
 
-        public Case(Expression condition, Sentence code)
-            : base(0,0,"Case")
+        public Case(Expression condition, Sentence code, int ro, int col)
+            : base(ro,col,"Case")
         {
             this.condition = condition;
             this.sentence = code;
             this.isNull = false;
             this.isElse = false;
+            this.row = ro;
+            this.column = col;
         }
-        public Case()
-            : base(0, 0, "Case")
+        public Case(int row, int cl)
+            : base(row, cl, "Case")
         {
             this.isElse = false;
             this.isNull = true;
+            this.row = row;
+            this.column = cl;
         }
         //ESTE ES EL ELSE-CASE
-        public Case(Sentence code)
-            : base(0, 0, "Case")
+        public Case(Sentence code, int row, int col)
+            : base(row, col, "Case")
         {
             this.sentence = code;
             this.isNull = false;
             this.isElse = true;
+            this.row = row;
+            this.column = col;
         }
 
         public override object Execute(Ambit ambit)

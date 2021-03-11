@@ -21,7 +21,11 @@ namespace CompiPascal.AST
             ArrayList prametros_llamada = new ArrayList();
             prametros_llamada = (new ParametersAST()).CALL_PARAMETERS(actual.ChildNodes[2], prametros_llamada);
 
-            return new CallFunction(actual.ChildNodes[0].Token.Text, prametros_llamada);
+            var identifier = actual.ChildNodes[0].Token.Text;
+            var row = actual.ChildNodes[0].Token.Location.Line;
+            var column = actual.ChildNodes[0].Token.Location.Column;
+
+            return new CallFunction(identifier, prametros_llamada, row, column);
         }
     }
 }

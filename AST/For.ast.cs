@@ -39,7 +39,10 @@ namespace CompiPascal.AST
             var direccion = actual.ChildNodes[5].ChildNodes[0].Token.Text;
             var fin = expressionAST.getExpresion(actual.ChildNodes[6]);
             var lista_instrucciones = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[8]);
-            return new FOR(ident, inicio, fin, new Sentence(lista_instrucciones), direccion);
+            var row = actual.ChildNodes[0].Token.Location.Line;
+            var col = actual.ChildNodes[0].Token.Location.Column;
+
+            return new FOR(ident, inicio, fin, new Sentence(lista_instrucciones), direccion, row, col);
 
 
 

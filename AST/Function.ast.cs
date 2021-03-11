@@ -84,7 +84,7 @@ namespace CompiPascal.AST
 
             var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[9]);
 
-            lista_funciones.AddLast(new Function(identifier, parametros, declaraciones,  function_type, new Sentence(function_instructions), false));
+            lista_funciones.AddLast(new Function(identifier, parametros, declaraciones,  function_type.ToLower(), new Sentence(function_instructions), false));
 
             elementos_her.Clear();
             lista_funciones = FUNCTION_LIST(actual.ChildNodes[11], lista_funciones, elementos_her);
@@ -147,10 +147,12 @@ namespace CompiPascal.AST
                     elementos_her = PARAMETER_BODY(actual.ChildNodes[2], elementos_her);
                     var dataType = actual.ChildNodes[4].ChildNodes[0].Token.Text;
 
+                    var row = actual.ChildNodes[1].Token.Location.Line;
+                    var col = actual.ChildNodes[1].Token.Location.Column;
 
                     foreach (var item in elementos_her)
                     {
-                        parametros.AddLast(declarationAST.GetDeclarationValue(item.ToString(), dataType, true));
+                        parametros.AddLast(declarationAST.GetDeclarationValue(item.ToString(), dataType.ToLower(), true, row, col));
                     }
 
                     //SI VIENEN MAS PARAMETROS
@@ -168,10 +170,12 @@ namespace CompiPascal.AST
                     elementos_her = PARAMETER_BODY(actual.ChildNodes[1], elementos_her);
                     var dataType = actual.ChildNodes[3].ChildNodes[0].Token.Text;
 
+                    var row = actual.ChildNodes[0].Token.Location.Line;
+                    var col = actual.ChildNodes[0].Token.Location.Column;
 
                     foreach (var item in elementos_her)
                     {
-                        parametros.AddLast(declarationAST.GetDeclarationValue(item.ToString(), dataType, true));
+                        parametros.AddLast(declarationAST.GetDeclarationValue(item.ToString(), dataType.ToLower(), true, row, col));
                     }
 
                     //SI VIENEN MAS PARAMETROS

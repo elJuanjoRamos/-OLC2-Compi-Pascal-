@@ -88,9 +88,12 @@ namespace CompiPascal.AST
                 //OBTENGO EL TIPO
                 var datatype = actual.ChildNodes[4].ChildNodes[0].Token.Text;
 
+                var row = actual.ChildNodes[1].Token.Location.Line;
+                var col = actual.ChildNodes[1].Token.Location.Column;
+
                 foreach (var item in elementos_her)
                 {
-                    lista_actual.AddLast(GetDeclarationValue(item.ToString(), datatype, false));
+                    lista_actual.AddLast(GetDeclarationValue(item.ToString(), datatype, false, row, col));
                 }
                 elementos_her.Clear();
 
@@ -99,6 +102,7 @@ namespace CompiPascal.AST
             else
             {
                 var datatype = actual.ChildNodes[1].ChildNodes[0].Token.Text;
+                
                 elementos_her.Add(datatype);
                 lista_actual = ASSIGNATION_VARIABLE(actual.ChildNodes[2], lista_actual, elementos_her);
             }
@@ -140,17 +144,24 @@ namespace CompiPascal.AST
 
         public LinkedList<Instruction> ASSIGNATION_VARIABLE(ParseTreeNode actual, LinkedList<Instruction> lista_actual, ArrayList elementos_her)
         {
+
+            var row = 0;
+            var col = 0;
+
             //VAR A: TIPO = EXP;
             if (actual.ChildNodes.Count > 0)
             {
+                row = actual.ChildNodes[0].Token.Location.Line;
+                col = actual.ChildNodes[0].Token.Location.Column;
                 var exp = expressionAST.getExpresion(actual.ChildNodes[1]);
-                lista_actual.AddLast(new Declaration(elementos_her[0].ToString(), elementos_her[1].ToString(), exp, 0, 0, true));
+                lista_actual.AddLast(new Declaration(elementos_her[0].ToString(), elementos_her[1].ToString(), exp, row, col, true));
                 elementos_her.Clear();
             }
             // VAR A:TIPO;
             else
             {
-                lista_actual.AddLast(GetDeclarationValue(elementos_her[0].ToString(), elementos_her[1].ToString(), false));
+
+                lista_actual.AddLast(GetDeclarationValue(elementos_her[0].ToString(), elementos_her[1].ToString(), false, row, col));
                 elementos_her.Clear();
             }
             return lista_actual;
@@ -167,23 +178,24 @@ namespace CompiPascal.AST
             }
             return elementos_her;
         }
-        public Declaration GetDeclarationValue(string identifier, string datatype, bool perteneceFuncion)
+        public Declaration GetDeclarationValue(string identifier, string datatype, bool perteneceFuncion, int row, int col)
         {
-            if (datatype.Equals("integer"))
+
+            if (datatype.ToLower().Equals("integer"))
             {
-                return new Declaration(identifier.ToString(), datatype, new Literal(0, 1), 0, 0, false);
+                return new Declaration(identifier.ToString(), datatype, new Literal(0, 1, row, col), 0, 0, false);
             }
-            else if (datatype.Equals("real"))
+            else if (datatype.ToLower().Equals("real"))
             {
-                return new Declaration(identifier.ToString(), datatype, new Literal(0, 4), 0, 0, false);
+                return new Declaration(identifier.ToString(), datatype, new Literal(0, 4, row, col), 0, 0, false);
             }
-            else if (datatype.Equals("string"))
+            else if (datatype.ToLower().Equals("string"))
             {
-                return new Declaration(identifier.ToString(), datatype, new Literal("", 2), 0, 0, false);
+                return new Declaration(identifier.ToString(), datatype, new Literal("", 2, row, col), 0, 0, false);
             }
-            else if (datatype.Equals("boolean"))
+            else if (datatype.ToLower().Equals("boolean"))
             {
-                return new Declaration(identifier.ToString(), datatype, new Literal(false, 3), 0, 0, false);
+                return new Declaration(identifier.ToString(), datatype, new Literal(false, 3, row, col), 0, 0, false);
             }
             return null;
         }

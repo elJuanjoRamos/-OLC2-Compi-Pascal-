@@ -8,5 +8,15 @@ Baz [label=<
 <td width='100'><i>Mensaje</i></td>
 <td width='100'><i>Linea</i></td>
 <td><i width='100'>Columna</i></td> </tr>
-
+<tr>
+<td height='25'>Lexico</td>
+<td height='25'>Invalid character: '"'.</td>
+<td height='25'>8</td>
+<td height='25'>16</td>
+</tr><tr>
+<td height='25'>Lexico</td>
+<td height='25'>Invalid character: '"'.</td>
+<td height='25'>13</td>
+<td height='25'>16</td>
+</tr>
 </table>>];}

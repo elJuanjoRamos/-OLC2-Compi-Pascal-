@@ -24,13 +24,16 @@ namespace CompiPascal.AST
             var instrucciones = actual.ChildNodes[1];
             var condicion = (new ExpressionAST()).getExpresion(actual.ChildNodes[3]);
 
+            var row = actual.ChildNodes[0].Token.Location.Line;
+            var col = actual.ChildNodes[0].Token.Location.Column;
+
             InstructionAST instructionAST = new InstructionAST();
 
             //OBTENGO LA LISTA DE INSTRUCCIONES
             LinkedList<Instruction> lista_instrucciones = instructionAST.ISTRUCCIONES(instrucciones);
 
             //RETORNO EL NUEVO REPEAT-UTIL
-            return new Repeat(condicion, new Sentence(lista_instrucciones));
+            return new Repeat(condicion, new Sentence(lista_instrucciones), row, col);
 
         }
         #endregion

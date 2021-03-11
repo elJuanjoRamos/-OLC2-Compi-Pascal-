@@ -22,13 +22,9 @@ namespace CompiPascal.grammar.sentences
 
         public override object Execute(Ambit ambit)
         {
-            var ambitName = "Global_While";
-            if (!ambit.IsNull)
-            {
-                ambitName = ambit.Ambit_name + "_While";
-            }
+            
 
-            var whileAmbit = new Ambit(ambit, ambitName, "While", false);
+            var whileAmbit = new Ambit(ambit, ambit.Ambit_name + "_While", "While", false);
 
             //CONDICION
             var cond = condition.Execute(whileAmbit);

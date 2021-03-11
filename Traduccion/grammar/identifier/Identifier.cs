@@ -10,12 +10,15 @@ namespace CompiPascal.Traduccion.grammar.identifier
         private string id;
         private string type;
         private bool isNull;
-        public Identifier_Trad(string v, string i, string t)
+        private string tipo_dato;
+
+        public Identifier_Trad(string v, string i, string t, string tipo)
         {
             this._value = v;
             this.id = i;
             this.type = t;
             this.isNull = false;
+            this.tipo_dato = tipo;
         }
         public Identifier_Trad()
         {
@@ -40,5 +43,6 @@ namespace CompiPascal.Traduccion.grammar.identifier
         }
 
         public bool IsNull { get => isNull; set => isNull = value; }
+        public string Tipo_dato { get => tipo_dato; set => tipo_dato = value; }
     }
 }

@@ -13,22 +13,21 @@ namespace CompiPascal.grammar.sentences
         private Expression condicion;
         private ArrayList cases;
         private Case else_case;
-
-        public Switch(Expression condicion, ArrayList cases, Case else_case):
-            base(0,0, "Case")
+        private int row;
+        private int column;
+        public Switch(Expression condicion, ArrayList cases, Case else_case, int ro, int col):
+            base(ro,col, "Case")
         {
             this.condicion = condicion;
             this.cases = cases;
             this.else_case = else_case;
+            this.row = ro;
+            this.column = col;
         }
 
         public override object Execute(Ambit ambit)
         {
-            var ambitName = "Global_Case";
-            if (ambit != null)
-            {
-                ambitName = ambit.Ambit_name + "_Case";
-            }
+           
 
            
 
@@ -39,7 +38,8 @@ namespace CompiPascal.grammar.sentences
             var numeroCaso = -1;
 
 
-            
+            var switchAmbit = new Ambit(ambit, ambit.Ambit_name+ "_Case", "Case", false);
+
             for (int i = 0; i < cases.Count; i++)
             {
                 
@@ -49,7 +49,7 @@ namespace CompiPascal.grammar.sentences
                 {
                     numeroCaso = i;
 
-                    var switchAmbit = new Ambit(ambit, ambitName, "Case", false);
+                    
                     var element = (Case)cases[i];
                     var resultado = element.Execute(switchAmbit);
 

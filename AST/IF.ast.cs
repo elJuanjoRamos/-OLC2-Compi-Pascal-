@@ -33,13 +33,15 @@ namespace CompiPascal.AST
              */
             IF ifs = new IF();
             ExpressionAST expressionAST = new ExpressionAST();
-            
+            var row = actual.ChildNodes[0].Token.Location.Line;
+            var col = actual.ChildNodes[0].Token.Location.Column;
+
             var LOGIC_EXPRESION = expressionAST.getExpresion(actual.ChildNodes[1]);
             var SENTENCES = IF_SENTENCE(actual.ChildNodes[3]);
             var ELSE = ELIF(actual.ChildNodes[4]);
 
 
-            return new IF(LOGIC_EXPRESION, SENTENCES, ELSE);
+            return new IF(LOGIC_EXPRESION, SENTENCES, ELSE, row, col);
         }
 
         public Sentence IF_SENTENCE(ParseTreeNode actual)

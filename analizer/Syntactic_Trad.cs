@@ -93,8 +93,8 @@ namespace CompiPascal.analizer
             LinkedList<Instruction_Trad> lista_declaraciones, LinkedList<Instruction_Trad> lista_funciones,
             string path)
         {
+            GraphController.Instance.setPath(path);
             //GUARDAR VARIABLES
-
 
             foreach (var item in lista_declaraciones)
             {
@@ -145,7 +145,9 @@ namespace CompiPascal.analizer
                 }
 
             }
-
+            
+            GraphController.Instance.getAmbitoGraficar_Trad(general.getGeneral(), true);
+            GraphController.Instance.graficarTSGeneral();
             texto_traduccion += "\n\nend.";
 
         }

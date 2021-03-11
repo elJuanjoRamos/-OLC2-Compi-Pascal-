@@ -67,7 +67,7 @@ namespace CompiPascal.analizer
                 return;
             }
             //SE MANDA A GRAFICAR
-            //GraphController.Instance.getGraph(root, paths);
+            GraphController.Instance.getGraph(root, paths);
 
             //PROGRAM BODY -> GRAMATICA
             var program_body = root.ChildNodes.ElementAt(0).ChildNodes.ElementAt(3);
@@ -106,6 +106,7 @@ namespace CompiPascal.analizer
             var error_variable = false;
             var error_funcion = false;
 
+            GraphController.Instance.setPath(path);
 
             foreach (var item in lista_declaraciones)
             {
@@ -151,7 +152,7 @@ namespace CompiPascal.analizer
             if (!error_variable && !error_funcion)
             {
                 //GRAFICAR TS
-                GraphController.Instance.setPath(path);
+                //GraphController.Instance.setPath(path);
                 //GraphController.Instance.graficarTS(general.getGeneral());
 
 
@@ -164,6 +165,25 @@ namespace CompiPascal.analizer
                         {
                             continue;
                         }
+                        else if (result is Instruction)
+                        {
+                            if (result is Break)
+                            {
+                                var r = (Break)result;
+                                ErrorController.Instance.SyntacticError("La sentencia Break solo puede aparece en ciclos o en la sentencia CASE", r.Row, r.Column);
+                            }
+                            else if (result is Continue)
+                            {
+                                var r = (Continue)result;
+                                ErrorController.Instance.SyntacticError("La sentencia Continue solo puede aparece en ciclos", r.Row, r.Column);
+                            }
+                            else if (result is Exit)
+                            {
+                                var r = (Exit)result;
+                                ErrorController.Instance.SyntacticError("La sentencia Exit solo puede aparece en funciones", r.Row, r.Column);
+
+                            }
+                        }
                     }
                     catch (Exception)
                     {
@@ -172,6 +192,10 @@ namespace CompiPascal.analizer
                     }
 
                 }
+
+                
+                //GraphController.Instance.getAmbitoGraficar(general.getGeneral(), true);
+                //GraphController.Instance.graficarTSGeneral();
             }
 
         }

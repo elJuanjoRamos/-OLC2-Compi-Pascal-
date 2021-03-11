@@ -27,34 +27,36 @@ namespace CompiPascal.AST
 
         public Expression GetLiteral(ParseTreeNode node)
         {
+            var row = node.Token.Location.Line;
+            var column = node.Token.Location.Column;
 
             if (node.Term.ToString().ToString().Equals("NUMERO"))
             {
-                return new Literal(node.Token.Value, 1);
+                return new Literal(node.Token.Value, 1, row, column);
             }
             else if (node.Term.ToString().Equals("CADENA"))
             {
-                return new Literal(node.Token.Value, 2);
+                return new Literal(node.Token.Value, 2, row, column);
             }
             else if (node.Term.ToString().Equals("RESERV_TRUE") || node.Term.ToString().Equals("RESERV_FALSE"))
             {
-                return new Literal(node.Token.Value, 3);
+                return new Literal(node.Token.Value, 3, row, column);
             }
             else if (node.Term.ToString().Equals("REAL"))
             {
-                return new Literal(node.Token.Value, 4);
+                return new Literal(node.Token.Value, 4, row, column);
             }
             else if (node.Term.ToString().Equals("TYPE"))
             {
-                return new Literal(node.Token.Value, 5);
+                return new Literal(node.Token.Value, 5, row, column);
             }
             else if (node.Term.ToString().Equals("ARRAY"))
             {
-                return new Literal(node.Token.Value, 6);
+                return new Literal(node.Token.Value, 6, row, column);
             }
             else if (node.Term.ToString().Equals("IDENTIFIER"))
             {
-                return new Access(node.Token.Value.ToString());
+                return new Access(node.Token.Value.ToString(),  row, column);
             }
 
             return null;
@@ -79,6 +81,9 @@ namespace CompiPascal.AST
             {
                 var not = actual.ChildNodes[0].Token.Text.ToLower();
                 var izq = EXPRELACIONAL(actual.ChildNodes[1]);
+                var row = actual.ChildNodes[1].Token.Location.Line;
+                var col = actual.ChildNodes[1].Token.Location.Column;
+
                 var relacional = new Logical(izq, null, not,0,0);
                 return EXPLOGICA_PRIMA(actual.ChildNodes[2], relacional);
             }
@@ -99,7 +104,10 @@ namespace CompiPascal.AST
             {
                 var simb = actual.ChildNodes[0].Token.Text.ToLower();
                 var derecho = EXPRELACIONAL(actual.ChildNodes[1]);
-                var relacional = new Logical(izq, derecho, simb,0,0);
+                var row = actual.ChildNodes[0].Token.Location.Line;
+                var col = actual.ChildNodes[0].Token.Location.Column;
+
+                var relacional = new Logical(izq, derecho, simb, row, col);
                 return EXPLOGICA_PRIMA(actual.ChildNodes[2], relacional);
             }
             return izq;
@@ -175,8 +183,10 @@ namespace CompiPascal.AST
                 var simb = actual.ChildNodes[0].Token.Text;
 
                 var derecho = TERMINO(actual.ChildNodes[1]);
+                var row = actual.ChildNodes[0].Token.Location.Line;
+                var col = actual.ChildNodes[0].Token.Location.Column;
 
-                var aritmetica = new Arithmetic(izq, derecho, simb);
+                var aritmetica = new Arithmetic(izq, derecho, simb, row, col);
 
                 return EXPRESION_PRIMA(actual.ChildNodes[2], aritmetica);
 
@@ -199,7 +209,10 @@ namespace CompiPascal.AST
             {
                 var simb = actual.ChildNodes[0].Token.Text;
                 var derecho = FACTOR(actual.ChildNodes[1]);
-                var aritmetica = new Arithmetic(izq, derecho, simb);
+                var row = actual.ChildNodes[0].Token.Location.Line;
+                var col = actual.ChildNodes[0].Token.Location.Column;
+
+                var aritmetica = new Arithmetic(izq, derecho, simb, row, col);
                 return TERMINO_PRIMA(actual.ChildNodes[2], aritmetica);
             }
             return izq;
@@ -278,11 +291,11 @@ namespace CompiPascal.AST
 
                if (simb.Equals("-"))
                {
-                   var iz = FACTOR(actual.ChildNodes[1]);
+                    var iz = FACTOR(actual.ChildNodes[1]);
+                    var row = actual.ChildNodes[1].Token.Location.Line;
+                    var col = actual.ChildNodes[1].Token.Location.Column;
 
-
-
-                   return new Arithmetic(iz, new Literal("-1", 1), "*");
+                    return new Arithmetic(iz, new Literal("-1", 1, row, col), "*", row, col);
                }
            }
            else

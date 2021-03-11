@@ -17,7 +17,7 @@ namespace CompiPascal.grammar.expression
 
 
         public Logical(Expression l, Expression r, string t, int ro, int c) 
-        : base("Logical")
+        : base(ro, c, "Logical")
         {
             this.left = l;
             this.right = r;

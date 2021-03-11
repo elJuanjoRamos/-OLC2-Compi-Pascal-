@@ -15,29 +15,30 @@ namespace CompiPascal.grammar.sentences
         private Expression actualizacion;
         private Instruction sentence;
         private string direccion;
-
-        public FOR(string initId, Expression inicializacion, Expression actualizacion, Instruction sentence, string dir)
-            : base(0,0, "For")
+        private int row;
+        private int column;
+        public FOR(string initId, Expression inicializacion, Expression actualizacion, Instruction sentence, string dir, int ro, int col)
+            : base(ro, col, "For")
         {
             this.initId = initId;
             this.inicializacion = inicializacion;
             this.actualizacion = actualizacion;
             this.sentence = sentence;
             this.direccion = dir;
+            this.row = ro;
+            this.column = col;
         }
+
+        public int Row { get => row; set => row = value; }
+        public int Column { get => column; set => column = value; }
 
         public override object Execute(Ambit ambit)
         {
-            var ambitName = "Global_For";
-            if (!ambit.IsNull)
-            {
-                ambitName = ambit.Ambit_name + "_For";
-            }
-            var forAmbit = new Ambit(ambit, ambitName, "For", false);
+            var forAmbit = new Ambit(ambit,  "For", "For", false);
 
 
             //SE HACE LA ASIGNACION INICIAL
-            Assignation assignation = new Assignation(initId, inicializacion);
+            Assignation assignation = new Assignation(initId, inicializacion, Row, Column);
 
 
             Identifier identifier = ambit.getVariable(initId);
@@ -61,15 +62,14 @@ namespace CompiPascal.grammar.sentences
                         simb = ">=";
                     }
 
-                    Relational cond_temp = new Relational(inicializacion, actualizacion, simb, 0, 0);
+                    Relational cond_temp = new Relational(inicializacion, actualizacion, simb, Row, Column);
 
                     var condicion = cond_temp.Execute(forAmbit);
 
 
                     if (condicion.getDataType != DataType.BOOLEAN)
                     {
-                        ConsolaController.Instance.Add("La condicion del for no es boleana");
-
+                        ErrorController.Instance.SemantycErrors("La condicion del for no es booleana", Row, Column);
                         return null;
                     }
 
@@ -80,7 +80,7 @@ namespace CompiPascal.grammar.sentences
                         assignation.Execute(ambit);
 
 
-                        Relational cond = new Relational(new Access(initId), actualizacion, simb, 0, 0);
+                        Relational cond = new Relational(new Access(initId,Row, column), actualizacion, simb, row, column);
 
 
                         //EJECUCION
@@ -92,6 +92,34 @@ namespace CompiPascal.grammar.sentences
                             if (!sentence.IsNull)
                             {
                                 var element = sentence.Execute(forAmbit);
+
+
+                                //SE HACE UPDATE DEL VALOR
+                                var s = "+";
+                                if (!direccion.ToLower().Equals("to"))
+                                {
+                                    s = "-";
+                                }
+
+                                var arit = new Arithmetic(new Access(initId, Row, column), new Literal("1", 1, Row, column), s, Row, column);
+                                var val = arit.Execute(forAmbit);
+
+
+                                cond = new Relational(arit, actualizacion, simb, Row, Column);
+                                condicion = cond.Execute(forAmbit);
+
+
+
+                                if (condicion.getDataType != DataType.BOOLEAN)
+                                {
+                                    ErrorController.Instance.SemantycErrors("La condicion del for no es booleana", 0, 0);
+                                    return null;
+                                }
+
+                                if ((bool)condicion.Value)
+                                {
+                                    forAmbit.setVariable(initId, val.Value, val.getDataType, false, "Variable");
+                                }
 
                                 if (element != null)
                                 {
@@ -108,37 +136,10 @@ namespace CompiPascal.grammar.sentences
                                         {
                                             continue;
                                         }
-                                        //return ins.;
                                     }
                                 }
 
-                                //SE HACE UPDATE DEL VALOR
-
-                                var s = "+";
-                                if (!direccion.ToLower().Equals("to"))
-                                {
-                                    s = "-";
-                                }
                                 
-                                var arit = new Arithmetic(new Access(initId), new Literal("1", 1), s);
-                                var val = arit.Execute(forAmbit);
-
-
-                                cond = new Relational(arit, actualizacion, simb, 0, 0);
-                                condicion = cond.Execute(forAmbit);
-
-
-
-                                if (condicion.getDataType != DataType.BOOLEAN)
-                                {
-                                    ConsolaController.Instance.Add("La condicion no es booleana");
-                                    return null;
-                                }
-
-                                if ((bool)condicion.Value)
-                                {
-                                    forAmbit.setVariable(initId, val.Value, val.getDataType, false, "Variable");
-                                }
 
                             }
 

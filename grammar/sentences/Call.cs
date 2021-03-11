@@ -15,11 +15,13 @@ namespace CompiPascal.grammar.sentences
         private int row;
         private int column;
 
-        public Call(string id, ArrayList expresion): 
-            base(0,0,"Call")
+        public Call(string id, ArrayList expresion, int row, int col): 
+            base(row,col,"Call")
         {
             this.id = id;
             this.parametros = expresion;
+            this.row = row;
+            this.column = col;
         }
 
         public override object Execute(Ambit ambit)
@@ -28,7 +30,7 @@ namespace CompiPascal.grammar.sentences
             if (id.Equals("graficar_ts"))
             {
                 //PRINT A LA TABLA SIMBOLOS
-                GraphController.Instance.graficarTS(ambit);
+                GraphController.Instance.graficarTSAmbit(ambit);
                 return 0;
             }
             else
@@ -71,11 +73,13 @@ namespace CompiPascal.grammar.sentences
                 }
 
                 //SE ASIGNAN LOS VALORES RECIBIDOS A LOS PARAMETROS DE LA FUNCION
+                
+                
                 for (int i = 0; i < parametros.Count; i++)
                 {
                     var variable = (Declaration)(funcion_llamada.getParameterAt(i));
 
-                    var result = ((Expression)parametros[i]).Execute(function_ambit);
+                    var result = ((Expression)parametros[i]).Execute(ambit);
 
                     if (variable.getDataType == result.getDataType)
                     {
@@ -126,7 +130,7 @@ namespace CompiPascal.grammar.sentences
 
                                 if (response.Return_func_return)
                                 {
-
+                                    //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
                                     return new Returned(funcion_llamada.Retorno, funcion_llamada.Tipe);
 
                                 }
@@ -137,10 +141,9 @@ namespace CompiPascal.grammar.sentences
                                     //UPDATE FUNCION A LA TABLA SIMBOLOS
                                     funcion_llamada.Retorno = result.Value.ToString();
                                     ambit.setFunction(funcion_llamada.Id, funcion_llamada);
+                                    //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
                                     return new Returned(result.Value, result.getDataType);
                                 }
-
-
                             }
                             else
                             {
@@ -148,13 +151,21 @@ namespace CompiPascal.grammar.sentences
                                 return null;
                             }
                         }
+                        if (funcion_Elementos is Break)
+                        {
+                            var r = (Break)funcion_Elementos;
+                            ErrorController.Instance.SyntacticError("La sentencia Break solo puede aparece en ciclos o en la sentencia CASE", r.Row, r.Column);
+                        }
+                        else if (funcion_Elementos is Continue)
+                        {
+                            var r = (Continue)funcion_Elementos;
+                            ErrorController.Instance.SyntacticError("La sentencia Continue solo puede aparece en ciclos", r.Row, r.Column);
+                        }
                     }
+                    //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
                 }
-
             }
 
-
-            
             return 0;
             
         }

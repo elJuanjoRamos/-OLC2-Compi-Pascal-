@@ -11,18 +11,24 @@ namespace CompiPascal.grammar.expression
         private Object value;
         private int type;
         private bool isNull;
-
-        public Literal(Object v, int t) :
-            base("Literal")
+        private int row;
+        private int column;
+        public Literal(Object v, int t, int r, int c) :
+            base(r,c,"Literal")
         {
             this.value = v;
             this.type = t;
             this.isNull = false;
+            this.row = r;
+            this.column = c;
+
         }
-        public Literal() :
-            base("Literal")
+        public Literal(int r, int c) :
+            base(r, c,"Literal")
         {
             this.isNull = true;
+            this.row = r;
+            this.column = c;
         }
 
         public override Returned Execute(Ambit ambit)
@@ -63,6 +69,7 @@ namespace CompiPascal.grammar.expression
         }
 
         public bool IsNull { get => isNull; set => isNull = value; }
-
+        public int Row { get => row; set => row = value; }
+        public int Column { get => column; set => column = value; }
     }
 }

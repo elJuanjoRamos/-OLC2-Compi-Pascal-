@@ -21,6 +21,8 @@ namespace CompiPascal.AST
             //VAR_ASSIGNATE.Rule = IDENTIFIER + DOS_PUNTOS + EQUALS + LOGIC_EXPRESION + PUNTO_COMA;
             var identifier = actual.ChildNodes[0].Token.Text;
 
+            var row = actual.ChildNodes[0].Token.Location.Line;
+            var column = actual.ChildNodes[0].Token.Location.Column;
             Expression exp = null;
 
 
@@ -39,13 +41,13 @@ namespace CompiPascal.AST
             {
                 exp = (new ExpressionAST()).getExpresion(actual.ChildNodes[3]);
 
-                return new Assignation(identifier, exp);
+                return new Assignation(identifier, exp, row, column);
             }
             //ES UNA LLAMADA
             else
             {
                 var llamada_funcion = (new Call_Expression()).CALLFUNCTION(actual.ChildNodes[3].ChildNodes[0]);
-                return new Assignation(identifier, llamada_funcion);
+                return new Assignation(identifier, llamada_funcion, row, column);
             }
 
         }

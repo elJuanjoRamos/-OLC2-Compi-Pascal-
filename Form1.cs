@@ -70,7 +70,7 @@ namespace CompiPascal
                         if (!ErrorController.Instance.containSemantycError())
                         {
                             setPicture_text(consola, pictureBox4, ConsolaController.Instance.getText(), "ast.png");
-                            setPicture_text(consola, pictureBox5, "", "tabla_simbolos.png");
+                            setPicture_text(consola, pictureBox5, "", "tabla_simbolostotal.png");
 
                         }
                         else
@@ -124,10 +124,12 @@ namespace CompiPascal
 
                 syntactic_Trad.analizer(traduccion.Text, Application.StartupPath);
 
-                consolaTraduccion.Text = consolaTraduccion.Text + syntactic_Trad.get_Traduction();
 
 
-                consolaTraduccion.Text = consolaTraduccion.Text + ConsolaController.Instance.getText() + "\n\nFinalizado.";
+                //consolaTraduccion.Text = consolaTraduccion.Text + ConsolaController.Instance.getText() + ;
+
+                setPicture_text(consola, pictureBox4, syntactic_Trad.get_Traduction(), "ast.png");
+                setPicture_text(consolaTraduccion, pictureBox5, "\n\nFinalizado.", "tabla_simbolos_total.png");
             }
             else
             {

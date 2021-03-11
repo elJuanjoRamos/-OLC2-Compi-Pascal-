@@ -19,13 +19,15 @@ namespace CompiPascal.grammar.sentences
 
        
 
-        public IF(Expression condition, Instruction sentences, Instruction elif)
-            : base(0,0, "IF")
+        public IF(Expression condition, Instruction sentences, Instruction elif, int ro, int co)
+            : base(ro,co, "IF")
         {
             this.condition = condition;
             this.sentences = sentences;
             this.elif = elif;
             this.IsNull = false;
+            this.row = ro;
+            this.column = co;
             
         }
 
@@ -36,22 +38,15 @@ namespace CompiPascal.grammar.sentences
         }
         public override object Execute(Ambit ambit)
         {
-            var ambitName = "Global_If";
-            if (!ambit.IsNull)
-            {
-                ambitName = ambit.Ambit_name + "_If";
-            }
-
-
-
-            var ifAmbit = new Ambit(ambit, ambitName, "If", false);
+            
+            var ifAmbit = new Ambit(ambit, "IF", "If", false);
 
             //CONDICION
             var condition = this.condition.Execute(ifAmbit);
             //VERIFICA QUE LLA CONDICION SEA BOOLEANA
             if (condition.getDataType != DataType.BOOLEAN)
             {
-                ErrorController.Instance.SemantycErrors("Semantico - La condicion del If no es booleana", 0, 0);
+                ErrorController.Instance.SemantycErrors("Semantico - La condicion del If no es booleana", row, column);
                 return null;
             }
 
@@ -69,7 +64,7 @@ namespace CompiPascal.grammar.sentences
                 {
                     return 0;
                 }
-                var elseAmbit = new Ambit(ambit, ambitName, "Else", false);
+                var elseAmbit = new Ambit(ambit, "Else", "Else", false);
                 return elif.Execute(elseAmbit);
             }
 

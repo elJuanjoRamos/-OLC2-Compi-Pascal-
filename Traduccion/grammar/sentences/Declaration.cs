@@ -36,7 +36,7 @@ namespace CompiPascal.Traduccion.grammar.sentences
             }
 
             var val = this.value.Execute(ambit);
-            ambit.save(Id, val, Type);
+            ambit.save(Id, val, Type, "Variable");
 
             if (this.isConst)
             {

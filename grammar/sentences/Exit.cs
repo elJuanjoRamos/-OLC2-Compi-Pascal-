@@ -10,17 +10,21 @@ namespace CompiPascal.grammar.sentences
     {
         private Expression value;
         private bool return_func_return;
-        public int row;
+        private int row;
         private int column;
 
         public Expression Value { get => value; set => this.value = value; }
         public bool Return_func_return { get => return_func_return; set => return_func_return = value; }
+        public int Row { get => row; set => row = value; }
+        public int Column { get => column; set => column = value; }
 
-        public Exit(Expression value) :
-            base(0,0, "Exit")
+        public Exit(Expression value, int row, int col) :
+            base(row, col, "Exit")
         {
             this.value = value;
             this.return_func_return = false;
+            this.row = row;
+            this.column = col;
         }
 
         public Exit() :

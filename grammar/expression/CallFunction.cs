@@ -16,16 +16,20 @@ namespace CompiPascal.grammar.expression
         private int row;
         private int column;
 
-        public CallFunction(string id, ArrayList expresion) :
-            base("Call")
+        public CallFunction(string id, ArrayList expresion, int row, int col) :
+            base(row, col, "Call")
         {
             this.id = id;
             this.parametros = expresion;
+            this.row = row;
+            this.column = col;
         }
 
         public override Returned Execute(Ambit ambit)
         {
             {
+
+
                 var funcion_llamada = ambit.getFuncion(this.id);
                 if (funcion_llamada == null)
                 {
@@ -52,7 +56,7 @@ namespace CompiPascal.grammar.expression
                 }
                 else
                 {
-                    function_ambit = new Ambit(ambit, ambit.Ambit_name + "_Function", "Function", false);
+                    function_ambit = new Ambit(ambit, ambit.Ambit_name + "_Function_" + funcion_llamada.Id, "Function", false);
                 }
 
 
@@ -71,7 +75,7 @@ namespace CompiPascal.grammar.expression
                 {
                     var variable = (Declaration)(funcion_llamada.getParameterAt(i));
 
-                    var result = ((Expression)parametros[i]).Execute(function_ambit);
+                    var result = ((Expression)parametros[i]).Execute(ambit);
 
                     if (variable.getDataType == result.getDataType)
                     {
@@ -109,22 +113,46 @@ namespace CompiPascal.grammar.expression
 
                 else
                 {
-                    if (funcion_Elementos is Instruction)
+                    if (funcion_llamada.IsProcedure)
                     {
-                        var inst = (Instruction)funcion_Elementos;
-                        if (inst.Name.Equals("Exit"))
+                        if (funcion_Elementos is Instruction)
                         {
-                            if (!funcion_llamada.IsProcedure)
+                            var inst = (Instruction)funcion_Elementos;
+                            if (inst.Name.Equals("Exit"))
                             {
+                                ErrorController.Instance.SemantycErrors("Los procediminetos no pueden retornar ningun valor", 0, 0);
+                                return new Returned();
+                            }
+                        }
+                        if (funcion_Elementos is Break)
+                        {
+                            var r = (Break)funcion_Elementos;
+                            ErrorController.Instance.SyntacticError("La sentencia Break solo puede aparece en ciclos o en la sentencia CASE", r.Row, r.Column);
+                        }
+                        else if (funcion_Elementos is Continue)
+                        {
+                            var r = (Continue)funcion_Elementos;
+                            ErrorController.Instance.SyntacticError("La sentencia Continue solo puede aparece en ciclos", r.Row, r.Column);
+                        }
+                    } else
+                    {
+                        if (funcion_Elementos is Instruction)
+                        {
+                            var inst = (Instruction)funcion_Elementos;
+                            if (inst.Name.Equals("Exit"))
+                            {
+
 
                                 var response = ((Exit)funcion_Elementos);
 
                                 if (response.Return_func_return)
                                 {
+                                    //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
 
                                     return new Returned(funcion_llamada.Retorno, funcion_llamada.Tipe);
 
-                                } else
+                                }
+                                else
                                 {
                                     var result = ((Exit)funcion_Elementos).Value.Execute(function_ambit);
                                     //HAY ERROR
@@ -137,6 +165,7 @@ namespace CompiPascal.grammar.expression
                                     //VERIFICA QUE EL TIPO DE RETORNO SEA VALIDO
                                     if (result.getDataType == funcion_llamada.Tipe)
                                     {
+                                        //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
                                         return new Returned(result.Value, result.getDataType);
                                     }
                                     else
@@ -145,24 +174,20 @@ namespace CompiPascal.grammar.expression
                                         return new Returned();
                                     }
                                 }
-
-
-                              
-
-
-                              
-
-                            }
-                            else
-                            {
-                                ErrorController.Instance.SemantycErrors("Los procediminetos no pueden retornar ningun valor", 0, 0);
-                                return new Returned();
                             }
                         }
-                    }
+                        else if (funcion_Elementos is Returned)
+                        {
+                            //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
+                            return (Returned)funcion_Elementos;
+                        }
+                        else
+                        {
+                            //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
+                            return new Returned(funcion_llamada.Retorno, funcion_llamada.Tipe);
+                        }
+                    }   
                 }
-
-
                 return new Returned();
             }
         }

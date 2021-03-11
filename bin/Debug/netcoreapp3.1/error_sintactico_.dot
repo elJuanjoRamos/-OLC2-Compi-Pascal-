@@ -1,0 +1,42 @@
+digraph G{
+graph [pad="0.5", nodesep="0.5", ranksep="2"]
+node[shape = plain]
+rankdir = LR;
+Baz [label=<
+<table border="0" cellborder="1" cellspacing="0"><tr>
+<td width='100'><i>Tipo</i></td>
+<td width='100'><i>Mensaje</i></td>
+<td width='100'><i>Linea</i></td>
+<td><i width='100'>Columna</i></td> </tr>
+<tr>
+<td height='25'>Sintactico</td>
+<td height='25'>Syntax error, expected: TK_PAR_IZQ</td>
+<td height='25'>8</td>
+<td height='25'>12</td>
+</tr><tr>
+<td height='25'>Sintactico</td>
+<td height='25'>Syntax error, expected: RESERV_END, IDENTIFIER, RESERV_IF, RESERV_CASE, RESERV_WHILE, RESERV_REPEAT, RESERV_FOR, RESERV_BREAK, RESERV_CONTINUE, RESERV_WRITE, RESERV_WRITEN, RESERV_EXIT, RESERV_TYPE</td>
+<td height='25'>10</td>
+<td height='25'>4</td>
+</tr><tr>
+<td height='25'>Sintactico</td>
+<td height='25'>Syntax error, expected: RESERV_ELSE, RESERV_END, IDENTIFIER, RESERV_IF, RESERV_CASE, RESERV_WHILE, RESERV_REPEAT, RESERV_FOR, RESERV_BREAK, RESERV_CONTINUE, RESERV_WRITE, RESERV_WRITEN, RESERV_EXIT, RESERV_TYPE, RESERV_UNTIL, TK_PAR_IZQ, REAL, CADENA, NUMERO, RESERV_TRUE, RESERV_FALSE, TK_MIN, TK_NOT</td>
+<td height='25'>11</td>
+<td height='25'>3</td>
+</tr><tr>
+<td height='25'>Sintactico</td>
+<td height='25'>Syntax error, expected: RESERV_END, IDENTIFIER, RESERV_IF, RESERV_CASE, RESERV_WHILE, RESERV_REPEAT, RESERV_FOR, RESERV_BREAK, RESERV_CONTINUE, RESERV_WRITE, RESERV_WRITEN, RESERV_EXIT, RESERV_TYPE</td>
+<td height='25'>14</td>
+<td height='25'>0</td>
+</tr><tr>
+<td height='25'>Sintactico</td>
+<td height='25'>Syntax error, expected: TK_PAR_IZQ</td>
+<td height='25'>18</td>
+<td height='25'>12</td>
+</tr><tr>
+<td height='25'>Sintactico</td>
+<td height='25'>Syntax error, expected: RESERV_END, IDENTIFIER, RESERV_IF, RESERV_CASE, RESERV_WHILE, RESERV_REPEAT, RESERV_FOR, RESERV_BREAK, RESERV_CONTINUE, RESERV_WRITE, RESERV_WRITEN, RESERV_EXIT, RESERV_TYPE</td>
+<td height='25'>20</td>
+<td height='25'>4</td>
+</tr>
+</table>>];}

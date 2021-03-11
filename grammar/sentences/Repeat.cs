@@ -14,22 +14,19 @@ namespace CompiPascal.grammar.sentences
         private int row;
         private int column;
 
-        public Repeat(Expression condition, Sentence sentences)
-            : base(0,0, "Repeat")
+        public Repeat(Expression condition, Sentence sentences, int ro, int col)
+            : base(ro,col, "Repeat")
         {
             this.condition = condition;
             this.sentences = sentences;
+            this.row = ro;
+            this.column = col;
         }
 
         public override object Execute(Ambit ambit)
         {
 
-            var ambitName = "Global_Repeat";
-            if (!ambit.IsNull)
-            {
-                ambitName = ambit.Ambit_name + "_Repeat";
-            }
-            var repeatAmbit = new Ambit(ambit, ambitName, "Repeat", false);
+            var repeatAmbit = new Ambit(ambit, "Repeat", "Repeat", false);
 
 
             //CONDICION
@@ -38,7 +35,7 @@ namespace CompiPascal.grammar.sentences
             //VERIFICA QUE SEA BOOL
             if (condicion.getDataType != DataType.BOOLEAN)
             {
-                ConsolaController.Instance.Add("Semantico - La condicion del If no es booleana");
+                ErrorController.Instance.SemantycErrors("La condicion del repeat no es booleana", row, column);
                 return null;
             }
 
@@ -75,7 +72,7 @@ namespace CompiPascal.grammar.sentences
                     condicion = this.condition.Execute(repeatAmbit);
                     if (condicion.getDataType != DataType.BOOLEAN)
                     {
-                        ConsolaController.Instance.Add("La condicion no es booleana");
+                        ErrorController.Instance.SemantycErrors("La condicion del repeat no es booleana", row, column);
                         return null;
                     }
 
