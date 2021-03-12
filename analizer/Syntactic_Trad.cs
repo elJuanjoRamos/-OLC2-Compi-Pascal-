@@ -12,7 +12,7 @@ namespace CompiPascal.analizer
 {
     class Syntactic_Trad
     {
-        string texto_traduccion = "";
+        string texto_traduccion = "program ";
         //AST
         public Ambit_Trad general = new Ambit_Trad();
         InstructionTraduccion instructionAST = new InstructionTraduccion();
@@ -61,12 +61,15 @@ namespace CompiPascal.analizer
                 return;
             }
             //Console.WriteLine(root);
-            //GraphController.Instance.getGraph(root, paths);
+            GraphController.Instance.getGraph(root, paths);
 
 
 
             //PROGRAM BODY -> GRAMATICA
             var program_body = root.ChildNodes[0].ChildNodes[3];
+
+
+            texto_traduccion += root.ChildNodes[0].ChildNodes[1].Token.Text + ";\n\n";
 
             //LISTA DE DECLARCION DE VARIABLES
             ArrayList elementos_her = new ArrayList();
@@ -113,7 +116,7 @@ namespace CompiPascal.analizer
             {
                 try
                 {
-                    texto_traduccion += "\n" + item.Execute(general);
+                    texto_traduccion += item.Execute(general);
                 }
                 catch (Exception)
                 {
@@ -124,18 +127,15 @@ namespace CompiPascal.analizer
 
 
             //INSTRUCCIONES
-            texto_traduccion += "\n\nbegin";
+            texto_traduccion += "\n\nbegin\n";
 
-            //GRAFICAR TS
-            //GraphController.Instance.setPath(path);
-            //GraphController.Instance.graficarTS2(general.getGeneral());
-
+           
 
             foreach (var item in actual)
             {
                 try
                 {
-                    texto_traduccion +=  "\n" + item.Execute(general);
+                    texto_traduccion +=  item.Execute(general);
                     
                 }
                 catch (Exception)
@@ -148,7 +148,7 @@ namespace CompiPascal.analizer
             
             GraphController.Instance.getAmbitoGraficar_Trad(general.getGeneral(), true);
             GraphController.Instance.graficarTSGeneral();
-            texto_traduccion += "\n\nend.";
+            texto_traduccion += "\nend.";
 
         }
         #endregion

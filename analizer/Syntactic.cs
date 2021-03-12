@@ -78,7 +78,7 @@ namespace CompiPascal.analizer
 
             //LISTA DE DECLARCION DE VARIABLES
             
-            lista_declaraciones = (new DeclarationAST()).LIST_DECLARATIONS(program_body.ChildNodes.ElementAt(1), lista_declaraciones, elemetos_heredados);
+            /*lista_declaraciones = (new DeclarationAST()).LIST_DECLARATIONS(program_body.ChildNodes.ElementAt(1), lista_declaraciones, elemetos_heredados);
             
             //LISTA DE DECLARACION DE FUNCIONES
             elemetos_heredados.Clear();
@@ -88,7 +88,7 @@ namespace CompiPascal.analizer
             LinkedList<Instruction> listaInstrucciones = instructionAST.INSTRUCTIONS_BODY(program_body.ChildNodes.ElementAt(3));
             
             //COMENZAR A EJECUTAR
-            ejecutar(listaInstrucciones, lista_declaraciones, lista_funciones, paths);
+            ejecutar(listaInstrucciones, lista_declaraciones, lista_funciones, paths);*/
 
         }
 

@@ -49,7 +49,7 @@ namespace CompiPascal.grammar.sentences
                     */
                     if (variable.Esconstante)
                     {
-                        ErrorController.Instance.SemantycErrors("No se puede cambiar el valor a una constante",0,0);
+                        ErrorController.Instance.SemantycErrors("No se puede cambiar el valor a una constante",row,column);
                         return null;
                     } else
                     {
@@ -62,7 +62,7 @@ namespace CompiPascal.grammar.sentences
                             return variable.Value;
                         } else
                         {
-                            ErrorController.Instance.SemantycErrors("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, 0, 0);
+                            ErrorController.Instance.SemantycErrors("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, row, column);
                             return null;
                         }
                     }
@@ -77,7 +77,7 @@ namespace CompiPascal.grammar.sentences
 
                         if (function.IsProcedure)
                         {
-                            ErrorController.Instance.SemantycErrors("No puede asignarse ningun valor al procedimiento '" + id+ "' ", 0, 0);
+                            ErrorController.Instance.SemantycErrors("No puede asignarse ningun valor al procedimiento '" + id+ "' ", row, column);
                             return null;
                         }
                         
@@ -92,13 +92,13 @@ namespace CompiPascal.grammar.sentences
                         }
                         else
                         {
-                            ErrorController.Instance.SemantycErrors("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, 0, 0);
+                            ErrorController.Instance.SemantycErrors("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, row, column);
                             return null;
                         }
 
                     } else
                     {
-                        ErrorController.Instance.SemantycErrors("La variable '" + id + "' no esta declara", 0, 0);
+                        ErrorController.Instance.SemantycErrors("La variable '" + id + "' no esta declara", row, column);
                         return null;
 
                     }

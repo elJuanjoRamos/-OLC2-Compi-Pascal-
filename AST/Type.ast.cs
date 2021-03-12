@@ -16,6 +16,11 @@ namespace CompiPascal.AST
 
         public LinkedList<Instruction> TYPE_LIST(ParseTreeNode actual, LinkedList<Instruction> lista_actual)
         {
+            if (actual.ChildNodes.Count > 0)
+            {
+
+            }
+
 
             return lista_actual;
         }

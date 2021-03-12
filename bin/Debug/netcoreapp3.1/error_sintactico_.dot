@@ -10,8 +10,8 @@ Baz [label=<
 <td><i width='100'>Columna</i></td> </tr>
 <tr>
 <td height='25'>Sintactico</td>
-<td height='25'>La funcion 'SumarNumeros' no esta definido</td>
-<td height='25'>0</td>
+<td height='25'>Syntax error, expected: TK_PUNTO_COMA</td>
+<td height='25'>7</td>
 <td height='25'>0</td>
 </tr>
 </table>>];}

@@ -10,8 +10,8 @@ Baz [label=<
 <td><i width='100'>Columna</i></td> </tr>
 <tr>
 <td height='25'>Semantico</td>
-<td height='25'>La funcion o procediminento 'CiclosYControl' no esta definido</td>
-<td height='25'>0</td>
-<td height='25'>0</td>
+<td height='25'>El tipo REAL no es asignable con INTEGER</td>
+<td height='25'>74</td>
+<td height='25'>4</td>
 </tr>
 </table>>];}

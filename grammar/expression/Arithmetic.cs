@@ -43,7 +43,7 @@ namespace CompiPascal.grammar.expression
 
             if (res == DataType.ERROR)
             {
-                ErrorController.Instance.SemantycErrors("Operador '" + this.type + "' NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, 0, 0);
+                ErrorController.Instance.SemantycErrors("Operador '" + this.type + "' NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, Row, column);
                 return new Returned();
             }
 
@@ -74,7 +74,7 @@ namespace CompiPascal.grammar.expression
                         result = new Returned((varIz.Value.ToString() + valDer.Value.ToString()), DataType.STRING);
                     } else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, Row, column);
                         return new Returned();
                     }
 
@@ -108,7 +108,7 @@ namespace CompiPascal.grammar.expression
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, Row, column);
                         return new Returned();
                     }
                     
@@ -126,13 +126,13 @@ namespace CompiPascal.grammar.expression
                         result = new Returned((varIz.Value.ToString() + valDer.Value.ToString()), DataType.STRING);
                     } else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, Row, Column);
                         return new Returned();
                     }
                 }
                 else 
                 {
-                    ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                    ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, Row, Column);
                     return new Returned();
 
                 }
@@ -158,7 +158,7 @@ namespace CompiPascal.grammar.expression
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, Row, column);
                         return new Returned();
                     }
 
@@ -178,14 +178,14 @@ namespace CompiPascal.grammar.expression
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, Row, column);
                         return new Returned();
                     }
 
                 }
                 else
                 {
-                    ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                    ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, row, column);
                     return new Returned();
                 }
 
@@ -212,7 +212,7 @@ namespace CompiPascal.grammar.expression
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, row, column);
                         return new Returned();
                     }
 
@@ -233,14 +233,14 @@ namespace CompiPascal.grammar.expression
                     } 
                     else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, row, column);
                         return new Returned();
                     }
 
                 }
                 else
                 {
-                    ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                    ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, row, column);
                     return new Returned();
                 }
 
@@ -266,7 +266,7 @@ namespace CompiPascal.grammar.expression
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, row, column);
                         return new Returned();
                     }
 
@@ -286,15 +286,14 @@ namespace CompiPascal.grammar.expression
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, row, column);
                         return new Returned();
                     }
 
                 }
                 else
                 {
-                    var texto = "Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType;
-                    //ErrorController.Instance.add(texto);
+                    ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, row, column);
                 }
 
             }
@@ -316,7 +315,7 @@ namespace CompiPascal.grammar.expression
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, row, column);
                         return new Returned();
                     }
 
@@ -336,14 +335,14 @@ namespace CompiPascal.grammar.expression
                     }
                     else
                     {
-                        ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, row, column);
                         return new Returned();
                     }
 
                 }
                 else
                 {
-                    ConsolaController.Instance.Add("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType);
+                    ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, row, column);
                     return new Returned();
                 }
             }

@@ -151,7 +151,10 @@ namespace CompiPascal.AST
 
                 var derecho = EXPRESION(actual.ChildNodes[1]);
 
-                var relacional = new Relational(izq, derecho, simb,0,0);
+                int row = actual.ChildNodes[0].Token.Location.Line;
+                int col = actual.ChildNodes[0].Token.Location.Column;
+
+                var relacional = new Relational(izq, derecho, simb,row, col);
 
 
                 return EXPRELACIONAL_PRIMA(actual.ChildNodes[2], relacional);

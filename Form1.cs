@@ -75,6 +75,7 @@ namespace CompiPascal
                         }
                         else
                         {
+                            consola.Text = consola.Text + "\nEstoy mostrando sintacticos";
                             setPicture_text(consola, pictureBox3, ErrorController.Instance.getSemantycError(Application.StartupPath), "error_semantico.png");
                         }
 
@@ -128,8 +129,8 @@ namespace CompiPascal
 
                 //consolaTraduccion.Text = consolaTraduccion.Text + ConsolaController.Instance.getText() + ;
 
-                setPicture_text(consola, pictureBox4, syntactic_Trad.get_Traduction(), "ast.png");
-                setPicture_text(consolaTraduccion, pictureBox5, "\n\nFinalizado.", "tabla_simbolos_total.png");
+                setPicture_text(consolaTraduccion, pictureBox4, syntactic_Trad.get_Traduction(), "ast.png");
+                setPicture_text(consolaTraduccion, pictureBox5, "\n\nFinalizado.", "tabla_simbolostotal.png");
             }
             else
             {

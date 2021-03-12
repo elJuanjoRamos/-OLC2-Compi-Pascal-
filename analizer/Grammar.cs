@@ -37,6 +37,7 @@ namespace CompiPascal.analizer
             //var IDENTIFIER = new IdentifierTerminal("IDENTIFIER", "[_a-zA-Z][_a-zA-Z0-9]");
             var IDENTIFIER = TerminalFactory.CreateCSharpIdentifier("IDENTIFIER");
             var IDENTIFIER_ARRAY_TYPE = TerminalFactory.CreateCSharpIdentifier("IDENTIFIER2");
+            var ACCESS_ARRAY = TerminalFactory.CreateCSharpIdentifier("ACCESS_ARRAY");
             var CADENA = new StringLiteral("CADENA", "\'");
             #endregion
 
@@ -54,7 +55,6 @@ namespace CompiPascal.analizer
             //Aritmethic    
             var PLUS = ToTerm("+", "TK_PLUS");
             var MIN = ToTerm("-", "TK_MIN");
-            var MIN2 = ToTerm("-", "TK_MIN2");
             var POR = ToTerm("*", "TK_POR");
             var DIVI = ToTerm("/", "TK_DIVI");
             var MODULE = ToTerm("%", "TK_MODULE");
@@ -75,7 +75,6 @@ namespace CompiPascal.analizer
             var RESERV_STR = ToTerm("string", "RESERV_STR");
             var RESERV_REAL = ToTerm("real", "RESERV_REAL");
             var RESERV_BOL = ToTerm("boolean", "RESERV_BOL");
-            var RESERV_VOID = ToTerm("void", "RESERV_VOID");
             var RESERV_OBJ = ToTerm("object", "RESERV_OBJ");
             var RESERV_PROGRAM = ToTerm("program", "RESERV_PROGRAM");
             var RESERV_VAR = ToTerm("var", "RESERV_VAR");
@@ -137,7 +136,6 @@ namespace CompiPascal.analizer
             var RESERV_WRITE = ToTerm("write", "RESERV_WRITE");
             var RESERV_WRITEN = ToTerm("writeln", "RESERV_WRITEN");
             var RESERV_EXIT = ToTerm("exit", "RESERV_EXIT");
-            var RESERV_GRAF = ToTerm("graficar_ts", "RESERV_GRAFICAR");
 
             #endregion
 
@@ -182,7 +180,6 @@ namespace CompiPascal.analizer
             NonTerminal VAR_DECLARATION = new NonTerminal("VAR_DECLARATION", "VAR_DECLARATION");
             NonTerminal CONST_DECLARATION = new NonTerminal("CONST_DECLARATION", "CONST_DECLARATION");
 
-            NonTerminal DECLARATION = new NonTerminal("DECLARATION", "DECLARATION");
             NonTerminal DECLARATION_BODY = new NonTerminal("DECLARATION_BODY", "DECLARATION_BODY");
             NonTerminal MORE_ID = new NonTerminal("MORE_ID", "MORE_ID");
 
@@ -337,12 +334,15 @@ namespace CompiPascal.analizer
 
 
 
-            VAR_ASSIGNATE.Rule = IDENTIFIER + DOS_PUNTOS + EQUALS + EXPLOGICA + PUNTO_COMA;
+            VAR_ASSIGNATE.Rule 
+                = IDENTIFIER + DOS_PUNTOS + EQUALS + EXPLOGICA + PUNTO_COMA
+                ;
 
 
-            DATA_TYPE.Rule = RESERV_REAL
+            DATA_TYPE.Rule 
+                = RESERV_REAL
                 | RESERV_STR
-                | RESERV_TYPE
+                | IDENTIFIER_ARRAY_TYPE
                 | RESERV_INT
                 | RESERV_BOL
                 | IDENTIFIER
@@ -361,20 +361,21 @@ namespace CompiPascal.analizer
                 | Empty
                 ;
 
-            TYPE.Rule = RESERV_TYPE + TYPE_P;
+            TYPE.Rule = RESERV_TYPE + IDENTIFIER_ARRAY_TYPE + EQUALS + TYPE_P;
 
-            TYPE_P.Rule = OBJECT
+            TYPE_P.Rule 
+                = OBJECT
                 | ARRAY
                 ;
 
 
-            ARRAY.Rule = RESERV_ARRAY + GUION + IDENTIFIER_ARRAY_TYPE + EQUALS + RESERV_ARRAY
+            ARRAY.Rule =   RESERV_ARRAY
                 + COR_IZQ + EXPLOGICA + PUNTO + PUNTO + EXPLOGICA + COR_DER + RESERV_OF + MORE_ARRAY + PUNTO_COMA;
             ;
 
             MORE_ARRAY.Rule
                 = DATA_TYPE
-                | RESERV_ARRAY + COR_IZQ + EXPLOGICA + PUNTO + PUNTO + EXPLOGICA + COR_DER + RESERV_OF + MORE_ARRAY + PUNTO_COMA;
+                | RESERV_ARRAY + COR_IZQ + EXPLOGICA + PUNTO + PUNTO + EXPLOGICA + COR_DER + RESERV_OF + MORE_ARRAY;
                 ;
 
             OBJECT.Rule = Empty;
@@ -432,6 +433,7 @@ namespace CompiPascal.analizer
                 | REAL
                 | CADENA
                 | NUMERO
+                | ACCESS_ARRAY + COR_IZQ + EXPLOGICA + COR_DER
                 | IDENTIFIER
                 | RESERV_TRUE
                 | RESERV_FALSE
