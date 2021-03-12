@@ -30,7 +30,7 @@ namespace CompiPascal.grammar.expression
             {
 
 
-                var funcion_llamada = ambit.getFuncion(this.id);
+                var funcion_llamada = ambit.getFuncion(this.id.ToLower());
                 if (funcion_llamada == null)
                 {
                     ErrorController.Instance.SyntacticError("La funcion '" + this.id + "' no esta definido",0,0);

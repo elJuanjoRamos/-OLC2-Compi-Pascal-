@@ -31,7 +31,7 @@ namespace CompiPascal.grammar.sentences
 
         public override object Execute(Ambit ambit)
         {
-            ambit.saveFuncion(this.id, this);
+            ambit.saveFuncion(this.id.ToLower(), this);
             return 0;
         }
 

@@ -59,7 +59,7 @@ namespace CompiPascal.grammar.sentences
                     if (element is Instruction)
                     {
                         var inst = (Instruction)element;
-                        if (inst.Name.Equals("Break"))
+                        if (inst.Name.Equals("Break") || inst.Name.Equals("Exit"))
                         {
                             return element;
                         }

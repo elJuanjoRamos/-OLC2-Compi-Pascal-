@@ -57,6 +57,14 @@ namespace CompiPascal.grammar.sentences
                     {
                         return null;
                     }
+                    if (resultado is Instruction)
+                    {
+                        var inst = (Instruction)resultado;
+                        if (inst.Name.Equals("Break") || inst.Name.Equals("Exit"))
+                        {
+                            return resultado;
+                        } 
+                    }
                     break;
                 }
             }

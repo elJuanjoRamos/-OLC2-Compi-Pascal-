@@ -81,10 +81,10 @@ namespace CompiPascal.AST
             {
                 var not = actual.ChildNodes[0].Token.Text.ToLower();
                 var izq = EXPRELACIONAL(actual.ChildNodes[1]);
-                var row = actual.ChildNodes[1].Token.Location.Line;
-                var col = actual.ChildNodes[1].Token.Location.Column;
+                var row = actual.ChildNodes[0].Token.Location.Line;
+                var col = actual.ChildNodes[0].Token.Location.Column;
 
-                var relacional = new Logical(izq, null, not,0,0);
+                var relacional = new Logical(izq, null, not,row,col);
                 return EXPLOGICA_PRIMA(actual.ChildNodes[2], relacional);
             }
 
@@ -292,8 +292,8 @@ namespace CompiPascal.AST
                if (simb.Equals("-"))
                {
                     var iz = FACTOR(actual.ChildNodes[1]);
-                    var row = actual.ChildNodes[1].Token.Location.Line;
-                    var col = actual.ChildNodes[1].Token.Location.Column;
+                    var row = actual.ChildNodes[0].Token.Location.Line;
+                    var col = actual.ChildNodes[0].Token.Location.Column;
 
                     return new Arithmetic(iz, new Literal("-1", 1, row, col), "*", row, col);
                }

@@ -36,7 +36,7 @@ namespace CompiPascal.grammar.sentences
             else
             {
 
-                var funcion_llamada = ambit.getFuncion(this.id);
+                var funcion_llamada = ambit.getFuncion(this.id.ToLower());
                 if (funcion_llamada == null)
                 {
                     ErrorController.Instance.SemantycErrors("La funcion o procediminento '" + this.id + "' no esta definido", 0, 0);

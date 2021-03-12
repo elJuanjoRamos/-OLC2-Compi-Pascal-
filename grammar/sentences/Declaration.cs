@@ -50,12 +50,12 @@ namespace CompiPascal.grammar.sentences
             //BUSCA LA VARIABLE SI NO HA SIDO DECLARADA
             if (!ambit.Ambit_name_inmediato.Equals("Function") && !ambit.Ambit_name_inmediato.Equals("Procedure"))
             {
-                buscar = ambit.getVariable(id);
+                buscar = ambit.getVariable(id.ToLower());
             } 
             //SIGFINICA QUE ES UNA DECLARACION EN FUNCION
             else
             {
-                buscar = ambit.getVariableFunctionInAmbit(id);
+                buscar = ambit.getVariableFunctionInAmbit(id.ToLower());
             }
 
             if (buscar.IsNull)

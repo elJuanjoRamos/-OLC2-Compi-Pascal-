@@ -48,33 +48,39 @@ namespace CompiPascal.grammar.sentences
                 {
 
                     var element = sentences.Execute(repeatAmbit);
+
+                    ////VERIFICA QUE NO HAYA ERROR
                     if (element == null)
                     {
                         return null;
                     }
-                    else
-                    {
 
-                        if (element is Instruction)
-                        {
-                            Instruction inst = (Instruction)element;
-                            if (inst.Name.Equals("Break"))
-                            {
-                                break;
-                            }
-                            else if (inst.Name.Equals("Continue"))
-                            {
-                                continue;
-                            }
-                        }
-                        
-                    }
+                    //VUELVE A EVALUAR LA CONDICION
                     condicion = this.condition.Execute(repeatAmbit);
                     if (condicion.getDataType != DataType.BOOLEAN)
                     {
                         ErrorController.Instance.SemantycErrors("La condicion del repeat no es booleana", row, column);
                         return null;
                     }
+
+                    //EVALUA LO QUE VIENE
+                    if (element is Instruction)
+                    {
+                        Instruction inst = (Instruction)element;
+                        if (inst.Name.Equals("Break"))
+                        {
+                            break;
+                        }
+                        else if (inst.Name.Equals("Continue"))
+                        {
+                            continue;
+                        }
+                        else if (inst.Name.Equals("Exit"))
+                        {
+                            return element;
+                        }
+                    }
+                    
 
                 } while ((bool)condicion.Value == false);
 

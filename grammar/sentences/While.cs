@@ -12,26 +12,29 @@ namespace CompiPascal.grammar.sentences
     {
         private Expression condition;
         private Sentence sentences;
-        
-        public While(Expression condition, Sentence sentences)
-            : base(0,0, "While")
+        private int row;
+        private int column;
+        public While(Expression condition, Sentence sentences, int row, int col)
+            : base(row,col, "While")
         {
             this.condition = condition;
             this.sentences = sentences;
+            this.row = row;
+            this.column = col;
         }
 
         public override object Execute(Ambit ambit)
         {
             
 
-            var whileAmbit = new Ambit(ambit, ambit.Ambit_name + "_While", "While", false);
+            var whileAmbit = new Ambit(ambit, "While", "While", false);
 
             //CONDICION
             var cond = condition.Execute(whileAmbit);
 
             if (cond.getDataType != DataType.BOOLEAN)
             {
-                ConsolaController.Instance.Add("La condicion del While no es booleana");
+                ErrorController.Instance.SemantycErrors("La condicion del While no es booleana",row, column);
                 return null;
             }
 
@@ -49,6 +52,14 @@ namespace CompiPascal.grammar.sentences
                     {
                         return null;
                     }
+                    //VUELVE A EVALUAR LA CONDICION
+                    cond = condition.Execute(whileAmbit);
+                    if (cond.getDataType != DataType.BOOLEAN)
+                    {
+
+                        ErrorController.Instance.SemantycErrors("La condicion del While no es booleana", row, column);
+                        return null;
+                    }
 
                     if (element is Instruction)
                     {
@@ -63,16 +74,14 @@ namespace CompiPascal.grammar.sentences
                         {
                             continue;
                         }
+                        else if (ins.Name.Equals("Exit"))
+                        {
+                            return element;
+                        }
                     }
 
 
-                    cond = condition.Execute(whileAmbit);
-                    if (cond.getDataType != DataType.BOOLEAN)
-                    {
-
-                        ConsolaController.Instance.Add("La condicion del While no es booleana");
-                        return null;
-                    }
+                    
 
 
                 }

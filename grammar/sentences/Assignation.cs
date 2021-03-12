@@ -37,7 +37,7 @@ namespace CompiPascal.grammar.sentences
                     return null;
                 }
 
-                Identifier variable = ambit.getVariable(id);
+                Identifier variable = ambit.getVariable(id.ToLower());
 
                 /**
                 * VALIDAR EXISTENCIA
@@ -58,7 +58,7 @@ namespace CompiPascal.grammar.sentences
                         */
                         if (variable.DataType == val.getDataType)
                         {
-                            ambit.setVariable(id, val.Value, val.getDataType, false, "Variable");
+                            ambit.setVariable(id.ToLower(), val.Value, val.getDataType, false, "Variable");
                             return variable.Value;
                         } else
                         {
@@ -70,9 +70,9 @@ namespace CompiPascal.grammar.sentences
                 } 
                 else
                 {
-                    Function function = ambit.getFuncion(id);
+                    Function function = ambit.getFuncion(id.ToLower());
 
-                    if (!function.IsNull)
+                    if (function != null)
                     {
 
                         if (function.IsProcedure)
@@ -87,7 +87,7 @@ namespace CompiPascal.grammar.sentences
                         if (function.Tipe == val.getDataType)
                         {
                             function.Retorno = val.Value.ToString();
-                            ambit.setFunction(Id, function);
+                            ambit.setFunction(Id.ToLower(), function);
                             return new Returned(function.Retorno, function.Tipe);
                         }
                         else

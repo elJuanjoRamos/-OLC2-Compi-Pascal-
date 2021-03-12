@@ -21,11 +21,15 @@ namespace CompiPascal.AST
 
             var condition = (new ExpressionAST()).getExpresion(actual.ChildNodes[1]);
 
+            int row = actual.ChildNodes[0].Token.Location.Line;
+            int col = actual.ChildNodes[0].Token.Location.Column;
+
+
             InstructionAST instructionAST = new InstructionAST();
 
             LinkedList<Instruction> lista_instrucciones = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[3]);
 
-            return new While(condition, new Sentence(lista_instrucciones));
+            return new While(condition, new Sentence(lista_instrucciones), row, col);
 
         }
 

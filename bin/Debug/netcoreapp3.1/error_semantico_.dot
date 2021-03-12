@@ -9,8 +9,8 @@ Baz [label=<
 <td width='100'><i>Linea</i></td>
 <td><i width='100'>Columna</i></td> </tr>
 <tr>
-<td height='25'>Sintactico</td>
-<td height='25'>La funcion 'SumarNumeros' no esta definido</td>
+<td height='25'>Semantico</td>
+<td height='25'>La funcion o procediminento 'CiclosYControl' no esta definido</td>
 <td height='25'>0</td>
 <td height='25'>0</td>
 </tr>

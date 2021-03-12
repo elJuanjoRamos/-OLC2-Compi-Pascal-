@@ -136,6 +136,10 @@ namespace CompiPascal.grammar.sentences
                                         {
                                             continue;
                                         }
+                                        else if (ins.Name.Equals("Exit"))
+                                        {
+                                            return element;
+                                        }
                                     }
                                 }
 
