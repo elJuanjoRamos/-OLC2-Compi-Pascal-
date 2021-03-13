@@ -10,8 +10,8 @@ Baz [label=<
 <td><i width='100'>Columna</i></td> </tr>
 <tr>
 <td height='25'>Sintactico</td>
-<td height='25'>Syntax error, expected: TK_PUNTO_COMA</td>
-<td height='25'>7</td>
-<td height='25'>0</td>
+<td height='25'>Syntax error, expected: RESERV_TYPE, RESERV_VAR, RESERV_CONST, RESERV_FUNCTION, RESERV_PROCEDURE, RESERV_BEGIN</td>
+<td height='25'>5</td>
+<td height='25'>33</td>
 </tr>
 </table>>];}

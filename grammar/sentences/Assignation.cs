@@ -106,10 +106,10 @@ namespace CompiPascal.grammar.sentences
 
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                ConsolaController.Instance.Add("Error Irrecuperable");
+                Console.WriteLine(e);
+                ConsolaController.Instance.Add("Recuperado de error, Row:" + row + " Col: " + column);
                 return null;
             }
             

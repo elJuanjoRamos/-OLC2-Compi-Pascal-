@@ -101,10 +101,17 @@ namespace CompiPascal.AST
             //SI VIENE UN SOLO ID
             else
             {
+                var esArray = false;
+
+                if (actual.ChildNodes[1].ChildNodes[0].Term.ToString().Equals("IDENTIFIER_ARRAY_TYPE"))
+                {
+                    esArray = true;
+                }
+
                 var datatype = actual.ChildNodes[1].ChildNodes[0].Token.Text;
                 
                 elementos_her.Add(datatype);
-                lista_actual = ASSIGNATION_VARIABLE(actual.ChildNodes[2], lista_actual, elementos_her);
+                lista_actual = ASSIGNATION_VARIABLE(actual.ChildNodes[2], lista_actual, elementos_her, esArray);
             }
             return lista_actual;
         }
@@ -142,7 +149,7 @@ namespace CompiPascal.AST
             return lista_actual;
         }
 
-        public LinkedList<Instruction> ASSIGNATION_VARIABLE(ParseTreeNode actual, LinkedList<Instruction> lista_actual, ArrayList elementos_her)
+        public LinkedList<Instruction> ASSIGNATION_VARIABLE(ParseTreeNode actual, LinkedList<Instruction> lista_actual, ArrayList elementos_her, bool esarray)
         {
 
             var row = 0;
@@ -160,9 +167,15 @@ namespace CompiPascal.AST
             // VAR A:TIPO;
             else
             {
-
-                lista_actual.AddLast(GetDeclarationValue(elementos_her[0].ToString(), elementos_her[1].ToString(), false, row, col));
-                elementos_her.Clear();
+                if (!esarray)
+                {
+                    lista_actual.AddLast(GetDeclarationValue(elementos_her[0].ToString(), elementos_her[1].ToString(), false, row, col));
+                    elementos_her.Clear();
+                } else
+                {
+                    lista_actual.AddLast(new Declaration_Array(elementos_her[0].ToString(), elementos_her[1].ToString(), row, col));
+                    elementos_her.Clear();
+                }
             }
             return lista_actual;
         }

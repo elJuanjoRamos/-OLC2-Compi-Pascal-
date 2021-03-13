@@ -31,9 +31,7 @@ namespace CompiPascal.grammar.expression
             Identifier value = ambit.getVariable(this.id.ToLower());
             if (value.IsNull)
             {
-                ConsolaController.Instance.Add("Este es un error: La variable '" + this.id + "' no ha sido declarada o no existe en el ambito " + ambit.Ambit_name);
-                ErrorController.Instance.SemantycErrors("Este es un error: La variable '" + this.id + "' no ha sido declarada o no existe en el ambito " + ambit.Ambit_name, 0, 0);
-
+                ErrorController.Instance.SemantycErrors("La variable '" + this.id + "' no ha sido declarada", Row, column);
             }
             return new Returned(value.Value, value.DataType);
         }

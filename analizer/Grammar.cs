@@ -36,8 +36,7 @@ namespace CompiPascal.analizer
             var NUMERO = new NumberLiteral("NUMERO");
             //var IDENTIFIER = new IdentifierTerminal("IDENTIFIER", "[_a-zA-Z][_a-zA-Z0-9]");
             var IDENTIFIER = TerminalFactory.CreateCSharpIdentifier("IDENTIFIER");
-            var IDENTIFIER_ARRAY_TYPE = TerminalFactory.CreateCSharpIdentifier("IDENTIFIER2");
-            var ACCESS_ARRAY = TerminalFactory.CreateCSharpIdentifier("ACCESS_ARRAY");
+            var IDENTIFIER_ARRAY_TYPE = TerminalFactory.CreateCSharpIdentifier("IDENTIFIER_ARRAY_TYPE");
             var CADENA = new StringLiteral("CADENA", "\'");
             #endregion
 
@@ -87,7 +86,6 @@ namespace CompiPascal.analizer
             #region ARRAYS Y TYPES TERMINALES
             var RESERV_TYPE = ToTerm("type", "RESERV_TYPE");
             var RESERV_ARRAY = ToTerm("array", "RESERV_ARRAY");
-            var GUION = ToTerm("-", "GION");
             var RESERV_OF = ToTerm("of", "RESERV_OF");
 
 
@@ -148,7 +146,7 @@ namespace CompiPascal.analizer
             RegisterOperators(5, Associativity.Left, EQUALS, DISCTINCT);
             RegisterOperators(6, Associativity.Left, AND, OR, NOT);
             RegisterOperators(7, Associativity.Left, PAR_IZQ, PAR_DER);
-
+            
             #endregion
 
             #region No Terminales
@@ -170,7 +168,7 @@ namespace CompiPascal.analizer
             NonTerminal TERMINO_PRIMA = new NonTerminal("TERMINO_PRIMA ", "TERMINO_PRIMA");
             NonTerminal FACTOR = new NonTerminal("FACTOR", "FACTOR");
             NonTerminal DATA_TYPE = new NonTerminal("DATA_TYPE", "DATA_TYPE");
-
+            NonTerminal ID_TIPE = new NonTerminal("ID_TIPE", "ID_TIPE");
 
             #endregion
 
@@ -185,7 +183,7 @@ namespace CompiPascal.analizer
 
             NonTerminal ASSIGNATION = new NonTerminal("ASSIGNATION", "ASSIGNATION");
             NonTerminal VAR_ASSIGNATE = new NonTerminal("VAR_ASSIGNATE", "VAR_ASSIGNATE");
-
+            NonTerminal VAR_ASSIGNATE_EXP = new NonTerminal("VAR_ASSIGNATE_EXP", "VAR_ASSIGNATE_EXP");
 
             #endregion
 
@@ -335,9 +333,12 @@ namespace CompiPascal.analizer
 
 
             VAR_ASSIGNATE.Rule 
-                = IDENTIFIER + DOS_PUNTOS + EQUALS + EXPLOGICA + PUNTO_COMA
+                = IDENTIFIER + VAR_ASSIGNATE_EXP
                 ;
-
+            VAR_ASSIGNATE_EXP.Rule
+                = DOS_PUNTOS + EQUALS + EXPLOGICA + PUNTO_COMA
+                | COR_IZQ + EXPLOGICA + COR_DER + DOS_PUNTOS + EQUALS + EXPLOGICA + PUNTO_COMA
+                ;
 
             DATA_TYPE.Rule 
                 = RESERV_REAL
@@ -433,13 +434,16 @@ namespace CompiPascal.analizer
                 | REAL
                 | CADENA
                 | NUMERO
-                | ACCESS_ARRAY + COR_IZQ + EXPLOGICA + COR_DER
-                | IDENTIFIER
+                | IDENTIFIER + ID_TIPE
                 | RESERV_TRUE
                 | RESERV_FALSE
                 | CALL_FUNCTION_PROCEDURE
                 | MIN + FACTOR
                 ;
+
+            ID_TIPE.Rule
+                = COR_IZQ + EXPLOGICA + COR_DER
+                | Empty;
 
             /*EXPRESION.Rule
                 = EXPRESION + PLUS + EXPRESION

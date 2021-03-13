@@ -230,76 +230,46 @@ namespace CompiPascal.AST
                 | REAL
                 | CADENA
                 | NUMERO
-                | IDENTIFIER
+                | IDENTIFIER + ID_TIPE
                 | RESERV_TRUE
                 | RESERV_FALSE
                 | CALL_FUNCTION_PROCEDURE
                 | MIN + FACTOR
                 ;
+
+            ID_TIPE.rule
+                = [ exp ] 
+                | Empty
+                ;
              */
 
 
-           
-           if (actual.ChildNodes.Count == 3)
+
+            if (actual.ChildNodes.Count == 3)
            {
                var izq = actual.ChildNodes[0];
-
                 return getExpresion(actual.ChildNodes[1]);
-
-               /* if (izq.Term.ToString().ToLower().Contains("tk"))
-               {
-                  
-               }
-               //SI NO LO ES, ES PORQUE VIENE UNA EXPRESION COMUN
-               else
-               {
-                   var simb = actual.ChildNodes[1].Token.Text;
-                   var opcion = 0;
-
-
-                   if (simb.Equals("+") || simb.Equals("-") || simb.Equals("*") || simb.Equals("/") || simb.Equals("%"))
-                   {
-                       opcion = 1;
-                   }
-                   else if (simb.Equals("<") || simb.Equals("<=") || simb.Equals(">") || simb.Equals(">=") || simb.Equals("=") || simb.Equals("<>"))
-                   {
-                       opcion = 2;
-                   }
-                   else if (simb.Equals("and") || simb.Equals("or") || simb.Equals("not"))
-                   {
-                       opcion = 3;
-                   }
-                   var iz = getExpresion(actual.ChildNodes[0]);
-                   var der = getExpresion(actual.ChildNodes[2]);
-
-                   switch (opcion)
-                   {
-                       case 1: //OPERACIONES ARITMETICAS
-                           return new Arithmetic(iz, der, simb);
-                       case 2: //OPERACIONES RELACIONALES
-                           return new Relational(iz, der, simb, 0, 0);
-                       case 3: //OPREACIONES LOGICAS
-                           return new Logical(iz, der, simb, 0, 0);
-                       default:
-                           break;
-                   }
-
-                   return null;
-               }*/
            }
            else if (actual.ChildNodes.Count == 2)
            {
-               var simb = actual.ChildNodes[0].Token.Text;
+
+                if (actual.ChildNodes[0].Term.ToString().Equals("IDENTIFIER"))
+                {
+                    return getAccess(actual);
+                } else {
+                    var simb = actual.ChildNodes[0].Token.Text;
 
 
-               if (simb.Equals("-"))
-               {
-                    var iz = FACTOR(actual.ChildNodes[1]);
-                    var row = actual.ChildNodes[0].Token.Location.Line;
-                    var col = actual.ChildNodes[0].Token.Location.Column;
+                    if (simb.Equals("-"))
+                    {
+                        var iz = FACTOR(actual.ChildNodes[1]);
+                        var row = actual.ChildNodes[0].Token.Location.Line;
+                        var col = actual.ChildNodes[0].Token.Location.Column;
 
-                    return new Arithmetic(iz, new Literal("-1", 1, row, col), "*", row, col);
-               }
+                        return new Arithmetic(iz, new Literal("-1", 1, row, col), "*", row, col);
+                    }
+                }
+               
            }
            else
            {
@@ -316,6 +286,32 @@ namespace CompiPascal.AST
 
            }
             return null;
+        }
+
+        public Expression getAccess(ParseTreeNode actual)
+        {
+            if (actual.ChildNodes[1].ChildNodes.Count == 0)
+            {
+                return GetLiteral(actual.ChildNodes[0]);
+            } else
+            {
+                var id = actual.ChildNodes[0].Token.Text;
+                var row = actual.ChildNodes[0].Token.Location.Line;
+                var col= actual.ChildNodes[0].Token.Location.Column;
+
+                return GetAccess_Array(actual.ChildNodes[1], id, row, col);
+            }
+        }
+
+        public Access_array GetAccess_Array(ParseTreeNode actual, string id, int row, int col)
+        {
+            if (actual.ChildNodes.Count > 0)
+            {
+                var exp = EXPLOGICA(actual.ChildNodes[1]);
+                return new Access_array(id, exp, row, col);
+            }
+            return null;
+
         }
     }
 }

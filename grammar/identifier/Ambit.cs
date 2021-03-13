@@ -234,6 +234,37 @@ namespace CompiPascal.grammar.identifier
         }
 
 
+        public Arrays getArray(string id)
+        {
+            Ambit amb = this;
+
+            while (amb != null)
+            {
+                if (amb.Arrays.ContainsKey(id))
+                {
+                    return amb.Arrays[id];
+                }
+                amb = amb.anterior;
+            }
+            
+
+            return null;
+        }
+
+        public void setArray(string id, Arrays tipo_dato)
+        {
+            Ambit env = this;
+
+            while (env != null)
+            {
+                if (env.Arrays.ContainsKey(id))
+                {
+                    env.Arrays[id] = tipo_dato;
+                    return;
+                }
+                env = env.anterior;
+            }
+        }
         #endregion
 
 

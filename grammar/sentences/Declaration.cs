@@ -86,7 +86,7 @@ namespace CompiPascal.grammar.sentences
                         }
                         else
                         {
-                            ErrorController.Instance.SemantycErrors("El tipo " + val.getDataType + " no es asignable con " + this.type.ToString(), 0, 0);
+                            ErrorController.Instance.SemantycErrors("El tipo " + val.getDataType + " no es asignable con " + this.type.ToString(), row, column);
                             return null;
                         }
                     }
@@ -100,7 +100,7 @@ namespace CompiPascal.grammar.sentences
             }
             else
             {
-                ErrorController.Instance.SemantycErrors("La variable '" + id + "' ya fue declarada", 0, 0);
+                ErrorController.Instance.SemantycErrors("La variable '" + id + "' ya fue declarada", row, column);
                 return null;
             }
             return 0;

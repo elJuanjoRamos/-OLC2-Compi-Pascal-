@@ -130,7 +130,7 @@ namespace CompiPascal.grammar.sentences
 
                                 if (response.Return_func_return)
                                 {
-                                    //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
+                                    GraphController.Instance.getAmbitoGraficar(function_ambit, false);
                                     return new Returned(funcion_llamada.Retorno, funcion_llamada.Tipe);
 
                                 }
@@ -141,7 +141,7 @@ namespace CompiPascal.grammar.sentences
                                     //UPDATE FUNCION A LA TABLA SIMBOLOS
                                     funcion_llamada.Retorno = result.Value.ToString();
                                     ambit.setFunction(funcion_llamada.Id, funcion_llamada);
-                                    //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
+                                    GraphController.Instance.getAmbitoGraficar(function_ambit, false);
                                     return new Returned(result.Value, result.getDataType);
                                 }
                             }
@@ -162,7 +162,7 @@ namespace CompiPascal.grammar.sentences
                             ErrorController.Instance.SyntacticError("La sentencia Continue solo puede aparece en ciclos", r.Row, r.Column);
                         }
                     }
-                    //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
+                    GraphController.Instance.getAmbitoGraficar(function_ambit, false);
                 }
             }
 

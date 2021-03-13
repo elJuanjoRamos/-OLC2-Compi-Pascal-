@@ -77,8 +77,16 @@ namespace CompiPascal.AST
             }
             else if (actual.Term.ToString().Equals("VAR_ASSIGNATE"))
             {
-                Assignation _assignation = (new AssignationAST()).VAR_ASSIGNATE(actual);
-                return _assignation;
+                var _assignation = (new AssignationAST()).VAR_ASSIGNATE(actual);
+
+                if (_assignation is Assignation)
+                {
+                    return (Assignation)_assignation;
+                }
+                else if (_assignation is Assignation_array)
+                {
+                    return (Assignation_array)_assignation;
+                }
             }
             else if (actual.Term.ToString().Equals("REPEAT_UNTIL"))
             {

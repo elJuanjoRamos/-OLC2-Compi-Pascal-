@@ -78,7 +78,7 @@ namespace CompiPascal.analizer
 
             //LISTA DE DECLARCION DE VARIABLES
             
-            /*lista_declaraciones = (new DeclarationAST()).LIST_DECLARATIONS(program_body.ChildNodes.ElementAt(1), lista_declaraciones, elemetos_heredados);
+            lista_declaraciones = (new DeclarationAST()).LIST_DECLARATIONS(program_body.ChildNodes.ElementAt(1), lista_declaraciones, elemetos_heredados);
             
             //LISTA DE DECLARACION DE FUNCIONES
             elemetos_heredados.Clear();
@@ -88,7 +88,7 @@ namespace CompiPascal.analizer
             LinkedList<Instruction> listaInstrucciones = instructionAST.INSTRUCTIONS_BODY(program_body.ChildNodes.ElementAt(3));
             
             //COMENZAR A EJECUTAR
-            ejecutar(listaInstrucciones, lista_declaraciones, lista_funciones, paths);*/
+            ejecutar(listaInstrucciones, lista_declaraciones, lista_funciones, lista_types, paths);
 
         }
 
@@ -98,15 +98,37 @@ namespace CompiPascal.analizer
 
 
         public void ejecutar(LinkedList<Instruction> actual, 
-            LinkedList<Instruction> lista_declaraciones, LinkedList<Instruction> lista_funciones,
-            string path)
+            LinkedList<Instruction> lista_declaraciones, LinkedList<Instruction> lista_funciones, 
+            LinkedList<Instruction> lista_types, string path)
         {
             //GUARDAR VARIABLES
-
+            var error_type = false;
             var error_variable = false;
             var error_funcion = false;
 
             GraphController.Instance.setPath(path);
+
+            foreach (var item in lista_types)
+            {
+                if (item != null)
+                {
+                    try
+                    {
+                        var result = item.Execute(general);
+                        if (result == null)
+                        {
+                            error_type = true;
+                            break;
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+                }
+            }
+
 
             foreach (var item in lista_declaraciones)
             {
