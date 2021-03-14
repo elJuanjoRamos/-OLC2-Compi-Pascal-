@@ -160,85 +160,91 @@ namespace CompiPascal.controller
         public void getAmbitoGraficar(Ambit ambit, bool isgeneral)
         {
 
-            var ambito_name = ambit.Ambit_name.Replace("General_", "");
-
-            var enlace = "";
-
-            var texto =
-                ambito_name + "[label=<\n" +
-                "<table border='0' cellborder='1' cellspacing='0'>\n" +
-                "<tr>\n" +
-                "<td>" + ambito_name + "</td>" +
-                "</tr>\n" +
-                "<tr>\n" +
-                "<td cellpadding='4'>\n" +
-                "<table color='orange' cellspacing='0'>\n" +
-                "<tr>\n" +
-                "<td width='100'><i>Nombre</i></td>\n" +
-                "<td width='100'><i>Tipo</i></td>\n" +
-                "<td width='100'><i>Ambito</i></td>\n" +
-                "<td width='100'><i>Valor</i></td>\n" +
-                "<td width='100'><i>Tipo objeto</i></td>\n" +
-                "</tr>\n";
-
-
-            if (ambit.anterior != null)
+            if (ambitos.Count <= 20)
             {
-                var ambit_temp = ambit.anterior.Ambit_name.Replace("General_", "");
-                enlace = ambit_temp + "->" + ambito_name+";\n";
+                var ambito_name = ambit.Ambit_name.Replace("General_", "");
 
-            }
+                var enlace = "";
 
-            var res_graphi = "";
-            while (ambit != null)
-            {
-                if (ambit.Variables.Count > 0)
+                var texto =
+                    ambito_name + "[label=<\n" +
+                    "<table border='0' cellborder='1' cellspacing='0'>\n" +
+                    "<tr>\n" +
+                    "<td>" + ambito_name + "</td>" +
+                    "</tr>\n" +
+                    "<tr>\n" +
+                    "<td cellpadding='4'>\n" +
+                    "<table color='orange' cellspacing='0'>\n" +
+                    "<tr>\n" +
+                    "<td width='100'><i>Nombre</i></td>\n" +
+                    "<td width='100'><i>Tipo</i></td>\n" +
+                    "<td width='100'><i>Ambito</i></td>\n" +
+                    "<td width='100'><i>Valor</i></td>\n" +
+                    "<td width='100'><i>Tipo objeto</i></td>\n" +
+                    "</tr>\n";
+
+
+                if (ambit.anterior != null)
                 {
-
-                    foreach (var item in ambit.Variables)
-                    {
-                        Identifier id = (Identifier)item.Value;
-                        ambito_name = ambit.Ambit_name.Replace("General_", "");
-                        res_graphi = "\n<tr>\n\t<td height='25'>" + id.Id + "</td>\n\t<td height='25'>" + id.DataType + "</td>\n\t<td height='25'>" + ambito_name + "</td>\n\t<td height='25'>" + id.Value.ToString() + "</td>\n\t<td height='25'>" + id.Tipo_dato + "</td>\n</tr>" + res_graphi;
-                    }
+                    var ambit_temp = ambit.anterior.Ambit_name.Replace("General_", "");
+                    enlace = ambit_temp + "->" + ambito_name + ";\n";
 
                 }
 
-
-                if (isgeneral)
+                var res_graphi = "";
+                while (ambit != null)
                 {
-                    if (ambit.Functions.Count > 0)
+                    if (ambit.Variables.Count > 0)
                     {
-                        var type = "void";
-                        var isfunc = "Procedure";
 
-                        foreach (var item in ambit.Functions)
+                        foreach (var item in ambit.Variables)
                         {
-                            type = "void";
-                            isfunc = "Procedure";
+                            Identifier id = (Identifier)item.Value;
+                            ambito_name = ambit.Ambit_name.Replace("General_", "");
+                            res_graphi = "\n<tr>\n\t<td height='25'>" + id.Id + "</td>\n\t<td height='25'>" + id.DataType + "</td>\n\t<td height='25'>" + ambito_name + "</td>\n\t<td height='25'>" + id.Value.ToString() + "</td>\n\t<td height='25'>" + id.Tipo_dato + "</td>\n</tr>" + res_graphi;
+                        }
 
-                            Function func = (Function)item.Value;
-                            if (!func.IsProcedure)
+                    }
+
+
+                    if (isgeneral)
+                    {
+                        if (ambit.Functions.Count > 0)
+                        {
+                            var type = "void";
+                            var isfunc = "Procedure";
+
+                            foreach (var item in ambit.Functions)
                             {
-                                isfunc = "Function";
-                                type = func.Tipe.ToString();
+                                type = "void";
+                                isfunc = "Procedure";
+
+                                Function func = (Function)item.Value;
+                                if (!func.IsProcedure)
+                                {
+                                    isfunc = "Function";
+                                    type = func.Tipe.ToString();
+                                }
+                                res_graphi = "<tr>\n<td height='25'>" + func.Id + "</td>\n<td height='25'>" + type + "</td>\n<td height='25'>" + ambit.Ambit_name + "</td>\n<td height='25'>" + func.Retorno.ToString() + "</td>\n<td height='25'>" + isfunc + "</td>\n</tr>" + res_graphi;
                             }
-                            res_graphi = "<tr>\n<td height='25'>" + func.Id + "</td>\n<td height='25'>" + type + "</td>\n<td height='25'>" + ambit.Ambit_name + "</td>\n<td height='25'>" + func.Retorno.ToString() + "</td>\n<td height='25'>" + isfunc + "</td>\n</tr>" + res_graphi;
                         }
                     }
+
+
+
+                    var temp = ambit.anterior;
+                    ambit = temp;
                 }
 
-                
 
-                var temp = ambit.anterior;
-                ambit = temp;
+                texto += res_graphi
+                    + "</table>\n</td>\n</tr>\n </table>>];\n";
+
+                ambitos.Add(new Simbolo(ambito_name, texto, enlace));
             }
 
 
-            texto += res_graphi
-                + "</table>\n</td>\n</tr>\n </table>>];\n";
 
-            ambitos.Add(new Simbolo(ambito_name, texto, enlace));
         }
 
 

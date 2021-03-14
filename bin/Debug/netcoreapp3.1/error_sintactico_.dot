@@ -10,13 +10,28 @@ Baz [label=<
 <td><i width='100'>Columna</i></td> </tr>
 <tr>
 <td height='25'>Sintactico</td>
-<td height='25'>Syntax error, expected: RESERV_ELSE, RESERV_END, IDENTIFIER, RESERV_IF, RESERV_CASE, RESERV_WHILE, RESERV_REPEAT, RESERV_FOR, RESERV_BREAK, RESERV_CONTINUE, RESERV_WRITE, RESERV_WRITEN, RESERV_EXIT, RESERV_TYPE, RESERV_UNTIL, TK_PAR_IZQ, REAL, CADENA, NUMERO, RESERV_TRUE, RESERV_FALSE, TK_MIN, TK_NOT</td>
-<td height='25'>16</td>
+<td height='25'>Syntax error, expected: TK_COMA, TK_DOS_PUNTOS</td>
 <td height='25'>5</td>
+<td height='25'>31</td>
 </tr><tr>
 <td height='25'>Sintactico</td>
-<td height='25'>Syntax error, expected: RESERV_END, IDENTIFIER, RESERV_IF, RESERV_CASE, RESERV_WHILE, RESERV_REPEAT, RESERV_FOR, RESERV_BREAK, RESERV_CONTINUE, RESERV_WRITE, RESERV_WRITEN, RESERV_EXIT, RESERV_TYPE</td>
-<td height='25'>18</td>
+<td height='25'>Syntax error, expected: TK_PUNTO</td>
+<td height='25'>8</td>
 <td height='25'>3</td>
+</tr><tr>
+<td height='25'>Sintactico</td>
+<td height='25'>Syntax error, expected: RESERV_BEGIN</td>
+<td height='25'>12</td>
+<td height='25'>1</td>
+</tr><tr>
+<td height='25'>Sintactico</td>
+<td height='25'>Syntax error, expected: RESERV_BEGIN</td>
+<td height='25'>13</td>
+<td height='25'>1</td>
+</tr><tr>
+<td height='25'>Sintactico</td>
+<td height='25'>Syntax error, expected: RESERV_BEGIN</td>
+<td height='25'>15</td>
+<td height='25'>0</td>
 </tr>
 </table>>];}

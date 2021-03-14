@@ -2,10 +2,10 @@ digraph G{
 graph [pad="0.5", nodesep="0.5", ranksep="2"]
 node[shape = plain]
 rankdir = LR;
-Function_llamar[label=<
+Procedure_generaNumeros[label=<
 <table border='0' cellborder='1' cellspacing='0'>
 <tr>
-<td>Function_llamar</td></tr>
+<td>Procedure_generaNumeros</td></tr>
 <tr>
 <td cellpadding='4'>
 <table color='orange' cellspacing='0'>
@@ -16,7 +16,276 @@ Function_llamar[label=<
 <td width='100'><i>Valor</i></td>
 <td width='100'><i>Tipo objeto</i></td>
 </tr>
-</table>
+
+<tr>
+	<td height='25'>i</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Variable</td>
+</tr>
+<tr>
+	<td height='25'>maxVal</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>30000</td>
+	<td height='25'>Constante</td>
+</tr>
+<tr>
+	<td height='25'>maximo</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Constante</td>
+</tr></table>
+</td>
+</tr>
+ </table>>];
+Procedure_muestraNumeros[label=<
+<table border='0' cellborder='1' cellspacing='0'>
+<tr>
+<td>Procedure_muestraNumeros</td></tr>
+<tr>
+<td cellpadding='4'>
+<table color='orange' cellspacing='0'>
+<tr>
+<td width='100'><i>Nombre</i></td>
+<td width='100'><i>Tipo</i></td>
+<td width='100'><i>Ambito</i></td>
+<td width='100'><i>Valor</i></td>
+<td width='100'><i>Tipo objeto</i></td>
+</tr>
+
+<tr>
+	<td height='25'>i</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Variable</td>
+</tr>
+<tr>
+	<td height='25'>maxVal</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>30000</td>
+	<td height='25'>Constante</td>
+</tr>
+<tr>
+	<td height='25'>maximo</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Constante</td>
+</tr></table>
+</td>
+</tr>
+ </table>>];
+Procedure_Burbuja[label=<
+<table border='0' cellborder='1' cellspacing='0'>
+<tr>
+<td>Procedure_Burbuja</td></tr>
+<tr>
+<td cellpadding='4'>
+<table color='orange' cellspacing='0'>
+<tr>
+<td width='100'><i>Nombre</i></td>
+<td width='100'><i>Tipo</i></td>
+<td width='100'><i>Ambito</i></td>
+<td width='100'><i>Valor</i></td>
+<td width='100'><i>Tipo objeto</i></td>
+</tr>
+
+<tr>
+	<td height='25'>i</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>2</td>
+	<td height='25'>Variable</td>
+</tr>
+<tr>
+	<td height='25'>maxVal</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>30000</td>
+	<td height='25'>Constante</td>
+</tr>
+<tr>
+	<td height='25'>maximo</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Constante</td>
+</tr>
+<tr>
+	<td height='25'>tmp</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>Procedure_Burbuja</td>
+	<td height='25'>96</td>
+	<td height='25'>Variable</td>
+</tr>
+<tr>
+	<td height='25'>cambiado</td>
+	<td height='25'>BOOLEAN</td>
+	<td height='25'>Procedure_Burbuja</td>
+	<td height='25'>False</td>
+	<td height='25'>Variable</td>
+</tr></table>
+</td>
+</tr>
+ </table>>];
+Procedure_muestraNumeros[label=<
+<table border='0' cellborder='1' cellspacing='0'>
+<tr>
+<td>Procedure_muestraNumeros</td></tr>
+<tr>
+<td cellpadding='4'>
+<table color='orange' cellspacing='0'>
+<tr>
+<td width='100'><i>Nombre</i></td>
+<td width='100'><i>Tipo</i></td>
+<td width='100'><i>Ambito</i></td>
+<td width='100'><i>Valor</i></td>
+<td width='100'><i>Tipo objeto</i></td>
+</tr>
+
+<tr>
+	<td height='25'>i</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Variable</td>
+</tr>
+<tr>
+	<td height='25'>maxVal</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>30000</td>
+	<td height='25'>Constante</td>
+</tr>
+<tr>
+	<td height='25'>maximo</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Constante</td>
+</tr></table>
+</td>
+</tr>
+ </table>>];
+Procedure_generaNumeros[label=<
+<table border='0' cellborder='1' cellspacing='0'>
+<tr>
+<td>Procedure_generaNumeros</td></tr>
+<tr>
+<td cellpadding='4'>
+<table color='orange' cellspacing='0'>
+<tr>
+<td width='100'><i>Nombre</i></td>
+<td width='100'><i>Tipo</i></td>
+<td width='100'><i>Ambito</i></td>
+<td width='100'><i>Valor</i></td>
+<td width='100'><i>Tipo objeto</i></td>
+</tr>
+
+<tr>
+	<td height='25'>i</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Variable</td>
+</tr>
+<tr>
+	<td height='25'>maxVal</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>30000</td>
+	<td height='25'>Constante</td>
+</tr>
+<tr>
+	<td height='25'>maximo</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Constante</td>
+</tr></table>
+</td>
+</tr>
+ </table>>];
+Procedure_muestraNumeros[label=<
+<table border='0' cellborder='1' cellspacing='0'>
+<tr>
+<td>Procedure_muestraNumeros</td></tr>
+<tr>
+<td cellpadding='4'>
+<table color='orange' cellspacing='0'>
+<tr>
+<td width='100'><i>Nombre</i></td>
+<td width='100'><i>Tipo</i></td>
+<td width='100'><i>Ambito</i></td>
+<td width='100'><i>Valor</i></td>
+<td width='100'><i>Tipo objeto</i></td>
+</tr>
+
+<tr>
+	<td height='25'>i</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Variable</td>
+</tr>
+<tr>
+	<td height='25'>maxVal</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>30000</td>
+	<td height='25'>Constante</td>
+</tr>
+<tr>
+	<td height='25'>maximo</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Constante</td>
+</tr></table>
+</td>
+</tr>
+ </table>>];
+Procedure_muestraNumeros[label=<
+<table border='0' cellborder='1' cellspacing='0'>
+<tr>
+<td>Procedure_muestraNumeros</td></tr>
+<tr>
+<td cellpadding='4'>
+<table color='orange' cellspacing='0'>
+<tr>
+<td width='100'><i>Nombre</i></td>
+<td width='100'><i>Tipo</i></td>
+<td width='100'><i>Ambito</i></td>
+<td width='100'><i>Valor</i></td>
+<td width='100'><i>Tipo objeto</i></td>
+</tr>
+
+<tr>
+	<td height='25'>i</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Variable</td>
+</tr>
+<tr>
+	<td height='25'>maxVal</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>30000</td>
+	<td height='25'>Constante</td>
+</tr>
+<tr>
+	<td height='25'>maximo</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Constante</td>
+</tr></table>
 </td>
 </tr>
  </table>>];
@@ -35,14 +304,65 @@ General[label=<
 <td width='100'><i>Tipo objeto</i></td>
 </tr>
 <tr>
-<td height='25'>llamar</td>
-<td height='25'>BOOLEAN</td>
+<td height='25'>QuickSort</td>
+<td height='25'>void</td>
 <td height='25'>General</td>
-<td height='25'>True</td>
-<td height='25'>Function</td>
+<td height='25'>-</td>
+<td height='25'>Procedure</td>
+</tr><tr>
+<td height='25'>Sort</td>
+<td height='25'>void</td>
+<td height='25'>General</td>
+<td height='25'>-</td>
+<td height='25'>Procedure</td>
+</tr><tr>
+<td height='25'>Burbuja</td>
+<td height='25'>void</td>
+<td height='25'>General</td>
+<td height='25'>-</td>
+<td height='25'>Procedure</td>
+</tr><tr>
+<td height='25'>muestraNumeros</td>
+<td height='25'>void</td>
+<td height='25'>General</td>
+<td height='25'>-</td>
+<td height='25'>Procedure</td>
+</tr><tr>
+<td height='25'>generaNumeros</td>
+<td height='25'>void</td>
+<td height='25'>General</td>
+<td height='25'>-</td>
+<td height='25'>Procedure</td>
+</tr>
+<tr>
+	<td height='25'>i</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Variable</td>
+</tr>
+<tr>
+	<td height='25'>maxVal</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>30000</td>
+	<td height='25'>Constante</td>
+</tr>
+<tr>
+	<td height='25'>maximo</td>
+	<td height='25'>INTEGER</td>
+	<td height='25'>General</td>
+	<td height='25'>100</td>
+	<td height='25'>Constante</td>
 </tr></table>
 </td>
 </tr>
  </table>>];
-General->Function_llamar;
+General->Procedure_generaNumeros;
+General->Procedure_muestraNumeros;
+General->Procedure_Burbuja;
+General->Procedure_muestraNumeros;
+General->Procedure_generaNumeros;
+General->Procedure_muestraNumeros;
+General->Procedure_muestraNumeros;
 }
