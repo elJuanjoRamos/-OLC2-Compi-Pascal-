@@ -37,7 +37,7 @@ namespace CompiPascal.grammar.expression
 
             if (res == DataType.ERROR)
             {
-                ErrorController.Instance.SemantycErrors("Operador '" + this.type + "' NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
+                set_error("Operador '" + this.type + "' NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
                 return new Returned();
             }
 
@@ -62,105 +62,31 @@ namespace CompiPascal.grammar.expression
                     var less = (bool)(double.Parse(valIz.Value.ToString()) < double.Parse(valDer.Value.ToString()));
                     result = new Returned(less, DataType.BOOLEAN);
 
-                    /*if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
-                    {
-                        if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
-                        {
-                            var less = (bool)(double.Parse(valIz.Value.ToString()) < double.Parse(valDer.Value.ToString()));
-                            result = new Returned(less, DataType.BOOLEAN);
-                        }
-                        else
-                        {
-                            ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType,0,0);
-                            return new Returned();
-                        }
-
-                    } else
-                    {
-                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
-                        return new Returned();
-                    }*/
-
-
-
                     break;
                 case OpRelational.LESS_EQUALS:
                     var lessE = (bool)(double.Parse(valIz.Value.ToString()) <= double.Parse(valDer.Value.ToString()));
                     result = new Returned(lessE, DataType.BOOLEAN);
 
-                    /*if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
-                    {
-                        if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
-                        {
-                            var less = (bool)(double.Parse(valIz.Value.ToString()) <= double.Parse(valDer.Value.ToString()));
-                            result = new Returned(less, DataType.BOOLEAN);
-                        }
-                        else
-                        {
-                            ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
-                            return new Returned();
-                        }
-
-                    }
-                    else
-                    {
-                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
-                        return new Returned();
-                    }*/
                     break;
                 case OpRelational.HIGHER:
                     var higher = (bool)(double.Parse(valIz.Value.ToString()) > double.Parse(valDer.Value.ToString()));
                     result = new Returned(higher, DataType.BOOLEAN);
-
-                    /*if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
-                    {
-                        if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
-                        {
-                            var higher = (bool)(double.Parse(valIz.Value.ToString()) > double.Parse(valDer.Value.ToString()));
-                            result = new Returned(higher, DataType.BOOLEAN);
-                        }
-                        else
-                        {
-                            ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
-                            return new Returned();
-                        }
-
-                    }
-                    else
-                    {
-                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
-                        return new Returned();
-                    }*/
                     break;
                 case OpRelational.HIGHER_EQUALS:
                     var higherE = (bool)(double.Parse(valIz.Value.ToString()) >= double.Parse(valDer.Value.ToString()));
                     result = new Returned(higherE, DataType.BOOLEAN);
 
-                    /*if (valIz.getDataType == DataType.INTEGER || valIz.getDataType == DataType.REAL)
-                    {
-                        if (valDer.getDataType == DataType.INTEGER || valDer.getDataType == DataType.REAL)
-                        {
-                            var higher = (bool)(double.Parse(valIz.Value.ToString()) >= double.Parse(valDer.Value.ToString()));
-                            result = new Returned(higher, DataType.BOOLEAN);
-                        }
-                        else
-                        {
-                            ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
-                            return new Returned();
-                        }
-
-                    }
-                    else
-                    {
-                        ErrorController.Instance.SemantycErrors("Operador " + this.type + " NO puede ser aplicado a los tipos " + valIz.getDataType + " con " + valDer.getDataType, 0, 0);
-                        return new Returned();
-                    }*/
                     break;
                 default:
                     break;
             }
 
             return result;
+        }
+        public void set_error(string texto, int row, int column)
+        {
+            ErrorController.Instance.SemantycErrors(texto, row, column);
+            ConsolaController.Instance.Add(texto + " - Row: " + row + "- Col: " + column + "\n");
         }
         public OpRelational GetType(string simb)
         {

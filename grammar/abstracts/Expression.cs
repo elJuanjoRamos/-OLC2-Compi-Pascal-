@@ -7,9 +7,13 @@ namespace CompiPascal.grammar.abstracts
 {
     public abstract class Expression
     {
-        public int row;
-        public int column;
+        private int row;
+        private int column;
         public string name;
+
+        public int Column { get => column; set => column = value; }
+        public int Row { get => row; set => row = value; }
+
         public Expression(int r, int c, string n)
         {
             this.row = r;

@@ -93,7 +93,7 @@ namespace CompiPascal.AST
 
                 foreach (var item in elementos_her)
                 {
-                    lista_actual.AddLast(GetDeclarationValue(item.ToString(), datatype, false, row, col));
+                    lista_actual.AddLast(GetDeclarationValue(item.ToString(), datatype, false, row, col, false));
                 }
                 elementos_her.Clear();
 
@@ -161,7 +161,7 @@ namespace CompiPascal.AST
                 row = actual.ChildNodes[0].Token.Location.Line;
                 col = actual.ChildNodes[0].Token.Location.Column;
                 var exp = expressionAST.getExpresion(actual.ChildNodes[1]);
-                lista_actual.AddLast(new Declaration(elementos_her[0].ToString(), elementos_her[1].ToString(), exp, row, col, true));
+                lista_actual.AddLast(new Declaration(elementos_her[0].ToString(), elementos_her[1].ToString(), exp, row, col, true, false));
                 elementos_her.Clear();
             }
             // VAR A:TIPO;
@@ -169,7 +169,7 @@ namespace CompiPascal.AST
             {
                 if (!esarray)
                 {
-                    lista_actual.AddLast(GetDeclarationValue(elementos_her[0].ToString(), elementos_her[1].ToString(), false, row, col));
+                    lista_actual.AddLast(GetDeclarationValue(elementos_her[0].ToString(), elementos_her[1].ToString(), false, row, col, false));
                     elementos_her.Clear();
                 } else
                 {
@@ -191,24 +191,24 @@ namespace CompiPascal.AST
             }
             return elementos_her;
         }
-        public Declaration GetDeclarationValue(string identifier, string datatype, bool perteneceFuncion, int row, int col)
+        public Declaration GetDeclarationValue(string identifier, string datatype, bool perteneceFuncion, int row, int col, bool refe)
         {
 
             if (datatype.ToLower().Equals("integer"))
             {
-                return new Declaration(identifier.ToString(), datatype, new Literal(0, 1, row, col), 0, 0, false);
+                return new Declaration(identifier.ToString(), datatype, new Literal(0, 1, row, col), row, col, false, refe);
             }
             else if (datatype.ToLower().Equals("real"))
             {
-                return new Declaration(identifier.ToString(), datatype, new Literal(0, 4, row, col), 0, 0, false);
+                return new Declaration(identifier.ToString(), datatype, new Literal(0, 4, row, col), row, col, false, refe);
             }
             else if (datatype.ToLower().Equals("string"))
             {
-                return new Declaration(identifier.ToString(), datatype, new Literal("", 2, row, col), 0, 0, false);
+                return new Declaration(identifier.ToString(), datatype, new Literal("", 2, row, col), row, col, false, refe);
             }
             else if (datatype.ToLower().Equals("boolean"))
             {
-                return new Declaration(identifier.ToString(), datatype, new Literal(false, 3, row, col), 0, 0, false);
+                return new Declaration(identifier.ToString(), datatype, new Literal(false, 3, row, col), row, col, false, refe);
             }
             return null;
         }

@@ -2,6 +2,7 @@
 using CompiPascal.grammar.sentences;
 using Irony.Parsing;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -67,7 +68,7 @@ namespace CompiPascal.AST
             return null;
         }
 
-        public Arrays ARRAYs(ParseTreeNode actual, string name)
+        public Instruction ARRAYs(ParseTreeNode actual, string name)
         {
 
             /*
@@ -77,12 +78,20 @@ namespace CompiPascal.AST
             ExpressionAST expressionAST = new ExpressionAST();
             var limit_inf = expressionAST.getExpresion(actual.ChildNodes[2]);
             var limit_sup = expressionAST.getExpresion(actual.ChildNodes[5]);
-            var tipo = MORE_ARRAY(actual.ChildNodes[8]);
+            ArrayList anidados = new ArrayList();
+            var resultado = MORE_ARRAY(actual.ChildNodes[8], name, anidados);
 
-            return new Arrays(name, limit_inf, limit_sup, tipo);
+            if (resultado is string)
+            {
+                return new Arrays(name, limit_inf, limit_sup, resultado.ToString());
+            } else
+            {
+                return new ArraysMultiple(name, limit_inf, limit_sup, "", anidados);
+            }
+            
         }
 
-        public string MORE_ARRAY(ParseTreeNode actual)
+        public object MORE_ARRAY(ParseTreeNode actual, string name, ArrayList anidados)
         {
             /*
               MORE_ARRAY.Rule
@@ -93,8 +102,31 @@ namespace CompiPascal.AST
             if (actual.ChildNodes.Count == 1)
             {
                 return actual.ChildNodes[0].ChildNodes[0].Token.Text;
+            } else
+            {
+                /*ExpressionAST expressionAST = new ExpressionAST();
+                var limit_inf = expressionAST.getExpresion(actual.ChildNodes[2]);
+                var limit_sup = expressionAST.getExpresion(actual.ChildNodes[5]);
+
+                var resultado = MORE_ARRAY(actual.ChildNodes[8], name, anidados);
+
+                //Instruction exp = null; 
+                if (resultado is string)
+                {
+                    return new Arrays(name, limit_inf, limit_sup, resultado.ToString());
+                }
+                else
+                {
+                    var exp = (Arrays)resultado;
+                    anidados.Add(new Arrays(name, limit_inf, limit_sup, exp.DataType));
+                    anidados.Add(exp);
+                }*/
+
             }
-            return "string";
+            return anidados;
         }
+        
+
+    
     }
 }

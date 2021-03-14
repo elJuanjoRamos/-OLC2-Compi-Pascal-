@@ -38,7 +38,7 @@ namespace CompiPascal.grammar.sentences
             var numeroCaso = -1;
 
 
-            var switchAmbit = new Ambit(ambit, ambit.Ambit_name+ "_Case", "Case", false);
+            var switchAmbit = new Ambit(ambit, ambit.Ambit_name, "Case", false);
 
             for (int i = 0; i < cases.Count; i++)
             {

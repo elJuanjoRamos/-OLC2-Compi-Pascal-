@@ -37,7 +37,7 @@ namespace CompiPascal.grammar.sentences
                     return null;
                 }
 
-                Identifier variable = ambit.getVariable(id.ToLower());
+                Identifier variable = ambit.getVariable(id);
 
                 /**
                 * VALIDAR EXISTENCIA
@@ -49,7 +49,7 @@ namespace CompiPascal.grammar.sentences
                     */
                     if (variable.Esconstante)
                     {
-                        ErrorController.Instance.SemantycErrors("No se puede cambiar el valor a una constante",row,column);
+                        setError("No se puede cambiar el valor a una constante",row,column);
                         return null;
                     } else
                     {
@@ -58,11 +58,11 @@ namespace CompiPascal.grammar.sentences
                         */
                         if (variable.DataType == val.getDataType)
                         {
-                            ambit.setVariable(id.ToLower(), val.Value, val.getDataType, false, "Variable");
+                            ambit.setVariable(id, val.Value, val.getDataType, false, "Variable");
                             return variable.Value;
                         } else
                         {
-                            ErrorController.Instance.SemantycErrors("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, row, column);
+                            setError("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, row, column);
                             return null;
                         }
                     }
@@ -70,14 +70,14 @@ namespace CompiPascal.grammar.sentences
                 } 
                 else
                 {
-                    Function function = ambit.getFuncion(id.ToLower());
+                    Function function = ambit.getFuncion(id);
 
                     if (function != null)
                     {
 
                         if (function.IsProcedure)
                         {
-                            ErrorController.Instance.SemantycErrors("No puede asignarse ningun valor al procedimiento '" + id+ "' ", row, column);
+                            setError("No puede asignarse ningun valor al procedimiento '" + id+ "' ", row, column);
                             return null;
                         }
                         
@@ -87,18 +87,18 @@ namespace CompiPascal.grammar.sentences
                         if (function.Tipe == val.getDataType)
                         {
                             function.Retorno = val.Value.ToString();
-                            ambit.setFunction(Id.ToLower(), function);
+                            ambit.setFunction(Id, function);
                             return new Returned(function.Retorno, function.Tipe);
                         }
                         else
                         {
-                            ErrorController.Instance.SemantycErrors("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, row, column);
+                            setError("El tipo " + val.getDataType + " no es asignable con " + variable.DataType, row, column);
                             return null;
                         }
 
                     } else
                     {
-                        ErrorController.Instance.SemantycErrors("La variable '" + id + "' no esta declara", row, column);
+                        setError("La variable '" + id + "' no esta declara", row, column);
                         return null;
 
                     }
@@ -113,6 +113,12 @@ namespace CompiPascal.grammar.sentences
                 return null;
             }
             
+        }
+
+        public void setError(string texto, int row, int col)
+        {
+            ErrorController.Instance.SemantycErrors(texto, row, col);
+            ConsolaController.Instance.Add(texto +" - Row:" + row + " - Col: " + col + "\n");
         }
 
 

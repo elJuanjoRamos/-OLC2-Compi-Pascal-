@@ -84,10 +84,9 @@ namespace CompiPascal.controller
 
 
 
-        public string getSemantycError(string startup_path)
+        public void getSemantycError(string startup_path)
         {
             GraphController.Instance.printError(semantycErrors, startup_path, "Semantico", "error_semantico");
-            return getText(semantycErrors, "Semantico");
         }
         public bool containSemantycError()
         {

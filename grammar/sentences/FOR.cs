@@ -34,7 +34,7 @@ namespace CompiPascal.grammar.sentences
 
         public override object Execute(Ambit ambit)
         {
-            var forAmbit = new Ambit(ambit,  "For", "For", false);
+            var forAmbit = new Ambit(ambit,  ambit.Ambit_name, "For", false);
 
 
             //SE HACE LA ASIGNACION INICIAL
@@ -69,7 +69,7 @@ namespace CompiPascal.grammar.sentences
 
                     if (condicion.getDataType != DataType.BOOLEAN)
                     {
-                        ErrorController.Instance.SemantycErrors("La condicion del for no es booleana", Row, Column);
+                        set_error("La condicion del for no es booleana", Row, Column);
                         return null;
                     }
 
@@ -112,7 +112,7 @@ namespace CompiPascal.grammar.sentences
 
                                 if (condicion.getDataType != DataType.BOOLEAN)
                                 {
-                                    ErrorController.Instance.SemantycErrors("La condicion del for no es booleana", 0, 0);
+                                    set_error("La condicion del for no es booleana", Row, Column);
                                     return null;
                                 }
 
@@ -142,9 +142,6 @@ namespace CompiPascal.grammar.sentences
                                         }
                                     }
                                 }
-
-                                
-
                             }
 
                             else
@@ -152,179 +149,18 @@ namespace CompiPascal.grammar.sentences
                                 break;
                             }
                         }
-
-
                     }
 
-
-
-
-
-                    /* //INCREMENTAL
-                     if (direccion.Equals("to"))
-                     {
-
-                         Relational cond = new Relational(new Access(initId), actualizacion, "<=", 0,0);
-                         var condicion = cond.Execute(forAmbit);
-
-
-                         if (condicion.getDataType != DataType.BOOLEAN)
-                         {
-                             ConsolaController.Instance.Add("La condicion del for no es boleana");
-
-                             return null;
-                         }
-
-
-
-                         //EJECUCION
-                         while ((bool)condicion.Value == true)
-                         {
-
-
-                             //VERIFICA QUE LA SENTENCIAS NO ESTEN VACIAS
-                             if (!sentence.IsNull)
-                             {
-                                 var element = sentence.Execute(forAmbit);
-
-                                 if (element != null)
-                                 {
-                                     if (element is Instruction)
-                                     {
-                                         Instruction ins = (Instruction)element;
-
-                                         //console.log(element);
-                                         if (ins.Name.Equals("Break"))
-                                         {
-                                             break;
-                                         }
-                                         else if (ins.Name.Equals("Continue"))
-                                         {
-                                             continue;
-                                         }
-                                         //return ins.;
-                                     }
-                                 }
-
-                                 //SE HACE UPDATE DEL VALOR
-                                 var arit = new Arithmetic(new Access(initId), new Literal("1", 1), "+");
-                                 var val = arit.Execute(forAmbit);
-
-
-                                 cond = new Relational(arit, actualizacion, "<=", 0, 0);
-                                 condicion = cond.Execute(forAmbit);
-
-
-
-                                 if (condicion.getDataType != DataType.BOOLEAN)
-                                 {
-                                     ConsolaController.Instance.Add("La condicion no es booleana");
-                                     return null;
-                                 }
-
-                                 if ((bool)condicion.Value)
-                                 {
-                                     forAmbit.setVariable(initId, val.Value, val.getDataType, false);
-                                 }
-
-                             }
-
-                             else
-                             {
-                                 break;
-                             }
-                         }
-                     }
-                     //DECREMENTAL
-                     else
-                     {
-                         Relational cond = new Relational(new Access(initId), actualizacion, ">=", 0, 0);
-                         var condicion = cond.Execute(forAmbit);
-
-
-                         if (condicion.getDataType != DataType.BOOLEAN)
-                         {
-                             ConsolaController.Instance.Add("La condicion no es boleana");
-                             return null;
-                         }
-
-
-
-                         //EJECUCION
-                         while ((bool)condicion.Value == true)
-                         {
-
-                             //VERIFICA QUE LA SENTENCIAS NO ESTEN VACIAS
-                             if (!sentence.IsNull)
-                             {
-                                 var element = sentence.Execute(forAmbit);
-
-                                 if (element != null)
-                                 {
-                                     if (element is Instruction)
-                                     {
-                                         Instruction ins = (Instruction)element;
-
-                                         //console.log(element);
-                                         if (ins.Name.Equals("Break"))
-                                         {
-                                             break;
-                                         }
-                                         else if (ins.Name.Equals("Continue"))
-                                         {
-                                             continue;
-                                         }
-                                         else if (ins.Name.Equals("Return"))
-                                         {
-
-                                         }
-                                         //return ins.;
-                                     }
-                                 }
-
-                                 //SE HACE UPDATE DEL VALOR
-                                 var arit = new Arithmetic(new Access(initId), new Literal("1", 1), "-");
-                                 var val = arit.Execute(forAmbit);
-
-
-                                 cond = new Relational(arit, actualizacion, ">=", 0, 0);
-                                 condicion = cond.Execute(forAmbit);
-
-
-
-                                 if (condicion.getDataType != DataType.BOOLEAN)
-                                 {
-                                     ConsolaController.Instance.Add("La condicion no es booleana");
-                                     return null;
-                                 }
-
-                                 if ((bool)condicion.Value)
-                                 {
-                                     forAmbit.setVariable(initId, val.Value, val.getDataType, false);
-                                 }
-
-                             }
-
-                             else
-                             {
-                                 break;
-                             }
-                         }
-                     }
-                     */
                 } else
                 {
-                    ConsolaController.Instance.Add("Variable de contador ilegal: La variable '" + initId + "' no debe estar asignada al momento de su declaracion");
-                    ErrorController.Instance.SyntacticError("Variable de contador ilegal: La variable '" + initId + "' no debe estar asignada al momento de su declaracion",0,0);
-
+                    set_error("Variable de contador ilegal: La variable '" + initId + "' no debe estar asignada al momento de su declaracion",Row, Column);
                     return null;
                 }
 
             }
             else
             {
-                ConsolaController.Instance.Add("La variable '" + initId + "' no esta declarada.");
-                ErrorController.Instance.SyntacticError("La variable '" + initId + "' no esta declarada.", 0, 0);
+                set_error("La variable '" + initId + "' no esta declarada.", Row, Column);
                 return null;
             }
 
@@ -332,6 +168,12 @@ namespace CompiPascal.grammar.sentences
 
             return 0;
 
+        }
+
+        public void set_error(string texto, int row, int column)
+        {
+            ErrorController.Instance.SemantycErrors(texto, row, column);
+            ConsolaController.Instance.Add(texto + " - Row: " + row + "- Col: " + column + "\n");
         }
     }
 }

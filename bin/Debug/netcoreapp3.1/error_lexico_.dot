@@ -10,13 +10,8 @@ Baz [label=<
 <td><i width='100'>Columna</i></td> </tr>
 <tr>
 <td height='25'>Lexico</td>
-<td height='25'>Invalid character: '"'.</td>
-<td height='25'>143</td>
-<td height='25'>16</td>
-</tr><tr>
-<td height='25'>Lexico</td>
-<td height='25'>Invalid character: '"'.</td>
-<td height='25'>148</td>
-<td height='25'>16</td>
+<td height='25'>Invalid character: '$'.</td>
+<td height='25'>1</td>
+<td height='25'>0</td>
 </tr>
 </table>>];}

@@ -203,7 +203,6 @@ namespace CompiPascal.analizer
                             {
                                 var r = (Exit)result;
                                 ErrorController.Instance.SyntacticError("La sentencia Exit solo puede aparece en funciones", r.Row, r.Column);
-
                             }
                         }
                     }
@@ -216,8 +215,8 @@ namespace CompiPascal.analizer
                 }
 
                 
-                //GraphController.Instance.getAmbitoGraficar(general.getGeneral(), true);
-                //GraphController.Instance.graficarTSGeneral();
+                GraphController.Instance.getAmbitoGraficar(general.getGeneral(), true);
+                GraphController.Instance.graficarTSGeneral();
             }
 
         }

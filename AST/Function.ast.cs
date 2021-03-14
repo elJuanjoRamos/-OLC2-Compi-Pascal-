@@ -67,6 +67,8 @@ namespace CompiPascal.AST
                 | Empty
                 ;
              */
+            int row = actual.ChildNodes[0].Token.Location.Line;
+            int col = actual.ChildNodes[0].Token.Location.Column;
 
             LinkedList<Instruction> parametros = new LinkedList<Instruction>();
             LinkedList<Instruction> declaraciones = new LinkedList<Instruction>();
@@ -84,7 +86,7 @@ namespace CompiPascal.AST
 
             var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[9]);
 
-            lista_funciones.AddLast(new Function(identifier, parametros, declaraciones,  function_type.ToLower(), new Sentence(function_instructions), false));
+            lista_funciones.AddLast(new Function(identifier, parametros, declaraciones,  function_type.ToLower(), new Sentence(function_instructions), false, row, col));
 
             elementos_her.Clear();
             lista_funciones = FUNCTION_LIST(actual.ChildNodes[11], lista_funciones, elementos_her);
@@ -107,6 +109,8 @@ namespace CompiPascal.AST
                 ;
              */
 
+            int row = actual.ChildNodes[0].Token.Location.Line;
+            int col = actual.ChildNodes[0].Token.Location.Column;
 
             LinkedList<Instruction> parametros = new LinkedList<Instruction>();
             LinkedList<Instruction> declaracion = new LinkedList<Instruction>();
@@ -121,7 +125,7 @@ namespace CompiPascal.AST
             var function_instructions = instructionAST.INSTRUCTIONS_BODY(actual.ChildNodes[7]);
 
 
-            lista_funciones.AddLast(new Function(identifier, parametros, declaracion, "any", new Sentence(function_instructions), true));
+            lista_funciones.AddLast(new Function(identifier, parametros, declaracion, "any", new Sentence(function_instructions), true, row, col));
 
             elementos_her.Clear();
             lista_funciones = FUNCTION_LIST(actual.ChildNodes[9], lista_funciones, elementos_her);
@@ -152,15 +156,12 @@ namespace CompiPascal.AST
 
                     foreach (var item in elementos_her)
                     {
-                        parametros.AddLast(declarationAST.GetDeclarationValue(item.ToString(), dataType.ToLower(), true, row, col));
+                        parametros.AddLast(declarationAST.GetDeclarationValue(item.ToString(), dataType.ToLower(), true, row, col, true));
                     }
 
                     //SI VIENEN MAS PARAMETROS
                     elementos_her.Clear();
                     parametros = PARAMETER_END(actual.ChildNodes[5], parametros, elementos_her);
-
-
-
                 }
 
                 //SIN RESERVADA VAR
@@ -175,7 +176,7 @@ namespace CompiPascal.AST
 
                     foreach (var item in elementos_her)
                     {
-                        parametros.AddLast(declarationAST.GetDeclarationValue(item.ToString(), dataType.ToLower(), true, row, col));
+                        parametros.AddLast(declarationAST.GetDeclarationValue(item.ToString(), dataType.ToLower(), true, row, col, false));
                     }
 
                     //SI VIENEN MAS PARAMETROS

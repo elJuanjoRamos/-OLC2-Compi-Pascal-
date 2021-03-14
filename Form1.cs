@@ -67,19 +67,17 @@ namespace CompiPascal
                     if (!ErrorController.Instance.containSyntacticError())
                     {
 
-                        if (!ErrorController.Instance.containSemantycError())
-                        {
-                            setPicture_text(consola, pictureBox4, ConsolaController.Instance.getText(), "ast.png");
-                            setPicture_text(consola, pictureBox5, "", "tabla_simbolostotal.png");
+                        setPicture_text(consola, pictureBox4, ConsolaController.Instance.getText(), "ast.png");
+                        setPicture_text(consola, pictureBox5, "", "tabla_simbolostotal.png");
 
-                        }
-                        else
-                        {
-                            consola.Text = consola.Text + "\nEstoy mostrando sintacticos";
-                            setPicture_text(consola, pictureBox3, ErrorController.Instance.getSemantycError(Application.StartupPath), "error_semantico.png");
-                        }
+                        ErrorController.Instance.getSemantycError(Application.StartupPath);
 
-                    } else
+                        setPicture_text(consola, pictureBox3, "", "error_semantico.png");
+
+
+
+                    }
+                    else
                     {
                         setPicture_text(consola, pictureBox2, ErrorController.Instance.getSintactycError(Application.StartupPath), "error_sintactico.png");
 

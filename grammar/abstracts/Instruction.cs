@@ -23,6 +23,8 @@ namespace CompiPascal.grammar.abstracts
 
         public string Name { get => name; set => name = value; }
         public bool IsNull { get => isNull; set => isNull = value; }
+        public int Row { get => row; set => row = value; }
+        public int Column { get => column; set => column = value; }
 
         public abstract object Execute(Ambit ambit);
     }

@@ -332,83 +332,31 @@ namespace CompiPascal.controller
         {
 
 
-            var graphi = "digraph G{\n";
-            graphi += "graph [pad=\"" + 0.5 + "\", nodesep=\"" + 0.5 + "\", ranksep=\"" + 2 + "\"]\nnode[shape = plain]\nrankdir = LR;\n";
+            
 
-
-            var texto = "";
-            var enlaces = "";
-            foreach (Simbolo simb in ambitos)
+            if (ambitos.Count < 20)
             {
-                texto += simb.Texto;
-                enlaces += simb.Apuntador;
 
-            }
-
-
-            graphi += texto + enlaces + "}";
-
-            print_image(this.path, "tabla_simbolos", "total", graphi); 
+                var graphi = "digraph G{\n";
+                graphi += "graph [pad=\"" + 0.5 + "\", nodesep=\"" + 0.5 + "\", ranksep=\"" + 2 + "\"]\nnode[shape = plain]\nrankdir = LR;\n";
 
 
-            /*var res_graphi = "";
-            var ambito_name = "";
-            var ambito_name2 = ambit.Ambit_name.Replace("General_", "");
-            var graphi = "digraph G{\n";
-
-            graphi += "label = \"" + "Ambito Graficado: " + ambito_name2 + "\"\n";
-
-            graphi += "graph [pad=\"" + 0.5 + "\", nodesep=\"" + 0.5 + "\", ranksep=\"" + 2 + "\"]\nnode[shape = plain]\nrankdir = LR;\nBaz [label=<";
-
-
-            graphi += "\n<table border=\"" + 0 + "\" cellborder=\"" + 1 + "\" cellspacing=\"" + 0 + "\">";
-
-
-            graphi += "\n<tr>\n\t<td width='100'><i>Nombre</i></td>\n\t<td width='100'><i>Tipo</i></td>\n\t<td width='100'><i>Ambito</i></td>\n\t<td><i width='100'>Valor</i></td>\n\t<td><i width='100'>Tipo Objeto</i></td>\n</tr>\n";
-
-
-
-            while (ambit != null)
-            {
-                if (ambit.Variables.Count > 0)
+                var texto = "";
+                var enlaces = "";
+                foreach (Simbolo simb in ambitos)
                 {
-
-                    foreach (var item in ambit.Variables)
-                    {
-                        Identifier id = (Identifier)item.Value;
-                        ambito_name = ambit.Ambit_name.Replace("General_", "");
-                        res_graphi = "\n<tr>\n\t<td height='25'>" + id.Id + "</td>\n\t<td height='25'>" + id.DataType + "</td>\n\t<td height='25'>" + ambito_name + "</td>\n\t<td height='25'>" + id.Value.ToString() + "</td>\n\t<td height='25'>" + id.Tipo_dato + "</td>\n</tr>" + res_graphi;
-                    }
+                    texto += simb.Texto;
+                    enlaces += simb.Apuntador;
 
                 }
 
-                if (ambit.Functions.Count > 0)
-                {
-                    var type = "void";
-                    var isfunc = "Procedure";
+                graphi += texto + enlaces + "}";
 
-                    foreach (var item in ambit.Functions)
-                    {
-                        type = "void";
-                        isfunc = "Procedure";
-
-                        Function func = (Function)item.Value;
-                        if (!func.IsProcedure)
-                        {
-                            isfunc = "Function";
-                            type = func.Tipe.ToString();
-                        }
-                        res_graphi = "<tr>\n<td height='25'>" + func.Id + "</td>\n<td height='25'>" + type + "</td>\n<td height='25'>" + ambit.Ambit_name + "</td>\n<td height='25'>" + func.Retorno.ToString() + "</td>\n<td height='25'>" + isfunc + "</td>\n</tr>" + res_graphi;
-                    }
-                }
-                var temp = ambit.anterior;
-                ambit = temp;
+                print_image(this.path, "tabla_simbolos", "total", graphi);
             }
 
-            graphi += res_graphi + "\n</table>>];\n" + "}";
-
-
-            print_image(this.path, "tabla_simbolos", ambito_name2, graphi);*/
+            
+            
         }
 
 

@@ -239,6 +239,7 @@ namespace CompiPascal.AST
 
             ID_TIPE.rule
                 = [ exp ] 
+                | TK_DOT + IDENTIFIER
                 | Empty
                 ;
              */

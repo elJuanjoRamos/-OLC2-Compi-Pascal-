@@ -167,7 +167,7 @@ namespace CompiPascal.Traduccion
 
                     foreach (var item in elementos_her)
                     {
-                        parametros.AddLast(declarationAST.GetDeclarationValue(item.ToString(), dataType, true, 0));
+                        parametros.AddLast(declarationAST.GetDeclarationValue(item.ToString(), dataType, true, 0, true));
                     }
 
                     //SI VIENEN MAS PARAMETROS
@@ -188,7 +188,7 @@ namespace CompiPascal.Traduccion
 
                     foreach (var item in elementos_her)
                     {
-                        parametros.AddLast(declarationAST.GetDeclarationValue(item.ToString(), dataType, true, 0));
+                        parametros.AddLast(declarationAST.GetDeclarationValue(item.ToString(), dataType, true, 0, false));
                     }
 
                     //SI VIENEN MAS PARAMETROS

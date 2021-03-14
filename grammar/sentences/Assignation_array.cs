@@ -55,7 +55,7 @@ namespace CompiPascal.grammar.sentences
 
                         if (indice < inferior || indice > superior)
                         {
-                            ErrorController.Instance.SemantycErrors("Indice fuera de rango al acceder al arreglo '" + this.id + "'", row, column);
+                            setError("Indice fuera de rango al acceder al arreglo '" + this.id + "'", row, column);
                             return null;
                         }
 
@@ -93,7 +93,7 @@ namespace CompiPascal.grammar.sentences
                         
                     } else
                     {
-                        ErrorController.Instance.SemantycErrors("El tipo " + val.getDataType + " no es asignable con " + arr.DataType, row, column);
+                        setError("El tipo " + val.getDataType + " no es asignable con " + arr.DataType, row, column);
                         return null;
                     }
                    
@@ -102,7 +102,7 @@ namespace CompiPascal.grammar.sentences
 
                 } else
                 {
-                    ErrorController.Instance.SemantycErrors("El arreglo '" + id + "' no esta declaro", row, column);
+                    setError("El arreglo '" + id + "' no esta declaro", row, column);
                     return null;
                 }
 
@@ -113,5 +113,11 @@ namespace CompiPascal.grammar.sentences
                 return null;
             }
         }
+        public void setError(string texto, int row, int col)
+        {
+            ErrorController.Instance.SemantycErrors(texto, row, col);
+            ConsolaController.Instance.Add(texto + " - Row:" + row + " - Col: " + col + "\n");
+        }
+
     }
 }

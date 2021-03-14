@@ -10,8 +10,13 @@ Baz [label=<
 <td><i width='100'>Columna</i></td> </tr>
 <tr>
 <td height='25'>Sintactico</td>
-<td height='25'>Syntax error, expected: RESERV_TYPE, RESERV_VAR, RESERV_CONST, RESERV_FUNCTION, RESERV_PROCEDURE, RESERV_BEGIN</td>
+<td height='25'>Syntax error, expected: RESERV_ELSE, RESERV_END, IDENTIFIER, RESERV_IF, RESERV_CASE, RESERV_WHILE, RESERV_REPEAT, RESERV_FOR, RESERV_BREAK, RESERV_CONTINUE, RESERV_WRITE, RESERV_WRITEN, RESERV_EXIT, RESERV_TYPE, RESERV_UNTIL, TK_PAR_IZQ, REAL, CADENA, NUMERO, RESERV_TRUE, RESERV_FALSE, TK_MIN, TK_NOT</td>
+<td height='25'>16</td>
 <td height='25'>5</td>
-<td height='25'>33</td>
+</tr><tr>
+<td height='25'>Sintactico</td>
+<td height='25'>Syntax error, expected: RESERV_END, IDENTIFIER, RESERV_IF, RESERV_CASE, RESERV_WHILE, RESERV_REPEAT, RESERV_FOR, RESERV_BREAK, RESERV_CONTINUE, RESERV_WRITE, RESERV_WRITEN, RESERV_EXIT, RESERV_TYPE</td>
+<td height='25'>18</td>
+<td height='25'>3</td>
 </tr>
 </table>>];}

@@ -31,7 +31,14 @@ namespace CompiPascal.grammar.sentences
             this.elementos = elems;
             this.dataType = (dt);
         }
-
+        public Arrays(string id, Expression inf, Expression sup, DataType dt)
+        {
+            this.id = id;
+            this.inf = inf;
+            this.sup = sup;
+            this.elementos = new ArrayList();
+            this.dataType = (dt);
+        }
         public Expression Inf { get => inf; set => inf = value; }
         public Expression Sup { get => sup; set => sup = value; }
         public ArrayList Elementos { get => elementos; set => elementos = value; }

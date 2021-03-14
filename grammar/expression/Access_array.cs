@@ -31,10 +31,10 @@ namespace CompiPascal.grammar.expression
 
         public override Returned Execute(Ambit ambit)
         {
-            Arrays arr = ambit.getArray(Id.ToLower());
+            Arrays arr = ambit.getArray(Id);
             if (arr == null)
             {
-                ErrorController.Instance.SemantycErrors("El arreglo '" + this.id + "' no ha sido declarado ", Row, column);
+                set_error("El arreglo '" + this.id + "' no ha sido declarado ", Row, column);
                 return new Returned();
             }
 
@@ -50,7 +50,7 @@ namespace CompiPascal.grammar.expression
 
             if (indice_actual < inferior || indice_actual > superior)
             {
-                ErrorController.Instance.SemantycErrors("Indice fuera de rango al acceder al arreglo '" + this.id + "'", Row, column);
+                set_error("Indice fuera de rango al acceder al arreglo '" + this.id + "'", Row, column);
                 return new Returned();
             }
 
@@ -58,8 +58,11 @@ namespace CompiPascal.grammar.expression
             var value = arr.Elementos[indice_actual];
 
             return new Returned(value, arr.DataType);
-
-
+        }
+        public void set_error(string texto, int row, int column)
+        {
+            ErrorController.Instance.SemantycErrors(texto, row, column);
+            ConsolaController.Instance.Add(texto + " - Row: " + row + "- Col: " + column + "\n");
         }
     }
 }

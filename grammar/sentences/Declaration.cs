@@ -18,9 +18,9 @@ namespace CompiPascal.grammar.sentences
         public bool isConst;
         public bool isAssigned;
         public bool perteneceFuncion;
-
+        private bool referencia;
         //CONSTRUCTOR PARA VARIABLES
-        public Declaration(string id, String dataType, Expression ex, int r, int c, bool isAs)
+        public Declaration(string id, String dataType, Expression ex, int r, int c, bool isAs, bool refe)
             : base(r, c, "Declaration")
         {
             this.id = id;
@@ -30,6 +30,7 @@ namespace CompiPascal.grammar.sentences
             this.column = c;
             this.isConst = false;
             this.isAssigned = isAs;
+            this.referencia = refe;
         }
         //CONSTRUCTOR PARA CONSTANTES
         public Declaration(string i, Expression e, int r, int c, bool isc)
@@ -50,12 +51,12 @@ namespace CompiPascal.grammar.sentences
             //BUSCA LA VARIABLE SI NO HA SIDO DECLARADA
             if (!ambit.Ambit_name_inmediato.Equals("Function") && !ambit.Ambit_name_inmediato.Equals("Procedure"))
             {
-                buscar = ambit.getVariable(id.ToLower());
+                buscar = ambit.getVariable(id);
             } 
             //SIGFINICA QUE ES UNA DECLARACION EN FUNCION
             else
             {
-                buscar = ambit.getVariableFunctionInAmbit(id.ToLower());
+                buscar = ambit.getVariableFunctionInAmbit(id);
             }
 
             if (buscar.IsNull)
@@ -73,7 +74,7 @@ namespace CompiPascal.grammar.sentences
 
                     if (this.type == DataType.CONST)
                     {
-                        ambit.save(this.id.ToLower(), val.Value, val.getDataType, true, true, "Constante");
+                        ambit.save(this.id, val.Value, val.getDataType, true, true, "Constante");
                         return val.Value;
 
                     }
@@ -81,12 +82,12 @@ namespace CompiPascal.grammar.sentences
                     {
                         if (val.getDataType == this.type)
                         {
-                            ambit.save(this.id.ToLower(), val.Value, val.getDataType, false, isAssigned, "Variable");
+                            ambit.save(this.id, val.Value, val.getDataType, false, isAssigned, "Variable");
                             return val.Value;
                         }
                         else
                         {
-                            ErrorController.Instance.SemantycErrors("El tipo " + val.getDataType + " no es asignable con " + this.type.ToString(), row, column);
+                            set_error("El tipo " + val.getDataType + " no es asignable con " + this.type.ToString(), row, column);
                             return null;
                         }
                     }
@@ -100,7 +101,7 @@ namespace CompiPascal.grammar.sentences
             }
             else
             {
-                ErrorController.Instance.SemantycErrors("La variable '" + id + "' ya fue declarada", row, column);
+                set_error("La variable '" + id + "' ya fue declarada", row, column);
                 return null;
             }
             return 0;
@@ -133,5 +134,12 @@ namespace CompiPascal.grammar.sentences
             get { return type; }
             set { type = value; }
         }
+
+        public void set_error(string texto, int row, int column)
+        {
+            ErrorController.Instance.SemantycErrors(texto, row, column);
+            ConsolaController.Instance.Add(texto + " - Row: " + row + "- Col: " + column + "\n");
+        }
+        public bool Referencia { get => referencia; set => referencia = value; }
     }
 }

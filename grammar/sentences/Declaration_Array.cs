@@ -32,16 +32,22 @@ namespace CompiPascal.grammar.sentences
                     ambit.saveArray(id.ToLower(), new Arrays(id.ToLower(), ar.Inf, ar.Sup, ar.DataType, ar.Elementos));
                 } else
                 {
-                    ErrorController.Instance.SemantycErrors("El arreglo '" + id + "' ya fue declarado", row, column);
+                    set_error("El arreglo '" + id + "' ya fue declarado", row, column);
                 }
 
             } else
             {
-                ErrorController.Instance.SemantycErrors("El arreglo '" + array + "' ya no ha sido declarado", row, column);
+                set_error("El arreglo '" + array + "' ya no ha sido declarado", row, column);
                 return null;
             }
 
             return 0;
+        }
+
+        public void set_error(string texto, int row, int column)
+        {
+            ErrorController.Instance.SemantycErrors(texto, row, column);
+            ConsolaController.Instance.Add(texto + " - Row: " + row + "- Col: " + column + "\n");
         }
     }
 }

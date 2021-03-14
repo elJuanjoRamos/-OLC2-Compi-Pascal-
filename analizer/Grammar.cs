@@ -202,8 +202,7 @@ namespace CompiPascal.analizer
             NonTerminal IFTHEN = new NonTerminal("IF-THEN", "IF-THEN");
             NonTerminal IF_SENTENCE = new NonTerminal("IF_SENTENCE", "IF_SENTENCE");
             NonTerminal ELIF = new NonTerminal("ELIF", "ELIF");
-            NonTerminal ELIF_SENT = new NonTerminal("ELIF_SENT", "ELIF_SENT");
-
+   
             #endregion
 
             #region CASE NO TERMINALES
@@ -379,7 +378,8 @@ namespace CompiPascal.analizer
                 | RESERV_ARRAY + COR_IZQ + EXPLOGICA + PUNTO + PUNTO + EXPLOGICA + COR_DER + RESERV_OF + MORE_ARRAY;
                 ;
 
-            OBJECT.Rule = Empty;
+            OBJECT.Rule = 
+                RESERV_OBJ + DECLARATION_LIST + RESERV_END + PUNTO_COMA;
 
             #endregion
 

@@ -27,14 +27,14 @@ namespace CompiPascal.grammar.sentences
         {
             
 
-            var whileAmbit = new Ambit(ambit, "While", "While", false);
+            var whileAmbit = new Ambit(ambit, ambit.Ambit_name, "While", false);
 
             //CONDICION
             var cond = condition.Execute(whileAmbit);
 
             if (cond.getDataType != DataType.BOOLEAN)
             {
-                ErrorController.Instance.SemantycErrors("La condicion del While no es booleana",row, column);
+                set_error("La condicion del While no es booleana",row, column);
                 return null;
             }
 
@@ -57,7 +57,7 @@ namespace CompiPascal.grammar.sentences
                     if (cond.getDataType != DataType.BOOLEAN)
                     {
 
-                        ErrorController.Instance.SemantycErrors("La condicion del While no es booleana", row, column);
+                        set_error("La condicion del While no es booleana", row, column);
                         return null;
                     }
 
@@ -92,6 +92,11 @@ namespace CompiPascal.grammar.sentences
             }
 
             return 0;
+        }
+        public void set_error(string texto, int row, int column)
+        {
+            ErrorController.Instance.SemantycErrors(texto, row, column);
+            ConsolaController.Instance.Add(texto + " - Row: " + row + "- Col: " + column + "\n");
         }
     }
 }

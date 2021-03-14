@@ -2,6 +2,7 @@
 using CompiPascal.grammar.abstracts;
 using CompiPascal.grammar.identifier;
 using CompiPascal.grammar.sentences;
+using CompiPascal.Model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,16 +31,16 @@ namespace CompiPascal.grammar.expression
             {
 
 
-                var funcion_llamada = ambit.getFuncion(this.id.ToLower());
+                var funcion_llamada = ambit.getFuncion(this.id);
                 if (funcion_llamada == null)
                 {
-                    ErrorController.Instance.SyntacticError("La funcion '" + this.id + "' no esta definido",0,0);
+                    set_error("La funcion '" + this.id + "' no esta definido",row, column);
                     return new Returned();
                 }
 
                 if (funcion_llamada.Parametos.Count != parametros.Count)
                 {
-                    ErrorController.Instance.SyntacticError("La funcion '" + this.id + "' no recibe la misma cantidad de parametros",0,0);
+                    set_error("La funcion '" + this.id + "' no recibe la misma cantidad de parametros",row, column);
                     return new Returned();
 
                 }
@@ -50,13 +51,13 @@ namespace CompiPascal.grammar.expression
 
                 if (funcion_llamada.IsProcedure)
                 {
-                    ErrorController.Instance.SyntacticError("El procedimiento'" + this.id + "' no puede asignarse como valor de retorno",0,0);
+                    set_error("El procedimiento'" + this.id + "' no puede asignarse como valor de retorno",row, column);
                     return new Returned();
 
                 }
                 else
                 {
-                    function_ambit = new Ambit(ambit, ambit.Ambit_name + "_Function_" + funcion_llamada.Id, "Function", false);
+                    function_ambit = new Ambit(ambit, "Function_" + funcion_llamada.Id, "Function", false);
                 }
 
 
@@ -75,6 +76,20 @@ namespace CompiPascal.grammar.expression
                 {
                     var variable = (Declaration)(funcion_llamada.getParameterAt(i));
 
+
+                    if (variable.Referencia)
+                    {
+                        if (parametros[i] is Access)
+                        {
+                            Access acceso = (Access)parametros[i];
+                            funcion_llamada.Parametros_referencia.Add(new SimboloReferencia(variable.Id, acceso.Id));
+                        }
+                        else if (parametros[i] is Access_array)
+                        {
+
+                        }
+                    }
+
                     var result = ((Expression)parametros[i]).Execute(ambit);
 
                     if (variable.getDataType == result.getDataType)
@@ -83,7 +98,7 @@ namespace CompiPascal.grammar.expression
                     }
                     else
                     {
-                        ErrorController.Instance.SyntacticError("El tipo " + result.getDataType + " no es asignable con " + variable.getDataType, 0, 0);
+                        set_error("El tipo " + result.getDataType + " no es asignable con " + variable.getDataType, row, column);
                         return new Returned();
                     }
                 }
@@ -120,19 +135,19 @@ namespace CompiPascal.grammar.expression
                             var inst = (Instruction)funcion_Elementos;
                             if (inst.Name.Equals("Exit"))
                             {
-                                ErrorController.Instance.SemantycErrors("Los procediminetos no pueden retornar ningun valor", 0, 0);
+                                set_error("Los procediminetos no pueden retornar ningun valor", inst.Row, inst.Column);
                                 return new Returned();
                             }
                         }
                         if (funcion_Elementos is Break)
                         {
                             var r = (Break)funcion_Elementos;
-                            ErrorController.Instance.SyntacticError("La sentencia Break solo puede aparece en ciclos o en la sentencia CASE", r.Row, r.Column);
+                            set_error("La sentencia Break solo puede aparece en ciclos o en la sentencia CASE", r.Row, r.Column);
                         }
                         else if (funcion_Elementos is Continue)
                         {
                             var r = (Continue)funcion_Elementos;
-                            ErrorController.Instance.SyntacticError("La sentencia Continue solo puede aparece en ciclos", r.Row, r.Column);
+                            set_error("La sentencia Continue solo puede aparece en ciclos", r.Row, r.Column);
                         }
                     } else
                     {
@@ -147,14 +162,28 @@ namespace CompiPascal.grammar.expression
 
                                 if (response.Return_func_return)
                                 {
-                                    //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
 
-                                    return new Returned(funcion_llamada.Retorno, funcion_llamada.Tipe);
+                                    GraphController.Instance.getAmbitoGraficar(function_ambit, false);
+                                    //SINTETIZA LOS PARAMETROS POR REFERENCIA
+                                    sintetizar_referencia(function_ambit, funcion_llamada);
+
+                                    switch (funcion_llamada.Tipe)
+                                    {
+                                        case DataType.INTEGER:
+                                            return new Returned(int.Parse(funcion_llamada.Retorno), funcion_llamada.Tipe);
+                                        case DataType.STRING:
+                                            return new Returned((funcion_llamada.Retorno), funcion_llamada.Tipe);
+                                        case DataType.BOOLEAN:
+                                            return new Returned(bool.Parse(funcion_llamada.Retorno), funcion_llamada.Tipe);
+                                        case DataType.REAL:
+                                            return new Returned(double.Parse(funcion_llamada.Retorno), funcion_llamada.Tipe);
+                                    }
 
                                 }
                                 else
                                 {
-                                    var result = ((Exit)funcion_Elementos).Value.Execute(function_ambit);
+                                    var ext = (Exit)funcion_Elementos;
+                                    var result = (ext).Value.Execute(function_ambit);
                                     //HAY ERROR
                                     if (result.getDataType == DataType.ERROR || result == null)
                                     {
@@ -165,12 +194,25 @@ namespace CompiPascal.grammar.expression
                                     //VERIFICA QUE EL TIPO DE RETORNO SEA VALIDO
                                     if (result.getDataType == funcion_llamada.Tipe)
                                     {
-                                        //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
-                                        return new Returned(result.Value, result.getDataType);
+                                        //SINTETIZA LOS PARAMETROS POR REFERENCIA
+                                        sintetizar_referencia(function_ambit, funcion_llamada);
+                                        GraphController.Instance.getAmbitoGraficar(function_ambit, false);
+
+                                        switch (funcion_llamada.Tipe)
+                                        {
+                                            case DataType.INTEGER:
+                                                return new Returned((int)result.Value, result.getDataType);
+                                            case DataType.STRING:
+                                                return new Returned((string)result.Value, result.getDataType);
+                                            case DataType.BOOLEAN:
+                                                return new Returned((bool)result.Value, result.getDataType);
+                                            case DataType.REAL:
+                                                return new Returned((double)result.Value, result.getDataType);
+                                        }                                        
                                     }
                                     else
                                     {
-                                        ErrorController.Instance.SemantycErrors("Tipos incompatibles, la funcion '" + funcion_llamada.Id + "' retorna " + funcion_llamada.Tipe + " en lugar de" + result.getDataType, 0, 0);
+                                        set_error("Tipos incompatibles, la funcion '" + funcion_llamada.Id + "' retorna " + funcion_llamada.Tipe + " en lugar de" + result.getDataType, ext.Row, ext.Column);
                                         return new Returned();
                                     }
                                 }
@@ -178,18 +220,56 @@ namespace CompiPascal.grammar.expression
                         }
                         else if (funcion_Elementos is Returned)
                         {
-                            //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
+                            //SINTETIZA LOS PARAMETROS POR REFERENCIA
+                            sintetizar_referencia(function_ambit, funcion_llamada);
+                            GraphController.Instance.getAmbitoGraficar(function_ambit, false);
                             return (Returned)funcion_Elementos;
                         }
                         else
                         {
-                            //GraphController.Instance.getAmbitoGraficar(function_ambit, false);
-                            return new Returned(funcion_llamada.Retorno, funcion_llamada.Tipe);
+                            //SINTETIZA LOS PARAMETROS POR REFERENCIA
+                            sintetizar_referencia(function_ambit, funcion_llamada);
+                            GraphController.Instance.getAmbitoGraficar(function_ambit, false);
+
+
+                            switch (funcion_llamada.Tipe)
+                            {
+                                case DataType.INTEGER:
+                                    return new Returned(int.Parse(funcion_llamada.Retorno), funcion_llamada.Tipe);
+                                case DataType.STRING:
+                                    return new Returned((funcion_llamada.Retorno), funcion_llamada.Tipe);
+                                case DataType.BOOLEAN:
+                                    return new Returned(bool.Parse(funcion_llamada.Retorno), funcion_llamada.Tipe);
+                                case DataType.REAL:
+                                    return new Returned(double.Parse(funcion_llamada.Retorno), funcion_llamada.Tipe);
+                            }
+
                         }
                     }   
                 }
                 return new Returned();
             }
+        }
+
+        //METODO PARA SINTETIZAR VALORES
+        public void sintetizar_referencia(Ambit ambit, Function funcion_llamada)
+        {
+            if (funcion_llamada.Parametros_referencia.Count > 0)
+            {
+                foreach (SimboloReferencia simbolo in funcion_llamada.Parametros_referencia)
+                {
+                    var variable = ambit.getVariableFunctionInAmbit(simbolo.Actual);
+                    ambit.setVariableInAmbit(simbolo.Padre, variable.Value, variable.DataType, false, "Variable");
+                }
+                funcion_llamada.Parametros_referencia.Clear();
+            }
+        }
+
+
+        public void set_error(string texto, int row, int column)
+        {
+            ErrorController.Instance.SemantycErrors(texto, row, column);
+            ConsolaController.Instance.Add(texto + " - Row: " + row + "- Col: " + column + "\n");
         }
     }
 }

@@ -46,7 +46,7 @@ namespace CompiPascal.Traduccion
                 if (tipo.Term.ToString().Equals("RESERV_CONST"))
                 {
                     var identifier = actual.ChildNodes[1].Token.Text;
-                    lista_actual.AddLast(new Declaration_Trad(identifier, "any" ,  expressionAST.getExpresion(actual.ChildNodes[3]), true, cant_tabs));
+                    lista_actual.AddLast(new Declaration_Trad(identifier, "any" ,  expressionAST.getExpresion(actual.ChildNodes[3]), true, cant_tabs, false));
                     lista_actual = CONST_DECLARATION(actual.ChildNodes[5], lista_actual, elementos_her, cant_tabs);
                     lista_actual = LIST_DECLARATIONS(actual.ChildNodes[6], lista_actual, elementos_her, cant_tabs);
                 }
@@ -94,7 +94,7 @@ namespace CompiPascal.Traduccion
 
                 foreach (var item in elementos_her)
                 {
-                    lista_actual.AddLast(GetDeclarationValue(item.ToString(), datatype, false, cant_Tabs));
+                    lista_actual.AddLast(GetDeclarationValue(item.ToString(), datatype, false, cant_Tabs, false));
                 }
                 elementos_her.Clear();
 
@@ -138,7 +138,7 @@ namespace CompiPascal.Traduccion
             if (actual.ChildNodes.Count > 0)
             {
                 var identifier = actual.ChildNodes[0].Token.Text;
-                lista_actual.AddLast(new Declaration_Trad(identifier, "any",expressionAST.getExpresion(actual.ChildNodes[2]),true, cant_Tabs));
+                lista_actual.AddLast(new Declaration_Trad(identifier, "any",expressionAST.getExpresion(actual.ChildNodes[2]),true, cant_Tabs, false));
                 lista_actual = CONST_DECLARATION(actual.ChildNodes[4], lista_actual, elementos_her, cant_Tabs);
             }
             return lista_actual;
@@ -151,13 +151,13 @@ namespace CompiPascal.Traduccion
             if (actual.ChildNodes.Count > 0)
             {
                 var exp = expressionAST.getExpresion(actual.ChildNodes[1]);
-                lista_actual.AddLast(new Declaration_Trad(elementos_her[0].ToString(), elementos_her[1].ToString(), exp, false, cant_tabs));
+                lista_actual.AddLast(new Declaration_Trad(elementos_her[0].ToString(), elementos_her[1].ToString(), exp, false, cant_tabs, false));
                 elementos_her.Clear();
             }
             // VAR A:TIPO;
             else
             {
-                lista_actual.AddLast(GetDeclarationValue(elementos_her[0].ToString(), elementos_her[1].ToString(), false, cant_tabs));
+                lista_actual.AddLast(GetDeclarationValue(elementos_her[0].ToString(), elementos_her[1].ToString(), false, cant_tabs, false));
                 elementos_her.Clear();
             }
             return lista_actual;
@@ -174,23 +174,23 @@ namespace CompiPascal.Traduccion
             }
             return elementos_her;
         }
-        public Declaration_Trad GetDeclarationValue(string identifier, string datatype, bool perteneceFuncion, int cant_tabs)
+        public Declaration_Trad GetDeclarationValue(string identifier, string datatype, bool perteneceFuncion, int cant_tabs, bool refer)
         {
             if (datatype.Equals("integer"))
             {
-                return new Declaration_Trad(identifier.ToString(), datatype, new Literal_Trad("0", 1), false, cant_tabs);
+                return new Declaration_Trad(identifier.ToString(), datatype, new Literal_Trad("0", 1), false, cant_tabs, refer);
             }
             else if (datatype.Equals("real"))
             {
-                return new Declaration_Trad(identifier.ToString(), datatype, new Literal_Trad("0", 4), false, cant_tabs);
+                return new Declaration_Trad(identifier.ToString(), datatype, new Literal_Trad("0", 4), false, cant_tabs, refer);
             }
             else if (datatype.Equals("string"))
             {
-                return new Declaration_Trad(identifier.ToString(), datatype, new Literal_Trad("", 2), false, cant_tabs);
+                return new Declaration_Trad(identifier.ToString(), datatype, new Literal_Trad("", 2), false, cant_tabs, refer);
             }
             else if (datatype.Equals("boolean"))
             {
-                return new Declaration_Trad(identifier.ToString(), datatype, new Literal_Trad("false", 3), false, cant_tabs);
+                return new Declaration_Trad(identifier.ToString(), datatype, new Literal_Trad("false", 3), false, cant_tabs, refer);
             }
             return null;
         }

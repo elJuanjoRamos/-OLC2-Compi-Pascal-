@@ -39,14 +39,14 @@ namespace CompiPascal.grammar.sentences
         public override object Execute(Ambit ambit)
         {
             
-            var ifAmbit = new Ambit(ambit, "IF", "If", false);
+            var ifAmbit = new Ambit(ambit, ambit.Ambit_name, "If", false);
 
             //CONDICION
             var condition = this.condition.Execute(ifAmbit);
             //VERIFICA QUE LLA CONDICION SEA BOOLEANA
             if (condition.getDataType != DataType.BOOLEAN)
             {
-                ErrorController.Instance.SemantycErrors("Semantico - La condicion del If no es booleana", row, column);
+                setError("Semantico - La condicion del If no es booleana", row, column);
                 return null;
             }
 
@@ -64,12 +64,16 @@ namespace CompiPascal.grammar.sentences
                 {
                     return 0;
                 }
-                var elseAmbit = new Ambit(ambit, "Else", "Else", false);
+                var elseAmbit = new Ambit(ambit, ambit.Ambit_name, "Else", false);
                 return elif.Execute(elseAmbit);
             }
 
         } 
-        
+        public void setError(string text, int row, int column)
+        {
+            ErrorController.Instance.SemantycErrors(text, row, column);
+            ConsolaController.Instance.Add(text + " - Row: " + row + " - Col: " + column+"\n");
+        }
         public bool IsNull { get => isNull; set => isNull = value; }
     }
 }

@@ -26,7 +26,7 @@ namespace CompiPascal.grammar.sentences
         public override object Execute(Ambit ambit)
         {
 
-            var repeatAmbit = new Ambit(ambit, "Repeat", "Repeat", false);
+            var repeatAmbit = new Ambit(ambit, ambit.Ambit_name, "Repeat", false);
 
 
             //CONDICION
@@ -35,7 +35,7 @@ namespace CompiPascal.grammar.sentences
             //VERIFICA QUE SEA BOOL
             if (condicion.getDataType != DataType.BOOLEAN)
             {
-                ErrorController.Instance.SemantycErrors("La condicion del repeat no es booleana", row, column);
+                set_error("La condicion del repeat no es booleana", row, column);
                 return null;
             }
 
@@ -59,7 +59,7 @@ namespace CompiPascal.grammar.sentences
                     condicion = this.condition.Execute(repeatAmbit);
                     if (condicion.getDataType != DataType.BOOLEAN)
                     {
-                        ErrorController.Instance.SemantycErrors("La condicion del repeat no es booleana", row, column);
+                        set_error("La condicion del repeat no es booleana", row, column);
                         return null;
                     }
 
@@ -90,6 +90,12 @@ namespace CompiPascal.grammar.sentences
             }
 
             return 0;
+        }
+
+        public void set_error(string texto, int row, int column)
+        {
+            ErrorController.Instance.SemantycErrors(texto, row, column);
+            ConsolaController.Instance.Add(texto + " - Row: " + row + "- Col: " + column + "\n");
         }
     }
 }

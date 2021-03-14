@@ -58,7 +58,7 @@ namespace CompiPascal.grammar.expression
 
                 } else
                 {
-                    ErrorController.Instance.SemantycErrors("Operador '" + this.type + "' NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, 0, 0);
+                    set_error("Operador '" + this.type + "' NO puede ser aplicado a los tipos " + varIz.getDataType + " con " + valDer.getDataType, 0, 0);
                     return new Returned();
                 }
             } else
@@ -71,14 +71,18 @@ namespace CompiPascal.grammar.expression
 
                 } else
                 {
-                    ErrorController.Instance.SemantycErrors("Operador '" + this.type + "' NO puede ser aplicado al tipo " + varIz.getDataType, 0, 0);
+                    set_error("Operador '" + this.type + "' NO puede ser aplicado al tipo " + varIz.getDataType, 0, 0);
                     return new Returned();
                 }
 
             }
             return result;
         }
-
+        public void set_error(string texto, int row, int column)
+        {
+            ErrorController.Instance.SemantycErrors(texto, row, column);
+            ConsolaController.Instance.Add(texto + " - Row: " + row + "- Col: " + column + "\n");
+        }
         public OpLogical GetOpLogical(string simb)
         {
             if (simb.Equals("and"))

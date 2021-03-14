@@ -80,7 +80,14 @@ namespace CompiPascal.Traduccion.grammar.sentences
             foreach (var param in parametos)
             {
                 Declaration_Trad dec = (Declaration_Trad)param;
-                parametros_fun += dec.Id + ":" + dec.Type + ";";
+
+                if (dec.Referencia)
+                {
+                    parametros_fun += "var "+dec.Id + ":" + dec.Type + ";";
+                } else
+                {
+                    parametros_fun += dec.Id + ":" + dec.Type + ";";
+                }
                 ambit_Trad.saveVarFunction(dec.Id, "0", dec.Type);
 
             }
