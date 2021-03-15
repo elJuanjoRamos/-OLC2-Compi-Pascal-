@@ -21,7 +21,7 @@ namespace CompiPascal.grammar.sentences
         private bool referencia;
         //CONSTRUCTOR PARA VARIABLES
         public Declaration(string id, String dataType, Expression ex, int r, int c, bool isAs, bool refe)
-            : base(r, c, "Declaration")
+            : base("Declaration")
         {
             this.id = id;
             this.type = GetDataType(dataType);
@@ -34,7 +34,7 @@ namespace CompiPascal.grammar.sentences
         }
         //CONSTRUCTOR PARA CONSTANTES
         public Declaration(string i, Expression e, int r, int c, bool isc)
-            : base(r, c, "Declaration")
+            : base("Declaration")
         {
             this.id = i;
             this.type = DataType.CONST;

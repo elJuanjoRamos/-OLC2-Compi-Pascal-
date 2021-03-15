@@ -17,8 +17,11 @@ namespace CompiPascal.grammar.sentences
         private int row;
         private int column;
 
+        public int Row { get => row; set => row = value; }
+        public int Column { get => column; set => column = value; }
+
         public Call(string id, ArrayList expresion, int row, int col): 
-            base(row,col,"Call")
+            base("Call")
         {
             this.id = id;
             this.parametros = expresion;
@@ -144,10 +147,11 @@ namespace CompiPascal.grammar.sentences
                         var inst = (Instruction)funcion_Elementos;
                         if (inst.Name.Equals("Exit"))
                         {
+                            var response = ((Exit)funcion_Elementos);
+
                             if (!funcion_llamada.IsProcedure)
                             {
-                                var response = ((Exit)funcion_Elementos);
-
+                         
                                 if (response.Return_func_return)
                                 {
                                     GraphController.Instance.getAmbitoGraficar(function_ambit, false);
@@ -176,7 +180,7 @@ namespace CompiPascal.grammar.sentences
                             }
                             else
                             {
-                                set_error("Los procediminentos no retornan ningun valor", inst.Row, inst.Column);
+                                set_error("Los procediminentos no retornan ningun valor", response.Row, response.Column);
                                 return null;
                             }
                         }

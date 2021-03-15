@@ -16,13 +16,13 @@ namespace CompiPascal.grammar.sentences
         public int Column { get => column; set => column = value; }
 
         public Break(int row, int column):
-            base(row,column, "Break")
+            base("Break")
         {
             this.row = row;
             this.column = column;
         }
         public Break() :
-            base(0, 0, "Break")
+            base("Break")
         {
         }
 

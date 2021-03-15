@@ -2,6 +2,7 @@
 using CompiPascal.grammar.sentences;
 using Irony.Parsing;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,6 +15,7 @@ namespace CompiPascal.AST
 
         }
 
+        ExpressionAST expressionAST = new ExpressionAST();
 
         #region ASIGNACION
         public object VAR_ASSIGNATE(ParseTreeNode actual)
@@ -41,7 +43,7 @@ namespace CompiPascal.AST
              
              VAR_ASSIGNATE_EXP.Rule
                 = DOS_PUNTOS + EQUALS + EXPLOGICA + PUNTO_COMA
-                | COR_IZQ + EXPLOGICA + COR_DER + DOS_PUNTOS + EQUALS + EXPLOGICA + PUNTO_COMA
+                | COR_IZQ + EXPLOGICA + COR_DER + MORE_ACCES + DOS_PUNTOS + EQUALS + EXPLOGICA + PUNTO_COMA
                 ;
              */
             if (actual.ChildNodes.Count == 4)
@@ -73,22 +75,25 @@ namespace CompiPascal.AST
                     return new Assignation(identifier, llamada_funcion, row, column);
                 }
             }
-            else if (actual.ChildNodes.Count == 7)
+            else if (actual.ChildNodes.Count == 8)
             {
-                ExpressionAST expressionAST = new ExpressionAST();
-
+                
 
                 var index  = (expressionAST).getExpresion(actual.ChildNodes[1]);
 
+
+                ArrayList arrays = new ArrayList();
+
+                arrays = MORE_ACCES(actual.ChildNodes[3], arrays);
 
 
                 Expression exp = null;
 
 
                 var encontrado = false;
-                for (int i = 0; i < actual.ChildNodes[5].ChildNodes.Count; i++)
+                for (int i = 0; i < actual.ChildNodes[6].ChildNodes.Count; i++)
                 {
-                    var a = actual.ChildNodes[5].ChildNodes[i];
+                    var a = actual.ChildNodes[6].ChildNodes[i];
                     if (a.Term.ToString().Equals("CALL_FUNCTION_PROCEDURE"))
                     {
                         encontrado = true;
@@ -98,19 +103,55 @@ namespace CompiPascal.AST
                 //SOLO ES UNA EXPRESION
                 if (!encontrado)
                 {
-                    exp = (new ExpressionAST()).getExpresion(actual.ChildNodes[5]);
+                    exp = (expressionAST).getExpresion(actual.ChildNodes[6]);
 
-                    return new Assignation_array(identifier, exp, row, column, index);
+                    if (arrays.Count == 0)
+                    {
+                        return new Assignation_array(identifier, exp, row, column, index);
+
+                    } else
+                    {
+                        return new Assignation_arrayMultiple(identifier, exp, row, column, index, arrays);
+                    }
+
                 }
                 //ES UNA LLAMADA
                 else
                 {
-                    var llamada_funcion = (new Call_Expression()).CALLFUNCTION(actual.ChildNodes[5].ChildNodes[0]);
-                    return new Assignation_array(identifier, llamada_funcion, row, column, index);
+                    var llamada_funcion = (new Call_Expression()).CALLFUNCTION(actual.ChildNodes[6].ChildNodes[0]);
+                    if (arrays.Count == 0)
+                    {
+                        return new Assignation_array(identifier, llamada_funcion, row, column, index);
+                    }
+                    else
+                    {
+                        return new Assignation_arrayMultiple(identifier, llamada_funcion, row, column, index, arrays);
+                    }
                 }
+
             }
 
             return null;
+        }
+
+        public ArrayList MORE_ACCES(ParseTreeNode actual, ArrayList lista)
+        {
+            /*
+             MORE_ACCES.Rule
+                = COR_IZQ + EXPLOGICA + COR_DER + MORE_ACCES
+                | Empty
+                ;
+             */
+
+            if (actual.ChildNodes.Count > 0)
+            {
+                var exp = expressionAST.EXPLOGICA(actual.ChildNodes[1]);
+                lista.Add(exp);
+
+                lista = MORE_ACCES(actual.ChildNodes[3], lista);
+
+            }
+            return lista;
         }
 
         #endregion

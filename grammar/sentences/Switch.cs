@@ -16,7 +16,7 @@ namespace CompiPascal.grammar.sentences
         private int row;
         private int column;
         public Switch(Expression condicion, ArrayList cases, Case else_case, int ro, int col):
-            base(ro,col, "Case")
+            base("Case")
         {
             this.condicion = condicion;
             this.cases = cases;

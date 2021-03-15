@@ -135,7 +135,8 @@ namespace CompiPascal.grammar.expression
                             var inst = (Instruction)funcion_Elementos;
                             if (inst.Name.Equals("Exit"))
                             {
-                                set_error("Los procediminetos no pueden retornar ningun valor", inst.Row, inst.Column);
+                                Exit ex = (Exit)funcion_Elementos;
+                                set_error("Los procediminetos no pueden retornar ningun valor", ex.Row, ex.Column);
                                 return new Returned();
                             }
                         }

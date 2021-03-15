@@ -18,7 +18,7 @@ namespace CompiPascal.grammar.sentences
 
 
         public Assignation_array(string id, Expression value, int row, int column, Expression ex) :
-            base(row, column, "Assignation")
+            base("Assignation")
         {
             this.id = id;
             this.value = value;
@@ -38,7 +38,7 @@ namespace CompiPascal.grammar.sentences
                     return null;
                 }
                 //VERIFICO LA EXISTENCIA
-                Arrays arr = ambit.getArray(id.ToLower());
+                Arrays arr = ambit.getArray(id);
 
                 if (arr != null)
                 {
@@ -84,11 +84,11 @@ namespace CompiPascal.grammar.sentences
                         catch (Exception e)
                         {
 
-                            Console.WriteLine(e);
+                            ConsolaController.Instance.Add(e.Message + "\n");
                         }
                         
 
-                        ambit.setArray(id.ToLower(), arr);
+                        ambit.setArray(id, arr);
                         return val.Value;
                         
                     } else

@@ -12,7 +12,7 @@ namespace CompiPascal.grammar.sentences
         private LinkedList<Expression> value;
         private bool isln;
         public Write(LinkedList<Expression> v, bool s) : 
-            base(0,0, "Write")
+            base("Write")
         {
             this.value = v;
             this.isln = s;

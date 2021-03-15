@@ -16,13 +16,13 @@ namespace CompiPascal.grammar.sentences
         public int Column { get => column; set => column = value; }
 
         public Continue(int row, int column) :
-            base(row, column, "Continue")
+            base("Continue")
         {
             this.row = row;
             this.column = column;
         }
         public Continue() :
-            base(0, 0, "Continue")
+            base("Continue")
         {
         }
 

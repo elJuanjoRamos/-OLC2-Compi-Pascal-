@@ -16,7 +16,7 @@ namespace CompiPascal.grammar.sentences
         public bool isElse;
 
         public Case(Expression condition, Sentence code, int ro, int col)
-            : base(ro,col,"Case")
+            : base("Case")
         {
             this.condition = condition;
             this.sentence = code;
@@ -26,7 +26,7 @@ namespace CompiPascal.grammar.sentences
             this.column = col;
         }
         public Case(int row, int cl)
-            : base(row, cl, "Case")
+            : base("Case")
         {
             this.isElse = false;
             this.isNull = true;
@@ -35,7 +35,7 @@ namespace CompiPascal.grammar.sentences
         }
         //ESTE ES EL ELSE-CASE
         public Case(Sentence code, int row, int col)
-            : base(row, col, "Case")
+            : base("Case")
         {
             this.sentence = code;
             this.isNull = false;

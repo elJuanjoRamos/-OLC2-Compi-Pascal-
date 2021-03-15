@@ -18,7 +18,7 @@ namespace CompiPascal.grammar.sentences
         private int row;
         private int column;
         public FOR(string initId, Expression inicializacion, Expression actualizacion, Instruction sentence, string dir, int ro, int col)
-            : base(ro, col, "For")
+            : base("For")
         {
             this.initId = initId;
             this.inicializacion = inicializacion;

@@ -20,7 +20,7 @@ namespace CompiPascal.grammar.sentences
         private bool isProcedure;
         private string retorno;
         public Function(string id, LinkedList<Instruction> parametos, LinkedList<Instruction> declas, string tipe, Instruction sentences, bool isProcedure, int row, int col)
-        : base(row ,col,"Function")
+        : base("Function")
         {
             this.retorno = "-";
             this.id = id;
@@ -89,5 +89,7 @@ namespace CompiPascal.grammar.sentences
         public string Id { get => id; set => id = value; }
         public LinkedList<Instruction> Declaraciones { get => declaraciones; set => declaraciones = value; }
         public ArrayList Parametros_referencia { get => parametros_referencia; set => parametros_referencia = value; }
+        public int Row { get => row; set => row = value; }
+        public int Column { get => column; set => column = value; }
     }
 }

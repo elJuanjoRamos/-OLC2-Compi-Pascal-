@@ -15,7 +15,7 @@ namespace CompiPascal.grammar.sentences
         private int column;
 
         public Repeat(Expression condition, Sentence sentences, int ro, int col)
-            : base(ro,col, "Repeat")
+            : base("Repeat")
         {
             this.condition = condition;
             this.sentences = sentences;

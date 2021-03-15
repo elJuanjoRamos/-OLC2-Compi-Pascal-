@@ -17,7 +17,7 @@ namespace CompiPascal.grammar.sentences
         private int column;
 
         public Assignation(string id, Expression value, int row, int column):
-            base(row,column, "Assignation")
+            base("Assignation")
         {
             this.id = id;
             this.value = value;

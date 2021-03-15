@@ -19,7 +19,7 @@ namespace CompiPascal.grammar.sentences
         public int Column { get => column; set => column = value; }
 
         public Exit(Expression value, int row, int col) :
-            base(row, col, "Exit")
+            base("Exit")
         {
             this.value = value;
             this.return_func_return = false;
@@ -28,7 +28,7 @@ namespace CompiPascal.grammar.sentences
         }
 
         public Exit() :
-            base(0, 0, "Exit")
+            base("Exit")
         {
             this.return_func_return = true;
         }

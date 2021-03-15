@@ -11,34 +11,58 @@ namespace CompiPascal.grammar.sentences
     {
         private string id;
         private string array;
-        public int row;
-        public int column;
+        private int row;
+        private int column;
+
+        public int Row { get => row; set => row = value; }
+        public int Column { get => column; set => column = value; }
 
         public Declaration_Array(string id, String dataType, int r, int c)
-            : base(r, c, "Declaration")
+            : base("Declaration")
         {
             this.id = id;
             this.array = dataType;
+            this.row = r;
+            this.column = c;
         }
         public override object Execute(Ambit ambit)
         {
-            Arrays ar = ambit.getArray(array.ToLower());
+            Arrays ar = ambit.getArray(array);
 
             if (ar != null)
             {
                 var rest = ambit.getArray(id);
                 if (rest == null)
                 {
-                    ambit.saveArray(id.ToLower(), new Arrays(id.ToLower(), ar.Inf, ar.Sup, ar.DataType, ar.Elementos));
+                    ambit.saveArray(id, new Arrays(id, ar.Inf, ar.Sup, ar.DataType, ar.Elementos, Row, Column));
                 } else
                 {
                     set_error("El arreglo '" + id + "' ya fue declarado", row, column);
                 }
 
-            } else
+            } 
+            else
             {
-                set_error("El arreglo '" + array + "' ya no ha sido declarado", row, column);
-                return null;
+                ArraysMultiple arraysMultiple = ambit.getArrayMulti(array);
+
+                if (arraysMultiple != null)
+                {
+                    var rest = ambit.getArrayMulti(id);
+                    if (rest == null)
+                    {
+                        ambit.saveArrayMultiple(id, new ArraysMultiple(id, arraysMultiple.Inf, arraysMultiple.Sup, arraysMultiple.DataType, arraysMultiple.Auxiliar, arraysMultiple.Arreglos, arraysMultiple.Elementos, Row, Column, arraysMultiple.Contador));
+                    }
+                    else
+                    {
+                        set_error("El arreglo '" + id + "' ya fue declarado", row, column);
+                    }
+
+                } else
+                {
+                    set_error("El arreglo '" + array + "' no ha sido declarado", row, column);
+                    return null;
+
+                }
             }
 
             return 0;

@@ -87,6 +87,10 @@ namespace CompiPascal.AST
                 {
                     return (Assignation_array)_assignation;
                 }
+                else if (_assignation is Assignation_arrayMultiple)
+                {
+                    return (Assignation_arrayMultiple)_assignation;
+                }
             }
             else if (actual.Term.ToString().Equals("REPEAT_UNTIL"))
             {

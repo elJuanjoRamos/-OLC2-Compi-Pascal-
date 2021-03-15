@@ -16,7 +16,7 @@ namespace CompiPascal.grammar.sentences
 
 
         public Sentence(LinkedList<Instruction> list)
-            : base(0,0, "Sentence")
+            : base("Sentence")
         {
             this.list = list;
             this.row = 0;
@@ -24,7 +24,7 @@ namespace CompiPascal.grammar.sentences
             this.isNull = false;
         }
         public Sentence()
-            : base(0, 0, "Sentence")
+            : base("Sentence")
         {
             this.isNull = true;
         }

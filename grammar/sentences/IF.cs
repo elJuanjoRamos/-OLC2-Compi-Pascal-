@@ -20,7 +20,7 @@ namespace CompiPascal.grammar.sentences
        
 
         public IF(Expression condition, Instruction sentences, Instruction elif, int ro, int co)
-            : base(ro,co, "IF")
+            : base("IF")
         {
             this.condition = condition;
             this.sentences = sentences;
@@ -32,7 +32,7 @@ namespace CompiPascal.grammar.sentences
         }
 
         public IF()
-            : base(0,0, "IF")
+            : base("IF")
         {
             this.IsNull = true;
         }

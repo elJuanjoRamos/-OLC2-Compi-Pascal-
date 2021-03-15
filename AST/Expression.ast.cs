@@ -2,6 +2,7 @@
 using CompiPascal.grammar.expression;
 using Irony.Parsing;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -238,8 +239,7 @@ namespace CompiPascal.AST
                 ;
 
             ID_TIPE.rule
-                = [ exp ] 
-                | TK_DOT + IDENTIFIER
+                = [ exp ] + MORE_ACCES
                 | Empty
                 ;
              */
@@ -291,25 +291,89 @@ namespace CompiPascal.AST
 
         public Expression getAccess(ParseTreeNode actual)
         {
+            /*
+                 ID_TIPE.rule
+                = [ exp ] + MORE_ACCES
+                | Empty
+                ;
+                 */
             if (actual.ChildNodes[1].ChildNodes.Count == 0)
             {
                 return GetLiteral(actual.ChildNodes[0]);
-            } else
+            } 
+            
+            else
             {
+
+                
                 var id = actual.ChildNodes[0].Token.Text;
                 var row = actual.ChildNodes[0].Token.Location.Line;
                 var col= actual.ChildNodes[0].Token.Location.Column;
 
-                return GetAccess_Array(actual.ChildNodes[1], id, row, col);
+
+                var obj = GetAccess_Array(actual.ChildNodes[1], id, row, col);
+
+                if (obj is Access_array)
+                {
+                    return (Access_array)obj;
+                }
+                else if (obj is Access_arrayMultiple)
+                {
+                    return (Access_arrayMultiple)obj;
+                }
+                
             }
+            return null;
         }
 
-        public Access_array GetAccess_Array(ParseTreeNode actual, string id, int row, int col)
+        public ArrayList MORE_ACCES(ParseTreeNode actual, ArrayList lista)
+        {
+            
+            if (actual.ChildNodes.Count > 0)
+            {
+                var exp = EXPLOGICA(actual.ChildNodes[1]);
+                lista.Add(exp);
+                lista = MORE_ACCES(actual.ChildNodes[3], lista);
+            }
+            return lista;
+        }
+
+        public object GetAccess_Array(ParseTreeNode actual, string id, int row, int col)
+        {
+            /*
+                ID_TIPE.rule
+               = [ exp ] + MORE_ACCES
+               | Empty
+               ;
+                */
+
+            if (actual.ChildNodes.Count > 0)
+            {
+                var exp = EXPLOGICA(actual.ChildNodes[1]);
+
+                ArrayList array = new ArrayList();
+
+                array = MORE_ACCES(actual.ChildNodes[3], array);
+                if (array.Count == 0)
+                {
+                    return new Access_array(id, exp, row, col);
+                }
+                else
+                {
+                    return GetAccess_ArrayMultiple(actual, id, row, col, array);
+                }
+
+                
+            }
+            return null;
+
+        }
+        public Access_arrayMultiple GetAccess_ArrayMultiple(ParseTreeNode actual, string id, int row, int col, ArrayList lista)
         {
             if (actual.ChildNodes.Count > 0)
             {
                 var exp = EXPLOGICA(actual.ChildNodes[1]);
-                return new Access_array(id, exp, row, col);
+                return new Access_arrayMultiple(id, exp, lista, row, col);
             }
             return null;
 

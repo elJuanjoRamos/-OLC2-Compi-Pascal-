@@ -194,7 +194,7 @@ namespace CompiPascal.analizer
             NonTerminal ARRAY = new NonTerminal("ARRAY", "ARRAY");
             NonTerminal OBJECT = new NonTerminal("OBJECT", "OBJECT");
             NonTerminal MORE_ARRAY = new NonTerminal("MORE_ARRAY", "MORE_ARRAY");
-
+            NonTerminal MORE_ACCES = new NonTerminal("MORE_ACCES", "MORE_ACCES");
 
             #endregion
 
@@ -336,9 +336,13 @@ namespace CompiPascal.analizer
                 ;
             VAR_ASSIGNATE_EXP.Rule
                 = DOS_PUNTOS + EQUALS + EXPLOGICA + PUNTO_COMA
-                | COR_IZQ + EXPLOGICA + COR_DER + DOS_PUNTOS + EQUALS + EXPLOGICA + PUNTO_COMA
+                | COR_IZQ + EXPLOGICA + COR_DER + MORE_ACCES + DOS_PUNTOS + EQUALS + EXPLOGICA + PUNTO_COMA
                 ;
 
+            MORE_ACCES.Rule
+                = COR_IZQ + EXPLOGICA + COR_DER + MORE_ACCES
+                | Empty
+                ;
             DATA_TYPE.Rule 
                 = RESERV_REAL
                 | RESERV_STR
@@ -442,7 +446,7 @@ namespace CompiPascal.analizer
                 ;
 
             ID_TIPE.Rule
-                = COR_IZQ + EXPLOGICA + COR_DER
+                = COR_IZQ + EXPLOGICA + COR_DER + MORE_ACCES
                 | Empty;
 
             /*EXPRESION.Rule

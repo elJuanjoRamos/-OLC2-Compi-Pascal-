@@ -11,6 +11,7 @@ namespace CompiPascal.grammar.identifier
         Dictionary<string, Identifier> variables;
         Dictionary<string, Function> functions;
         Dictionary<string, Arrays> arrays;
+        Dictionary<string, ArraysMultiple> arraysmulti;
         Dictionary<string, Types> types;
         private string ambit_name = "";
         private string ambit_name_inmediato = "";
@@ -22,6 +23,7 @@ namespace CompiPascal.grammar.identifier
             this.variables = new Dictionary<string, Identifier>();
             this.functions = new Dictionary<string, Function>();
             this.arrays = new Dictionary<string, Arrays>();
+            this.arraysmulti = new Dictionary<string, ArraysMultiple>();
             this.ambit_name = n;
             this.ambit_name_inmediato = ni;
             this.anterior = a;
@@ -34,6 +36,7 @@ namespace CompiPascal.grammar.identifier
             this.variables = new Dictionary<string, Identifier>();
             this.functions = new Dictionary<string, Function>();
             this.arrays = new Dictionary<string, Arrays>();
+            this.arraysmulti = new Dictionary<string, ArraysMultiple>();
             this.ambit_null = true;
             this.ambit_name = "General";
             this.ambit_name_inmediato = "General";
@@ -280,6 +283,49 @@ namespace CompiPascal.grammar.identifier
                 env = env.anterior;
             }
         }
+
+        public void saveArrayMultiple(string id, ArraysMultiple arrays)
+        {
+            Ambit amb = this;
+
+            if (!amb.Arraysmulti.ContainsKey(id.ToLower()))
+            {
+                amb.Arraysmulti[id.ToLower()] = arrays;
+            }
+        }
+
+
+        public ArraysMultiple getArrayMulti(string id)
+        {
+            Ambit amb = this;
+
+            while (amb != null)
+            {
+                if (amb.Arraysmulti.ContainsKey(id.ToLower()))
+                {
+                    return amb.Arraysmulti[id.ToLower()];
+                }
+                amb = amb.anterior;
+            }
+
+
+            return null;
+        }
+
+        public void setArrayMulti(string id, ArraysMultiple tipo_dato)
+        {
+            Ambit env = this;
+
+            while (env != null)
+            {
+                if (env.Arraysmulti.ContainsKey(id.ToLower()))
+                {
+                    env.Arraysmulti[id.ToLower()] = tipo_dato;
+                    return;
+                }
+                env = env.anterior;
+            }
+        }
         #endregion
 
         #region Types 
@@ -300,5 +346,6 @@ namespace CompiPascal.grammar.identifier
         internal Dictionary<string, Function> Functions { get => functions; set => functions = value; }
         internal Dictionary<string, Arrays> Arrays { get => arrays; set => arrays = value; }
         internal Dictionary<string, Types> Types { get => types; set => types = value; }
+        internal Dictionary<string, ArraysMultiple> Arraysmulti { get => arraysmulti; set => arraysmulti = value; }
     }
 }

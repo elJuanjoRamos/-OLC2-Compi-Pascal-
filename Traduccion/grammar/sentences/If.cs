@@ -40,13 +40,7 @@ namespace CompiPascal.Traduccion.grammar.sentences
             }
 
 
-            var ambitName = "Global_If";
-            if (!ambit.IsNull)
-            {
-                ambitName = ambit.Ambit_name + "_If";
-            }
-
-            var ifAmbit = new Ambit_Trad(ambit, ambitName, "If", false);
+            var ifAmbit = new Ambit_Trad(ambit, ambit.Ambit_name, "If", false);
 
             //CONDICION
             var condition = this.condition.Execute(ifAmbit);
@@ -64,7 +58,7 @@ namespace CompiPascal.Traduccion.grammar.sentences
             {
                 return if_total;
             }
-            var elseAmbit = new Ambit_Trad(ambit, ambitName, "Else", false);
+            var elseAmbit = new Ambit_Trad(ambit, ambit.Ambit_name, "Else", false);
             var else_sentence = elif.Execute(elseAmbit);
 
             if_total += tabs + "else \n"

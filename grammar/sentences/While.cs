@@ -15,7 +15,7 @@ namespace CompiPascal.grammar.sentences
         private int row;
         private int column;
         public While(Expression condition, Sentence sentences, int row, int col)
-            : base(row,col, "While")
+            : base("While")
         {
             this.condition = condition;
             this.sentences = sentences;

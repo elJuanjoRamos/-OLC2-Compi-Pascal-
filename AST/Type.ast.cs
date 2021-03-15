@@ -60,7 +60,8 @@ namespace CompiPascal.AST
             var element = actual.ChildNodes[0].ChildNodes[0].Token.Text;
             if (element.Equals("array"))
             {
-                return ARRAYs(actual.ChildNodes[0], name);
+                var result = ARRAYs(actual.ChildNodes[0], name);
+                return result;
             } else
             {
 
@@ -78,20 +79,24 @@ namespace CompiPascal.AST
             ExpressionAST expressionAST = new ExpressionAST();
             var limit_inf = expressionAST.getExpresion(actual.ChildNodes[2]);
             var limit_sup = expressionAST.getExpresion(actual.ChildNodes[5]);
-            ArrayList anidados = new ArrayList();
-            var resultado = MORE_ARRAY(actual.ChildNodes[8], name, anidados);
+
+            var row = actual.ChildNodes[0].Token.Location.Line;
+            var col = actual.ChildNodes[0].Token.Location.Column;
+
+            var resultado = MORE_ARRAY(actual.ChildNodes[8], name);
 
             if (resultado is string)
             {
-                return new Arrays(name, limit_inf, limit_sup, resultado.ToString());
+                return new Arrays(name, limit_inf, limit_sup, resultado.ToString(), row, col);
             } else
             {
-                return new ArraysMultiple(name, limit_inf, limit_sup, "", anidados);
+                var res = (ArraysMultiple)resultado;
+                return new ArraysMultiple(name, limit_inf, limit_sup, res.DataType, res.Auxiliar, res, row, col, res.Contador+1);
             }
             
         }
 
-        public object MORE_ARRAY(ParseTreeNode actual, string name, ArrayList anidados)
+        public object MORE_ARRAY(ParseTreeNode actual, string name)
         {
             /*
               MORE_ARRAY.Rule
@@ -104,29 +109,28 @@ namespace CompiPascal.AST
                 return actual.ChildNodes[0].ChildNodes[0].Token.Text;
             } else
             {
-                /*ExpressionAST expressionAST = new ExpressionAST();
+                var row = actual.ChildNodes[0].Token.Location.Line;
+                var col = actual.ChildNodes[0].Token.Location.Column;
+
+                ExpressionAST expressionAST = new ExpressionAST();
                 var limit_inf = expressionAST.getExpresion(actual.ChildNodes[2]);
                 var limit_sup = expressionAST.getExpresion(actual.ChildNodes[5]);
 
-                var resultado = MORE_ARRAY(actual.ChildNodes[8], name, anidados);
+                var resultado = MORE_ARRAY(actual.ChildNodes[8], name);
 
                 //Instruction exp = null; 
                 if (resultado is string)
                 {
-                    return new Arrays(name, limit_inf, limit_sup, resultado.ToString());
+                    return new ArraysMultiple(name, limit_inf, limit_sup, resultado.ToString(), resultado.ToString(), null,row, col,1);
                 }
                 else
                 {
-                    var exp = (Arrays)resultado;
-                    anidados.Add(new Arrays(name, limit_inf, limit_sup, exp.DataType));
-                    anidados.Add(exp);
-                }*/
+                    var exp = (ArraysMultiple)resultado;
+                    return (new ArraysMultiple(name, limit_inf, limit_sup, exp.DataType, exp.Auxiliar, exp, row, col, exp.Contador+1));
+                    
+                }
 
             }
-            return anidados;
-        }
-        
-
-    
+        }    
     }
 }

@@ -10,6 +10,7 @@ namespace CompiPascal.Traduccion.grammar
     {
         Dictionary<string, Identifier_Trad> variables;
         Dictionary<string, Function_Trad> functions;
+        Dictionary<string, Arrays_Trad> arrays;
         Dictionary<string, string> procedures;
         private string ambit_name = "";
         private string actualfunc = "";
@@ -206,6 +207,55 @@ namespace CompiPascal.Traduccion.grammar
             }
             return amb;
         }
+
+
+
+        #region ARRAYS
+
+        public void saveArray(string id, Arrays_Trad arrays)
+        {
+            Ambit_Trad amb = this;
+
+            if (!amb.Arrays.ContainsKey(id.ToLower()))
+            {
+                amb.Arrays[id.ToLower()] = arrays;
+            }
+        }
+
+
+        public Arrays_Trad getArray(string id)
+        {
+            Ambit_Trad amb = this;
+
+            while (amb != null)
+            {
+                if (amb.Arrays.ContainsKey(id.ToLower()))
+                {
+                    return amb.Arrays[id.ToLower()];
+                }
+                amb = amb.anterior;
+            }
+
+
+            return null;
+        }
+
+        public void setArray(string id, Arrays_Trad tipo_dato)
+        {
+            Ambit_Trad env = this;
+
+            while (env != null)
+            {
+                if (env.Arrays.ContainsKey(id.ToLower()))
+                {
+                    env.Arrays[id.ToLower()] = tipo_dato;
+                    return;
+                }
+                env = env.anterior;
+            }
+        }
+        #endregion
+
         public string Ambit_name { get => ambit_name; set => ambit_name = value; }
         public bool IsNull { get => ambit_null; set => ambit_null = value; }
         internal Dictionary<string, Identifier_Trad> Variables { get => variables; set => variables = value; }
@@ -216,5 +266,6 @@ namespace CompiPascal.Traduccion.grammar
         public string UnicId { get => unicId; set => unicId = value; }
         public string IdParent { get => idParent; set => idParent = value; }
         public Ambit_Trad Anterior { get => anterior; set => anterior = value; }
+        public Dictionary<string, Arrays_Trad> Arrays { get => arrays; set => arrays = value; }
     }
 }
